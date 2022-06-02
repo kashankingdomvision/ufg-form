@@ -17,7 +17,7 @@ class AlterQuoteTableForeignKeys extends Migration
             $table->foreign('commission_id')->references('id')->on('commissions')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('commission_group_id')->references('id')->on('commission_groups')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('default_supplier_currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('cascade')->onDelete('cascade');
@@ -37,19 +37,22 @@ class AlterQuoteTableForeignKeys extends Migration
      */
     public function down()
     {
+        $columns = [ 
+            'default_supplier_currency_id',
+            'created_by',
+            'user_id',
+            'season_id',
+            'brand_id',
+            'currency_id',
+            'holiday_type_id',
+            'sale_person_id',
+            'lead_passsenger_nationailty_id',
+            'lead_passenger_resident'
+        ];
+
         Schema::table('quotes', function (Blueprint $table) {
-            $table->dropForeign([
-                'default_supplier_currency_id',
-                'created_by',
-                'user_id',
-                'season_id',
-                'brand_id',
-                'currency_id',
-                'holiday_type_id',
-                'sale_person_id',
-                'lead_passsenger_nationailty_id',
-                'lead_passenger_resident'
-            ]);
+            $table->dropForeign($columns);
+            $table->dropColumn($columns);
         });
     }
 }

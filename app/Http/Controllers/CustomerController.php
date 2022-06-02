@@ -90,7 +90,7 @@ class CustomerController extends Controller
             if($request->status == 'cancelled'){
                 $quote->where('deleted_at', '!=', null);
             }else{
-                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+                $quote->where('status', 'like', '%'.$request->status.'%' );
             }
         }
         

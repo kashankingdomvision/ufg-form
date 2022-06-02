@@ -14,14 +14,11 @@ class CreateQuoteBehalfUsersTable extends Migration
     public function up()
     {
         Schema::create('quote_behalf_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('quote_id');
-            $table->unsignedBigInteger('behalf_user_id');
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('behalf_user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-            $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('behalf_user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

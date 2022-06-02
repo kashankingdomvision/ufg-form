@@ -139,7 +139,7 @@ class BookingController extends Controller
             });
 
             $booking->when($request->status, function ($query) use ($request) {
-                $query->where('booking_status', $request->status);
+                $query->where('status', $request->status);
             });
       
         }
@@ -327,9 +327,15 @@ class BookingController extends Controller
 
     public function edit($id)
     {
-        $booking = Booking::findOrFail(decrypt($id));
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
+        $booking                  = Booking::findOrFail(decrypt($id));
         $data['booking']          = $booking;
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -358,13 +364,12 @@ class BookingController extends Controller
                 return Helper::getPaymentDetialByRefNo($zoho_booking_reference);
             });
 
-            if($response['status'] == 200 && isset($response['body']['old_records'])) {
-                $data['old_ufg_payment_records'] = $response['body']['old_records'];
+            if($response['status'] == 200) {
+                
+                $data['old_ufg_payment_records'] = isset($response['body']['old_records']) ? $response['body']['old_records'] : NULL;
+                $data['ufg_payment_records']     = isset($response['body']['message']) ? $response['body']['message'] : NULL;
             }
 
-            if($response['status'] == 200 && isset($response['body']['message'])) {
-                $data['ufg_payment_records'] = $response['body']['message'];
-            }
         }
 
         $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
@@ -633,10 +638,17 @@ class BookingController extends Controller
         ]);
     }
 
-    public function show($id,$status = null)
+    public function show($id, $status = null)
     {
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
+        $booking                  = Booking::findOrFail(decrypt($id));
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['users']            = User::all()->sortBy('name');
@@ -646,7 +658,7 @@ class BookingController extends Controller
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['booking']            = Booking::findOrFail(decrypt($id));
+        $data['booking']          = $booking;
         $data['commission_types'] = Commission::all();
         $data['payment_methods']  = PaymentMethod::all();
         $data['banks']            = Bank::all();
@@ -676,8 +688,22 @@ class BookingController extends Controller
         $data['status'] = $status;
         $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
+        if(isset($booking->ref_no) && !empty($booking->ref_no)){
 
-        return view('bookings.show',$data);
+            $zoho_booking_reference = $booking->ref_no;
+
+            $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+                return Helper::getPaymentDetialByRefNo($zoho_booking_reference);
+            });
+
+            if($response['status'] == 200) {
+
+                $data['old_ufg_payment_records'] = isset($response['body']['old_records']) ? $response['body']['old_records'] : NULL;
+                $data['ufg_payment_records']     = isset($response['body']['message']) ? $response['body']['message'] : NULL;
+            }
+        }
+
+        return view('bookings.show', $data);
     }
 
     // not used currently
@@ -697,8 +723,13 @@ class BookingController extends Controller
         $booking_log                = BookingLog::findOrFail(decrypt($id));
         $data['log']                = $booking_log;
         $data['booking']            = (object) $booking_log->data;
-        $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries']          = cache()->rememberForever('countries', function () {
+                                        return Country::orderBy('sort_order', 'ASC')->get();
+                                    });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+                                        return Country::orderByService()->orderBy('name', 'ASC')->get();
+                                    });
         $data['categories']         = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']            = Season::all();
         $data['users']              = User::all()->sortBy('name');
@@ -751,7 +782,7 @@ class BookingController extends Controller
             'currency_id'          => $request->booking_currency_id,
         ]);
 
-        Booking::where('id', $request->booking_id)->update([ 'booking_status' => 'cancelled' ]);
+        Booking::where('id', $request->booking_id)->update([ 'status' => 'cancelled' ]);
 
         return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
     }
@@ -780,7 +811,7 @@ class BookingController extends Controller
 
     public function revert_cancel_booking($id){ 
 
-        Booking::where('id',decrypt($id))->update([ 'booking_status' => 'confirmed' ]);
+        Booking::where('id',decrypt($id))->update([ 'status' => 'confirmed' ]);
         BookingCancellation::where('booking_id',decrypt($id))->delete();
 
         return redirect()->back()->with('success_message', 'Booking Reverted Successfully');    
@@ -921,14 +952,14 @@ class BookingController extends Controller
         ]);
 
         Booking::where('id', $id)->update([ 
-            'booking_status' => 'cancelled',
+            'status' => 'cancelled',
             'cancel_date'    => Carbon::now()
         ]);
     }
 
     public function restorBooking($id)
     {
-        Booking::where('id', $id)->update([ 'booking_status' => 'confirmed' ]);
+        Booking::where('id', $id)->update([ 'status' => 'confirmed' ]);
         BookingCancellation::where('booking_id', $id)->delete();
     }
     

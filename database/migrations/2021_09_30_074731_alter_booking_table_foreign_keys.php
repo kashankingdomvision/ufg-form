@@ -40,8 +40,25 @@ class AlterBookingTableForeignKeys extends Migration
      */
     public function down()
     {
+        $columns = [ 
+            'quote_id',
+            'user_id',
+            'created_by',
+            'commission_id',
+            'commission_group_id',
+            'default_supplier_currency_id',
+            'season_id',
+            'brand_id',
+            'currency_id',
+            'holiday_type_id',
+            'sale_person_id',
+            'lead_passsenger_nationailty_id',
+            'lead_passenger_resident',
+        ];
+
         Schema::table('bookings', function (Blueprint $table) {
-            $table->dropForeign(['quote_id','user_id','commission_id','season_id','brand_id','currency_id','holiday_type_id','sale_person_id']);
+            $table->dropForeign($columns);
+            $table->dropColumn($columns);
         });
     }
 }

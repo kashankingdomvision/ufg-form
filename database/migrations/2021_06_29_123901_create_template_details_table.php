@@ -15,7 +15,7 @@ class CreateTemplateDetailsTable extends Migration
     {
         Schema::create('template_details', function (Blueprint $table) {
 
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('template_id')->nullable();
             $table->date('date_of_service')->nullable();
             $table->date('end_date_of_service')->nullable();

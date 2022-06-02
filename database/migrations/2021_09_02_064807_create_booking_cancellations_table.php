@@ -14,14 +14,13 @@ class CreateBookingCancellationsTable extends Migration
     public function up()
     {
         Schema::create('booking_cancellations', function (Blueprint $table) {
+            
             $table->id();
-            $table->unsignedBigInteger('booking_id');
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->double('cancellation_charges');
             $table->string('cancellation_reason');
             $table->double('total_refund_amount');
-            $table->unsignedBigInteger('currency_id');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

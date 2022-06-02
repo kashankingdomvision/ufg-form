@@ -14,19 +14,16 @@ class CreateTemplateTable extends Migration
     public function up()
     {
         Schema::create('templates', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('season_id')->nullable();;
-            $table->unsignedBigInteger('currency_id')->nullable();;
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->string('title');
-            $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('rate_type', ['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('status', [0, 1])->default(1);
             $table->tinyInteger('privacy_status');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

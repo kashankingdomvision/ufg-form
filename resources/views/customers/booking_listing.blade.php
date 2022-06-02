@@ -233,13 +233,13 @@
                                                         <span class="fa fa-money-bill-alt"></span>
                                                     </a>
 
-                                                    @if($booking->booking_status == 'confirmed')
+                                                    @if($booking->status == 'confirmed')
                                                         <a href="javascript:void(0)" class="cancel-booking float-right btn btn-outline-danger btn-xs " data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
                                                             <span class="fa fa-times"></span>
                                                         </a>
                                                     @endif
 
-                                                    @if($booking->booking_status == 'cancelled')
+                                                    @if($booking->status == 'cancelled')
                                                         <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class="revert-cancel-booking float-right btn btn-outline-success btn-xs" title="Revert Cancel Booking">
                                                             <span class="fa fa-undo-alt"></span>
                                                         </a>

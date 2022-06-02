@@ -39,23 +39,23 @@
                 </a>
               @endif
 
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
                   <button type="button" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i>&nbsp;&nbsp;Export in Excel</button>
                 </a>
               @endif
 
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <button type="button" class="multiple-alert btn btn-danger btn-sm float-right mr-2" data-action_type="cancel_quote" data-action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
 
                 <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Confirm Booking</button>
               @endif
 
-              @if($quote->booking_status == 'cancelled')
+              @if($quote->status == 'cancelled')
                 <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="restore_quote" data-action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}" title="Restore Quote"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
               @endif
               
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <button type="button" class="multiple-alert mr-2 float-right btn btn-teal btn-sm" data-action_type="edit_quote" title="Edit Quote"><i class="fas fa-edit mr-2"></i>Edit Quote</button>
               @endif
             </div>
@@ -1255,7 +1255,7 @@
                 <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
               </div>
 
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
                   <a href="{{ route('quotes.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>

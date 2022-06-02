@@ -15,9 +15,10 @@ class CreateBookingCategoryDetailsTable extends Migration
     {
         Schema::create('booking_category_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('booking_id');
-            $table->unsignedBigInteger('booking_detail_id');
-            $table->unsignedBigInteger('category_id');
+
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('type')->nullable();
             $table->string('label')->nullable();
@@ -30,10 +31,6 @@ class CreateBookingCategoryDetailsTable extends Migration
             $table->mediumInteger('max')->nullable();
             $table->string('subtype')->nullable();
             $table->enum('toggle', ['true' , 'false']);
-
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

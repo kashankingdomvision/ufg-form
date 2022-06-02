@@ -58,15 +58,39 @@ class QuoteController extends Controller
 
     public function index(Request $request)
     {
-        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
+        $quote  = Quote::
+        with([
+            'getBooking' => function ($query) {
+                $query->select('id','quote_id');
+            },
+            'getSeason' => function ($query) {
+                $query->select('id','name');
+            },
+            'getBrand' => function ($query) {
+                $query->select('id','name');
+            },
+            'getBookingCurrency' => function ($query) {
+                $query->select('id','name', 'code');
+            },
+            'getCreatedBy' => function ($query) {
+                $query->select('id','name');
+            },
+        ])
+        ->select(
+            '*', 
+            DB::raw('count(*) as quote_count')
+        )
+        ->where('is_archive', 0);
+        
         if(count($request->all()) >0){
             $quote = $this->searchFilters($quote, $request);
         }
-        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
-        $data['booking_seasons']  = Season::all();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
+
+        $data['quotes']           = $quote->groupBy('ref_no')->latest()->paginate($this->pagiantion);
+        $data['booking_seasons']  = Season::get(['id','name']);
+        $data['brands']           = Brand::orderBy('id','ASC')->get(['id','name']);
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
-        $data['users']            = User::get();
+        $data['users']            = User::get(['name']);
 
         return view('quotes.listing', $data);
     }
@@ -88,7 +112,7 @@ class QuoteController extends Controller
             if($request->status == 'cancelled'){
                 $quote->where('deleted_at', '!=', null);
             }else{
-                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+                $quote->where('status', 'like', '%'.$request->status.'%' );
             }
         }
 
@@ -249,7 +273,7 @@ class QuoteController extends Controller
             $data['agency_contact']         = $request->agency_contact??NULL;
             $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
             $data['booking_details']        = $request->booking_details;
-            $data['booking_status']         = 'confirmed';
+            $data['status']                 = 'confirmed';
             $data['booking_date']           = Carbon::now();
             $data['created_by']             =  Auth::id();
         }
@@ -435,13 +459,11 @@ class QuoteController extends Controller
 
     public function getQuoteDetailStoredTextArray($quoteDetail, $quote_detail){
 
-        $data = [
+        return [
             'quote_detail_id' => $quoteDetail->id,
             'stored_text'     => $quote_detail['stored_text']['text'],
             'action_date'     => $quote_detail['stored_text']['date']
         ];
-
-        return $data;
     }
 
     public function getQuoteLogArray($quote)
@@ -451,45 +473,46 @@ class QuoteController extends Controller
         $array['quote'] = $quote->getQuoteDetails->toArray();
         $array['pax'  ] = $quote->getPaxDetail->toArray();
 
-        $data = [
+        return [
             'quote_id'   => $quote->id,
             'version_no' => $quote->version,
             'data'       => $array,
             'log_no'     => $quote->getQuotelogs()->count(),
         ];
-
-        return $data;
     }
 
     public function create()
     {
-        $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
-        $data['sale_persons']     = User::get();
-        // whereHas('getRole', function($query){
-        //     $query->where('slug', 'sales-agent');
-        // })
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
         $data['quote_id']         = Helper::getQuoteID();
-        $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::orderBy('created_at','DESC')->get();
+        $data['groups']           = Group::latest()->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+        $data['preset_comments']      = PresetComment::orderBy('id', 'ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
-
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
-        $data['harbours']          = Harbour::get();
+        
+        // $data['commission_types'] = Commission::all();
+        // $data['quote_ref']        = Quote::get('quote_ref');
+        // $data['locations']        = Location::get();
+        // $data['harbours']          = Harbour::get();
+        // $data['booked_by']        = User::all()->sortBy('name');
+        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
 
         return view('quotes.create', $data);
     }
@@ -564,31 +587,64 @@ class QuoteController extends Controller
 
     public function edit($id)
     {
-        $quote = Quote::findOrFail(decrypt($id));
-        $data['quote']            = $quote;
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $quote = Quote::with([
+            'getCountryDestinations' => function ($query) {
+                $query->select('countries.id');
+            },
+            'getQuotelogs' => function ($query) {
+                $query->select('id','quote_id','log_no','version_no');
+            },
+            'getPaxDetail',
+            'getCommissionCriteria',
+            'getCurrency',
+            'getBrand',
+        ])
+        ->findOrFail(decrypt($id));
+
+        $data['quote']         = $quote;
+        $data['quote_details'] = $quote->getQuoteDetails()->with([
+            'getSupplierCurrency',
+            'getCategory',
+            'getGroupOwner',
+            'getSupplier',
+            'getProduct',
+            'getQuoteDetailCountries',
+        ])
+        ->get();
+
+
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+ 
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::where('currency_id', $quote->currency_id)->orderBy('created_at','DESC')->get();
+        $data['groups']           = Group::where('currency_id', $quote->currency_id)->latest()->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
+        $data['preset_comments']  = PresetComment::orderBy('id','ASC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
-
+        
+        
+        // $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        // $data['booked_by']        = User::all()->sortBy('name');
+        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        // $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
+        // $data['locations']        = Location::get();
+        // $data['commission_types'] = Commission::all();
+        // $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        // $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         return view('quotes.edit', $data);
     }
 
@@ -687,31 +743,43 @@ class QuoteController extends Controller
         $quote                    = $log->data;
         $data['quote']            = (object) $quote;
         $data['log']              = $log;
+
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
-        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+        $data['categories']       = Category::orderBy('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $data['quote']->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']->currency_id)->orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
+        $data['preset_comments']  = PresetComment::orderBy('id','ASC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
-
+        
         if($type != NULL){
             $data['type'] = $type;
         }
+        
+        
+        // $data['locations']        = Location::get();
+        // $data['booked_by']        = User::all()->sortBy('name');
+        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        // $data['quote_ref']        = Quote::where('quote_ref','!=', $data['quote']->quote_ref)->get('quote_ref');
+        // $data['commission_types'] = Commission::all();
+        // $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        // $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+
         return view('quotes.version', $data);
     }
 
@@ -756,12 +824,12 @@ class QuoteController extends Controller
             $bulk_action_ids  = explode(",", $bulk_action_ids);
     
             if($bulk_action_type == 'cancel'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'status' => 'cancelled' ]);
                 $message = "Quotes Cancelled Successfully.";
             }
     
             if($bulk_action_type == 'revert_cancel'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'status' => 'quote' ]);
                 $message = "Revert Cancelled Quotes Successfully.";
             }
     
@@ -800,12 +868,12 @@ class QuoteController extends Controller
 
         // }elseif ($request->btn  == 'cancel'){
 
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'cancelled']);
         //     $respons['message'] = 'Quotes Cancelled Successfully !!';
         // }
         // elseif ($request->btn  == 'quote'){
 
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'quote']);
         //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
         // }
 
@@ -888,7 +956,7 @@ class QuoteController extends Controller
             }
             
             $quote->update([
-                'booking_status' => 'booked',
+                'status' => 'booked',
                 'booking_date'   => Carbon::now()
             ]);
           
@@ -927,13 +995,13 @@ class QuoteController extends Controller
 
             if($action_type == 'cancel_quote'){
                 
-                Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'cancelled' ]);
+                Quote::findOrFail(decrypt($id))->update([ 'status' => 'cancelled' ]);
                 $message = "Quote Cancelled Successfully.";
             }
 
             if($action_type == 'restore_quote'){
 
-                Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'quote' ]);
+                Quote::findOrFail(decrypt($id))->update([ 'status' => 'quote' ]);
                 $message = "Quote Restored Successfully.";
             }
 
@@ -997,14 +1065,14 @@ class QuoteController extends Controller
         }
         
         $quote->update([
-            'booking_status' => 'booked',
+            'status' => 'booked',
             'booking_date'   => Carbon::now()
         ]);
     }
 
     public function cancelQuote($id){
 
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+        Quote::findOrFail(decrypt($id))->update(['status' => 'cancelled']);
     }
 
     public function exportQuote($id){
@@ -1062,13 +1130,13 @@ class QuoteController extends Controller
 
     public function cancel($id)
     {
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+        Quote::findOrFail(decrypt($id))->update(['status' => 'cancelled']);
         return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');
     }
 
     public function restore($id)
     {
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'quote']);
+        Quote::findOrFail(decrypt($id))->update(['status' => 'quote']);
         return redirect()->back()->with('success_message', 'Quote Restore Successfully');
     }
 
@@ -1206,3 +1274,8 @@ class QuoteController extends Controller
     // 'supplier_country_ids'  => (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ,
     // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
 }
+
+
+// whereHas('getRole', function($query){
+//     $query->where('slug', 'sales-agent');
+// })

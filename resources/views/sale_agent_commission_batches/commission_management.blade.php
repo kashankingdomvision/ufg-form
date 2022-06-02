@@ -79,15 +79,15 @@
                 </form>
               </div>
             </div>
-          <!-- End Multi Actions -->
+            <!-- End Multi Actions -->
 
-            {{-- <div>
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Partials</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Confirmed</a></li>
-                </ul>
-            </div> --}}
+              {{-- <div>
+                  <ul class="nav nav-pills">
+                      <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Partials</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Confirmed</a></li>
+                  </ul>
+              </div> --}}
 
             <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
@@ -123,8 +123,8 @@
                           <td>{{ $sac_batch->name }}</td>
                           <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
                           <td>{!! $sac_batch->formatted_status !!}</td>
-                          <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
-                          <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
+                          <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
+                          <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>
@@ -189,7 +189,7 @@
 
                                 <td class="d-flex">
                                   @if($sacb_details->status != 'paid' && $sacb_details->total_paid_amount_yet == 0)
-                                    <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
+                                    <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
                                     <button type="button" class="commission-status btn btn-outline-danger btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['dispute', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="dispute" title="Dispute Commission"><i class="fa fa-times"></i></button>
                                   @endif
                                 </td>
@@ -212,6 +212,8 @@
                 {{-- {{ $sac_batch->links() }} --}}
               </ul>
             </div>
+
+            <div id="overlay" class=""></div>
           </div>
         </div>
       </div>

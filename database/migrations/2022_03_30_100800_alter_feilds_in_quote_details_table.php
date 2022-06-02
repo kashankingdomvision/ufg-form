@@ -14,8 +14,7 @@ class AlterFeildsInQuoteDetailsTable extends Migration
     public function up()
     {
         Schema::table('quote_details', function (Blueprint $table) {
-            $table->unsignedBigInteger('group_owner_id')->nullable()->after('supplier_country_ids');
-            $table->foreign('group_owner_id')->references('id')->on('group_owners')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('group_owner_id')->nullable()->after('supplier_country_ids')->constrained('group_owners')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -15,14 +15,9 @@ class CreateBookingDetailCountriesTable extends Migration
     {
         Schema::create('booking_detail_countries', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('booking_id');
-            $table->unsignedBigInteger('booking_detail_id');
-            $table->unsignedBigInteger('country_id');
-
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

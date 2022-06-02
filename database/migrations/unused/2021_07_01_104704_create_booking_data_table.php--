@@ -14,7 +14,7 @@ class CreateBookingDataTable extends Migration
     public function up()
     {
         Schema::create('booking_data', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->enum('ask_for_transfer', [0, 1])->nullable();
             $table->string('reponsible_person_ti')->nullable();

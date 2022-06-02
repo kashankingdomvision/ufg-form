@@ -15,8 +15,8 @@ class CreateGroupQuoteTable extends Migration
     {
         Schema::create('group_quote', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_id')->constrained()->onDelete('cascade');
-            $table->foreignId('quote_id')->constrained()->onDelete('cascade');
+            $table->foreignId('group_id')->constrained('groups')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

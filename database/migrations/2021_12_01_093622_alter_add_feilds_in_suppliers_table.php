@@ -15,12 +15,10 @@ class AlterAddFeildsInSuppliersTable extends Migration
     {
         Schema::table('suppliers', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('group_owner_id')->after('name')->nullable(); 
+            $table->foreignId('group_owner_id')->after('name')->nullable()->constrained('group_owners')->onUpdate('cascade')->onDelete('cascade');
             $table->string('contact_person')->after('group_owner_id')->nullable(); 
             $table->string('code')->after('contact_person')->nullable(); 
             $table->double('commission_rate')->after('code')->nullable(); 
-            
-            $table->foreign('group_owner_id')->references('id')->on('group_owners')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -32,7 +30,14 @@ class AlterAddFeildsInSuppliersTable extends Migration
     public function down()
     {
         Schema::table('suppliers', function (Blueprint $table) {
-            $table->dropForeign(['group_owner_id', 'code', 'commission_rate']);
+
+            $table->dropForeign([
+                'group_owner_id',
+            ]);
+
+            $table->dropColumn([
+                'group_owner_id'
+            ]);
         });
     }
 }

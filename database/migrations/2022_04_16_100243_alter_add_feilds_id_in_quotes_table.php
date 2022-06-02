@@ -14,8 +14,7 @@ class AlterAddFeildsIdInQuotesTable extends Migration
     public function up()
     {
         Schema::table('quotes', function (Blueprint $table) {
-            $table->unsignedBigInteger('commission_criteria_id')->nullable()->after('user_id');
-            $table->foreign('commission_criteria_id')->references('id')->on('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_criteria_id')->nullable()->after('user_id')->constrained('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

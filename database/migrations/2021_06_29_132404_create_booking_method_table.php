@@ -14,7 +14,7 @@ class CreateBookingMethodTable extends Migration
     public function up()
     {
         Schema::create('booking_methods', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->timestamps();
         });

@@ -15,11 +15,8 @@ class CreateCommissionCriteriaHolidayTypesTable extends Migration
     {
         Schema::create('commission_criteria_holiday_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('commission_criteria_id');
-            $table->unsignedBigInteger('holiday_type_id');
-          
-            $table->foreign('commission_criteria_id')->references('id')->on('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('holiday_type_id')->references('id')->on('holiday_types')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_criteria_id')->constrained('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('holiday_type_id')->constrained('holiday_types')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

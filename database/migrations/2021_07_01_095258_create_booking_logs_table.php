@@ -14,14 +14,13 @@ class CreateBookingLogsTable extends Migration
     public function up()
     {
         Schema::create('booking_logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('booking_id');
+            
+            $table->id();
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->string('version_no');
             $table->bigInteger('log_no')->nullalbe();
             $table->longText('data');
             $table->timestamps();
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
-            
         });
     }
 

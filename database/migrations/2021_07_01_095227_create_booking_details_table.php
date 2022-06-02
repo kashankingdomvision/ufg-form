@@ -14,7 +14,7 @@ class CreateBookingDetailsTable extends Migration
     public function up()
     {
         Schema::create('booking_details', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->string('booking_detail_unique_ref_id', 6)->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
@@ -48,6 +48,7 @@ class CreateBookingDetailsTable extends Migration
             $table->double('markup_amount_in_booking_currency')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);
             $table->string('invoice')->nullable();
+            $table->double('outstanding_amount_left', 8, 2)->nullable();
             $table->enum('status', ['not_booked', 'pending', 'booked', 'cancelled'])->default('not_booked');
             $table->enum('payment_status', ['active', 'cancelled'])->default('active');
             $table->longText('category_details')->nullable();

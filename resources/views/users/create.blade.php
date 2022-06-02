@@ -8,7 +8,9 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-6"><h4>Add User</h4></div>
+        <div class="col-sm-6">
+          <h4>Add User</h4>
+        </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
@@ -40,17 +42,17 @@
 
                 <div class="form-group">
                   <label>Email <span style="color:red">*</span></label>
-                  <input type="email" name="email" id="email" class="form-control" placeholder="emample@mail.com" >
+                  <input type="email" name="email" id="email" class="form-control" placeholder="emample@mail.com">
                   <span class="text-danger" role="alert"></span>
                 </div>
 
                 <div class="form-group">
                   <label>Password <span style="color:red">*</span></label>
-                  <input type="password" name="password" id="password" class="form-control" placeholder="Password" >
+                  <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-                @if(Auth::user()->hasAdmin())
+                @if(Auth::user()->isAdmin())
                   <div class="form-group">
                     <label>User Type <span style="color:red">*</span></label>
                     <select name="role_id" id="role_id" class="form-control select2single role-id">
@@ -68,10 +70,9 @@
                   <select name="supervisor_id" id="supervisor_id" class="form-control select2single supervisor-id">
                     <option value="">Select Supervisor</option>
                     @foreach ($supervisors as $supervisor)
-                      <option value="{{ $supervisor->id }}" {{ ($supervisor->id == old('supervisor_id')) ? 'selected' : ''}} > {{ $supervisor->name }}</option>
+                      <option value="{{ $supervisor->id }}"> {{ $supervisor->name }}</option>
                     @endforeach
                   </select>
-
                   <span class="text-danger" role="alert"></span>
                 </div> 
 
@@ -192,5 +193,5 @@
 @endsection
 
 @push('js')
-  <script src="{{ asset('js/user_management.js') }}" ></script>
+<script src="{{ asset('js/user_management.js') }}"></script>
 @endpush

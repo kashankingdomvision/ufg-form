@@ -1,6 +1,6 @@
 @php
     $route = \Route::currentRouteName();
-    $currenct_user_is_admin = Auth::user()->hasAdmin();
+    $currenct_user_is_admin = Auth::user()->isAdmin();
 
     $supplier_routes = [
         'suppliers.index',

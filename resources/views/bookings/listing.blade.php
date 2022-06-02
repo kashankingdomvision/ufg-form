@@ -178,22 +178,22 @@
                                                         <span class="fa fa-money-bill-alt"></span>
                                                     </a>
 
-                                                    @if($booking->booking_status == 'confirmed')
+                                                    @if($booking->status == 'confirmed')
                                                         <button type="button" class="multiple-alert float-right btn btn-outline-danger btn-xs" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" data-action="{{ route('bookings.multiple.alert', ['cancel_booking', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times"></i></button>
                                                     @endif
                                         
-                                                    @if($booking->booking_status == 'cancelled')
+                                                    @if($booking->status == 'cancelled')
                                                         <button type="button" class="multiple-alert float-right btn btn-outline-success btn-xs" data-action_type="restore_booking" data-action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}" title="Restore Booking"><i class="fa fa-undo-alt"></i></button>
                                                     @endif
 
 
-                                                    {{-- @if($booking->booking_status == 'confirmed')
+                                                    {{-- @if($booking->status == 'confirmed')
                                                         <a href="javascript:void(0)" class="cancel-booking float-right btn btn-outline-danger btn-xs " data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
                                                             <span class="fa fa-times"></span>
                                                         </a>
                                                     @endif
 
-                                                    @if($booking->booking_status == 'cancelled')
+                                                    @if($booking->status == 'cancelled')
                                                         <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class=" float-right btn btn-outline-success btn-xs" title="Revert Cancel Booking">
                                                             <span class="fa fa-undo-alt"></span>
                                                         </a>
