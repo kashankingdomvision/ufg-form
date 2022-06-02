@@ -100,6 +100,8 @@ __webpack_require__(/*! ./commission_management/commission_criteria_app.js */ ".
 
 __webpack_require__(/*! ./commission_management/pay_commission.js */ "./resources/js/commission_management/pay_commission.js");
 
+__webpack_require__(/*! ./commission_management/view_commission_detail.js */ "./resources/js/commission_management/view_commission_detail.js");
+
 /***/ }),
 
 /***/ "./resources/js/commission_management/commission_app.js":
@@ -698,6 +700,38 @@ $(document).ready(function () {
       } else {
         printListingErrorMessage("Please Check Atleast One Record.");
       }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/commission_management/view_commission_detail.js":
+/*!**********************************************************************!*\
+  !*** ./resources/js/commission_management/view_commission_detail.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).on('click', ".view-detail", function (event) {
+  event.preventDefault();
+  var bookingID = $(this).data('booking_id');
+  var modal = $('#view_detail_modal');
+  modal.find('#commission_detail').val(bookingID);
+  $.ajax({
+    type: 'POST',
+    url: "".concat(REDIRECT_BASEURL, "pay-commissions/view-commission-detail/").concat(bookingID),
+    data: {
+      'booking_id': bookingID
+    },
+    success: function success(response) {
+      if (response.status && response.hasOwnProperty('html')) {
+        modal.modal('show');
+        $('#view_detail_modal .modal-body').html(response.html);
+      }
+    },
+    error: function error(_error) {
+      console.log('error');
     }
   });
 });
