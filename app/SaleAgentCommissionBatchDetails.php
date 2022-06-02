@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class SaleAgentCommissionBatchDetails extends Model
 {
@@ -24,6 +25,7 @@ class SaleAgentCommissionBatchDetails extends Model
         'dispute_detail'
     ];
 
+
     public function getFormattedStatusAttribute()
     {
         switch ($this->attributes['status']) {
@@ -43,13 +45,12 @@ class SaleAgentCommissionBatchDetails extends Model
             case 'paid':
                 return '<h5><span class="badge badge-success">Paid</span></h5>';
                 break;
-
-            
-  
         }
     }
     
-    
+    public function getDepositDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
 
     function getBooking() {
         return $this->hasOne(Booking::class, 'id', 'booking_id');
@@ -73,8 +74,6 @@ class SaleAgentCommissionBatchDetails extends Model
     }
 
     public function setOutstandingAmountLeftAttribute( $value ) {
-
-
         $this->attributes['outstanding_amount_left'] = str_replace( ',', '', $value );
     }
 
@@ -88,5 +87,9 @@ class SaleAgentCommissionBatchDetails extends Model
 
     public function setTotalOutstandingAmountAttribute( $value ) {
         $this->attributes['total_outstanding_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepositDateAttribute( $value ) {
+        $this->attributes['deposit_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }

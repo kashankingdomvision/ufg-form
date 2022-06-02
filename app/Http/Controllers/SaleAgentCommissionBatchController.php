@@ -506,9 +506,8 @@ class SaleAgentCommissionBatchController extends Controller
         // ->orderBy('id', 'DESC')
         // ->get();
 
-        $data['detail'] = SaleAgentCommissionBatchDetails::select('sac_batches.name','sac_batch_details.commission_amount_in_sale_person_currency',
-        'sac_batch_details.total_paid_amount_yet','sac_batch_details.outstanding_amount_left','sac_batch_details.pay_commission_amount',
-        'sac_batch_details.total_paid_amount','sac_batch_details.total_outstanding_amount','sac_batch_details.status')
+        $data['detail'] = SaleAgentCommissionBatchDetails::select('sac_batches.name','sac_batch_details.commission_amount_in_sale_person_currency','sac_batch_details.pay_commission_amount',
+        'sac_batch_details.total_paid_amount','sac_batch_details.total_outstanding_amount','sac_batch_details.status','sac_batches.deposit_date')
         ->leftJoin('sac_batches', 'sac_batches.id', '=', 'sac_batch_details.sac_batch_id')
         ->where('booking_id', $booking_id)->get();
 
