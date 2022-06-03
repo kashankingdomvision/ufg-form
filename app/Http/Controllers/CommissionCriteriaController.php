@@ -26,7 +26,7 @@ class CommissionCriteriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $commission_criterias = CommissionCriteria::
         with([
@@ -45,7 +45,15 @@ class CommissionCriteriaController extends Controller
         ]) 
         ->orderBy('id', 'ASC');
 
-        $data['commission_criterias'] = $commission_criterias->paginate($this->pagination, ['id','name','percentage']);
+        if(count($request->all()) >0){
+            $commission_criterias = $this->searchFilters($commission_criterias, $request);
+        }
+
+        $data['commission_criterias'] = $commission_criterias->paginate($this->pagination);
+        $data['booking_seasons']  = Season::get(['id','name']);
+        $data['brands']           = Brand::orderBy('id','ASC')->get(['id','name']);
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
+        $data['holiday_types']  = HolidayType::get(['id','name']);
         
         return view('commission_criterias.listing', $data);
         
@@ -56,6 +64,43 @@ class CommissionCriteriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    public function searchFilters($commission_criterias, $request)
+    {
+        if($request->has('booking_currency') && !empty($request->booking_currency)){
+            $commission_criterias->whereHas('getCurrencies', function($query) use($request){
+                $query->whereIn('currency_id', $request->booking_currency );
+            });
+        }
+
+        if($request->has('booking_season') && !empty($request->booking_season)){
+            $commission_criterias->whereHas('getSeasons', function($query) use($request){
+               $query->where('name', 'like', '%'. $request->booking_season.'%' );
+            });
+        }
+
+        if($request->has('holiday_types') && !empty($request->holiday_types)){
+            $commission_criterias->whereHas('getHolidayTypes', function($query) use($request){
+               $query->where('name', 'like', '%'. $request->holiday_types.'%' );
+            });
+        }
+
+        if($request->has('brand') && !empty($request->brand)){
+            $commission_criterias->whereHas('getBrands', function($query) use($request){
+                $query->whereIn('brand_id', $request->brand );
+            });
+        }
+
+        if($request->has('search') && !empty($request->search)){
+            $commission_criterias->where(function($query) use($request){
+                $query->where('name', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        return $commission_criterias;
+    }
+
     public function create()
     {
         $data['brands']          = Brand::orderBy('id','ASC')->get();

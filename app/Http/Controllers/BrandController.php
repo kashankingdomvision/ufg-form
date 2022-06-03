@@ -24,9 +24,6 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        
-
-
         $Brand = Brand::orderBy('id', 'ASC');
 
         if(count($request->all()) > 0){

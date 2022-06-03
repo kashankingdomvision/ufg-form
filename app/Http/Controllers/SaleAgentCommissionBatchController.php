@@ -492,19 +492,8 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function viewCommissionDetail($booking_id)
     {
-        // $data['sac_batch'] = SaleAgentCommissionBatch::with([
-        //     'getPaymentMethod',
-        //     'getSaleAgentCommissionBatchDetails',
-        //     'getSalePerson',
-        //     'getSalePersonCurrency',
-        //     'getSaleAgentCommissionBatchDetails.getBooking',
-        //     'getSaleAgentCommissionBatchDetails.getBooking.getCurrency',
-        //     'getSaleAgentCommissionBatchDetails.getBooking.getBrand',
-        //     'getSaleAgentCommissionBatchDetails.getBooking.getHolidayType',
-        //     'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
-        // ])
-        // ->orderBy('id', 'DESC')
-        // ->get();
+        // $data['detail'] = SaleAgentCommissionBatchDetails::select('sac_batch_details.sac_batch_id')->selectRaw("SUM(total_paid_amount) as total_batch")->groupBy('sac_batch_id')->get();
+        // dd($data['detail']);
 
         $data['detail'] = SaleAgentCommissionBatchDetails::select('sac_batches.name','sac_batch_details.commission_amount_in_sale_person_currency','sac_batch_details.pay_commission_amount',
         'sac_batch_details.total_paid_amount','sac_batch_details.total_outstanding_amount','sac_batch_details.status','sac_batches.deposit_date')
