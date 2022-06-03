@@ -1,3 +1,5 @@
+const { repeat } = require("lodash");
+
 $(document).ready(function() {
 
 
@@ -22,6 +24,14 @@ $(document).ready(function() {
         commissionRow.find('.row-total-outstanding-amount').val('0.00');
     }
 
+    function getTotalPayCommissionAmount() {
+
+        let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+        let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
+        $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
+
+        return totalPayCommissionAmount;
+    }
 
     $(document).on("change", '.pay-commission-amount', function (e) {
 
@@ -49,11 +59,6 @@ $(document).ready(function() {
             commissionRow.find('.row-total-outstanding-amount').val(check(rowTotalOutstandingAmount));
         }
 
-        getTotalPaidAmount();
-        getTotalOutstandingAmount();
-
-
-
         let salePersonPayments = removeComma($('.sale-person-payments').val());
 
         if (salePersonPayments !== undefined) {
@@ -61,25 +66,29 @@ $(document).ready(function() {
             $('#sale_person_payments').prop('checked', true).val('1');
 
             let balanceOwedAmount = removeComma($('.balance-owed-amount').val());
+            let currentOutstandingAmount = removeComma($('.current-outstanding-amount').val());
+            let calBalanceOwedOutstandingAmount = parseFloat(currentOutstandingAmount) - parseFloat(getTotalPayCommissionAmount());
 
+            if(calBalanceOwedOutstandingAmount < 0){
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Please Enter Correct Amount.'
+                });
 
-            let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
-            let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
+                resetCommissionRow(commissionRow);
+            }else{
 
-            let balanceOwedOutstandingAmount = removeComma($('.balance-owed-outstanding-amount').val());
-            let calBalanceOwedOutstandingAmount = parseFloat(balanceOwedAmount) - parseFloat(totalPayCommissionAmount);
+                $('.balance-owed-outstanding-amount').val(check(calBalanceOwedOutstandingAmount));
+            }
+            
             let calBalancTotalPaidAmount = parseFloat(balanceOwedAmount) - parseFloat(calBalanceOwedOutstandingAmount);
-
-
-            $('.balance-owed-outstanding-amount').val(check(calBalanceOwedOutstandingAmount));
-
-
             $('.balance-owed-total-paid-amount').val(check(calBalancTotalPaidAmount));
 
-  
-    
-            $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
+            getTotalPayCommissionAmount();
         }
+
+        getTotalPaidAmount();
+        getTotalOutstandingAmount();
     });
 
     $(document).on('submit', '#store_pay_commission', function(event) {

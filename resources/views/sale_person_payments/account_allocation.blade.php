@@ -168,12 +168,13 @@
                                 <tr class="border-top">
                                     <th></th>
                                     <th>Balance Owed</th>
+                                    <th class="d-none">Current Outstanding Amount</th>
                                     <th>Outstanding Amount</th>
                                     <th>Total Paid Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr >
+                                <tr>
                                     <td>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" name="sale_person_payment" id="sale_person_payments" value="0" class="sale-person-payments zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
@@ -185,13 +186,23 @@
                                         <input type="text" name="sale_person_payment_id" id="sale_person_payment_id" value="{{ $sp_payment->id }}" class="form-control sale-person-payment-id" style="max-width: 110px;">
                                     </td>
 
-                                    <td class="form-group">
+                                    <td class="form-group d-none">
                                         <div class="input-group mx-sm-2 d-flex justify-content-center">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">{{ $sp_payment->getSalePersonCurrency->code }}</span>
                                             </div>
                                             <input type="text" name="balance_owed_amount" id="balance_owed_amount" value="{{ Helper::number_format($sp_payment->balance_owed_amount) }}" class="form-control balance-owed-amount" style="max-width: 110px;" readonly>
                                         </div>
+                                    </td>
+
+                                    <td class="form-group">
+                                        <div class="input-group mx-sm-2 d-flex justify-content-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ $sp_payment->getSalePersonCurrency->code }}</span>
+                                            </div>
+                                            <input type="text" name="current_outstanding_amount" value="{{ Helper::number_format($sp_payment->balance_owed_outstanding_amount) }}" class="form-control current-outstanding-amount" style="max-width: 120px;" readonly>
+                                        </div>
+                                        <small class="text-danger"></small>
                                     </td>
 
                                     <td class="form-group">
