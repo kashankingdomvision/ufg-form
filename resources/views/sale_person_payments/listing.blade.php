@@ -63,11 +63,12 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
+                      <th></th>
                       <th>Sale Person</th>
                       <th>Sale Person Currency</th>
                       <th>Balance Owed</th>
                       <th>Outstanding Amount</th>
-                      <th>Paid Amount</th>
+                      <th>Total Paid Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -76,6 +77,14 @@
                     @if($sp_payments && $sp_payments->count())
                       @foreach ($sp_payments as $key => $sp_payment)
                         <tr>
+                          <td>
+                            @if(!$sp_payment->getSalePersonPaymentDetails->isEmpty())
+                              <button class="btn btn-sm parent-row" data-id="{{$sp_payment->id}}">
+                                <span class="fa fa-plus"></span>
+                              </button>
+                            @endif
+                          </td>
+
                           <td>
                             {{ isset($sp_payment->getSalePerson->name) && !empty($sp_payment->getSalePerson->name) ? $sp_payment->getSalePerson->name : '' }}
                           </td>
@@ -103,6 +112,32 @@
                             <a href="{{ route('sale_person_payments.edit', encrypt($sp_payment->id)) }}" class="mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             <a href="{{ route('sale_person_payments.account_allocation', [encrypt($sp_payment->id), encrypt($sp_payment->sale_person_id)]) }}" class="mr-2 btn btn-outline-success btn-xs" title="Account Allocation"><i class="fa fa-fw fa-tasks"></i></a>
                           </td>
+
+                          @if(!$sp_payment->getSalePersonPaymentDetails->isEmpty())
+                            <tbody class="child-row d-none" id="child-row-{{$sp_payment->id}}">
+                              <tr>
+                                <th></th>
+                                <th>Booking Ref #</th>
+                                <th>Paid Amount</th>
+                                <th colspan="4"></th>
+
+                              </tr>
+                              @foreach($sp_payment->getSalePersonPaymentDetails as $sp_payment_details)
+                                <tr>
+                                  <td></td>
+                                  <td>
+                                    {{ $sp_payment_details->getBooking->ref_no }}
+                                  </td>
+                                  <td>
+                                    {{ $sp_payment->getSalePersonCurrency->code }}
+                                    {{ Helper::number_format($sp_payment_details->paid_amount) }}
+                                  </td>
+                                  <td colspan="4"></td>
+                                </tr>
+                              @endforeach
+                            </tbody>
+                          @endif
+
                         </tr>
                       @endforeach
                     @else

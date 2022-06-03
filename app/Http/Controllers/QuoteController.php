@@ -119,7 +119,7 @@ class QuoteController extends Controller
         if($request->has('booking_currency') && !empty($request->booking_currency)){
             $quote->whereHas('getCurrency', function($query) use($request){
                 foreach ($request->booking_currency as $currency) {
-                    $query->where('code', 'like', '%'.$currency.'%' );
+                    $query->whereIn('id', $request->booking_currency);
                 }
             });
         }

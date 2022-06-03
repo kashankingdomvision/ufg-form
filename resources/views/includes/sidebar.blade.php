@@ -269,7 +269,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ route('sale_person_payments.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['sale_person_payments.index', 'sale_person_payments.create', 'sale_person_payments.edit', 'sale_person_payments.listing']) ? 'active' : '' }}">
+                                <a href="{{ route('sale_person_payments.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['sale_person_payments.index', 'sale_person_payments.create', 'sale_person_payments.edit', 'sale_person_payments.listing', 'sale_person_payments.account_allocation']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>
                                         Sale Person's Payment
