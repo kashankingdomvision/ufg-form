@@ -12,4 +12,9 @@ class CurrencyConversion extends Model
         'live',
         'manual',
     ];
+
+    public function scopeIgnoreSameCurrency($query)
+    {
+        return $query->whereColumn('from', '!=' ,'to');
+    }
 }

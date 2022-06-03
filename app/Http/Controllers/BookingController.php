@@ -350,7 +350,7 @@ class BookingController extends Controller
         $data['commission_types'] = Commission::all();
         $data['banks']            = Bank::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
@@ -662,7 +662,7 @@ class BookingController extends Controller
         $data['commission_types'] = Commission::all();
         $data['payment_methods']  = PaymentMethod::all();
         $data['banks']            = Bank::all();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         $data['locations']        = Location::get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
@@ -742,7 +742,7 @@ class BookingController extends Controller
         $data['payment_methods']    = PaymentMethod::all();
         $data['commission_types']   = Commission::all();
         $data['banks']              = Bank::all();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         $data['locations']        = Location::get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['booking_detail_statuses'] = BookingDetail::Statuses();

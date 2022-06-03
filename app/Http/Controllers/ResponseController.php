@@ -691,13 +691,13 @@ class ResponseController extends Controller
 
     public function getFilterCurrencyRates(Request $request){
 
-        $query = DB::table('currency_conversions');
+        $query = CurrencyConversion::query();
 
         if(!is_null($request->selected_currencies)){
             $query->whereIn('from', $request->selected_currencies);
         }
 
-        $data['currency_conversions'] = $query->get();
+        $data['currency_conversions'] = $query->ignoreSameCurrency()->get();
 
         return view('quote_booking_includes.currency_conversion_filter_modal', $data);
     }
