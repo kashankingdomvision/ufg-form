@@ -49,7 +49,7 @@
                                     <span class="text-danger" role="alert"></span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group d-none">
                                     <label>Sale Person Currency</label>
                                     <div class="input-group">
                                       <input type="text" name="sale_person_currency_id" value="" class="form-control sale-person-currency-id hide-arrows" readonly>

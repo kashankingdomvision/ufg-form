@@ -18,6 +18,8 @@ class CreateSalePersonPaymentsTable extends Migration
             $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->double('balance_owed_amount', 8, 2);
+            $table->double('balance_owed_outstanding_amount', 8, 2);
+            $table->double('balance_owed_total_paid_amount', 8, 2);
             $table->timestamps();
         });
     }

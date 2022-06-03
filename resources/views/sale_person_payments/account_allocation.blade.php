@@ -29,7 +29,7 @@
     </section>
 
   <section class="content">
-    <form method="get" action="{{ route('sale_person_payments.account_allocation') }}">
+    <form method="get" action="">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -47,7 +47,7 @@
                                         <select class="form-control select2single" name="sale_person_id">
                                             <option value="">Select User </option>
                                             @foreach ($users as $user)
-                                            <option value="{{ $user->id }}" {{ request()->get('sale_person_id') == $user->id  ? 'selected' : '' }}>
+                                            <option value="{{ $user->id }}" {{ $sale_person_id == $user->id ? 'selected' : '' }} >
                                                 {{ $user->name }}
                                             </option>
                                             @endforeach
@@ -93,7 +93,7 @@
     </form>
   </section>
 
-<form action="{{ route('pay_commissions.store') }}" id="store_pay_commission">
+<form action="{{ route('sale_person_payments.store_account_allocation') }}" id="store_pay_commission">
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -163,26 +163,76 @@
 
 
                     
+                        <table class="table table-hover text-nowrap mb-0">
+                            <thead>
+                                <tr class="border-top">
+                                    <th></th>
+                                    <th>Balance Owed</th>
+                                    <th class="d-none">Current Outstanding Amount</th>
+                                    <th>Outstanding Amount</th>
+                                    <th>Total Paid Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" name="sale_person_payment" id="sale_person_payments" value="0" class="sale-person-payments zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                            <label for="sale_person_payments" class="custom-control-label"></label>
+                                        </div>
+                                    </td>
+
+                                    <td class="d-none">
+                                        <input type="text" name="sale_person_payment_id" id="sale_person_payment_id" value="{{ $sp_payment->id }}" class="form-control sale-person-payment-id" style="max-width: 110px;">
+                                    </td>
+
+                                    <td class="form-group d-none">
+                                        <div class="input-group mx-sm-2 d-flex justify-content-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ $sp_payment->getSalePersonCurrency->code }}</span>
+                                            </div>
+                                            <input type="text" name="balance_owed_amount" id="balance_owed_amount" value="{{ Helper::number_format($sp_payment->balance_owed_amount) }}" class="form-control balance-owed-amount" style="max-width: 110px;" readonly>
+                                        </div>
+                                    </td>
+
+                                    <td class="form-group">
+                                        <div class="input-group mx-sm-2 d-flex justify-content-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ $sp_payment->getSalePersonCurrency->code }}</span>
+                                            </div>
+                                            <input type="text" name="current_outstanding_amount" value="{{ Helper::number_format($sp_payment->balance_owed_outstanding_amount) }}" class="form-control current-outstanding-amount" style="max-width: 120px;" readonly>
+                                        </div>
+                                        <small class="text-danger"></small>
+                                    </td>
+
+                                    <td class="form-group">
+                                        <div class="input-group mx-sm-2 d-flex justify-content-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ $sp_payment->getSalePersonCurrency->code }}</span>
+                                            </div>
+                                            <input type="text" name="balance_owed_outstanding_amount" id="balance_owed_outstanding_amount" value="{{ Helper::number_format($sp_payment->balance_owed_outstanding_amount) }}" class="form-control balance-owed-outstanding-amount" style="max-width: 120px;" readonly>
+                                        </div>
+                                        <small class="text-danger"></small>
+                                    </td>
+
+                                    <td class="form-group">
+                                        <div class="input-group mx-sm-2 d-flex justify-content-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ $sp_payment->getSalePersonCurrency->code }}</span>
+                                            </div>
+                                            <input type="text" name="balance_owed_total_paid_amount" id="balance_owed_total_paid_amount" value="{{ Helper::number_format($sp_payment->balance_owed_total_paid_amount) }}" class="form-control balance-owed-total-paid-amount" style="max-width: 120px;" readonly>
+                                        </div>
+                                        <small class="text-danger"></small>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
 
 
                         <div class="card-body p-0" id="listing_card_body">
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
-                                    <thead>
-                                        <tr class="border-top">
-                                            <th>Booking Ref #</th>
-                                            <th>Booking Currency</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            
-                                        </tr>
-                                    </tbody>
-
-
-
                                     <thead>
                                         <tr class="border-top">
                                             <th>
@@ -193,16 +243,16 @@
                                             </th>
                                             {{-- <th style="min-width: 200px;">feilds</th> --}}
                                             <th>Booking Ref #</th>
-                                            <th>Booking Currency</th>
+                                            {{-- <th>Booking Currency</th>
                                             <th>Brand</th>
-                                            <th>Holiday Type</th>
-                                            <th>Season</th>
-                                            <th>Com. Criteria</th>
-                                            <th>Departure Date</th>
-                                            <th>Selling Price</th>
-                                            <th>Total Markup Amount</th>
-                                            <th>Total Markup Percentage</th>
-                                            <th>Com. Amount</th>
+                                            <th>Holiday Type</th> --}}
+                                            {{-- <th>Season</th> --}}
+                                            {{-- <th>Com. Criteria</th> --}}
+                                            {{-- <th>Departure Date</th> --}}
+                                            {{-- <th>Selling Price</th> --}}
+                                            {{-- <th>Total Markup Amount</th> --}}
+                                            {{-- <th>Total Markup Percentage</th> --}}
+                                            {{-- <th>Com. Amount</th> --}}
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
                                             <th>Outstanding Amount Left</th>
@@ -241,10 +291,10 @@
                                                     </td>
 
                                                     <td>{{ $booking->ref_no }}</td>
-                                                    <td>
+                                                    {{-- <td>
                                                         {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : '' }}
-                                                    </td>
-                                                    <td>
+                                                    </td> --}}
+                                                    {{-- <td>
                                                         {{ !is_null($booking->getBrand) ? $booking->getBrand->name : '' }}
                                                     </td>
                                                     <td>
@@ -252,28 +302,28 @@
                                                     </td>
                                                     <td>
                                                         {{ !is_null($booking->getSeason) ? $booking->getSeason->name : '' }}
-                                                    </td>
-                                                    <td>
+                                                    </td> --}}
+                                                    {{-- <td>
                                                         <h5>
                                                             <span class="badge badge-info" title="Commission Name">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->name : '' }}</span>
                                                             <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
                                                         </h5>
                                                     </td>
-                                                    <td> {{ $booking->departure_date }} </td>
+                                                    <td> {{ $booking->departure_date }} </td> --}}
 
-                                                    <td>
+                                                    {{-- <td>
                                                         {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code : '' }} 
                                                         {{ Helper::number_format($booking->selling_price) }} </td>
                                                     <td>
                                                         {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code : '' }}
                                                         {{ Helper::number_format($booking->markup_amount) }}
-                                                    </td>
+                                                    </td> --}}
 
-                                                    <td>
+                                                    {{-- <td>
                                                         {{ Helper::number_format($booking->markup_percentage).' %' }}
-                                                    </td>
+                                                    </td> --}}
 
-                                                    <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
+                                                    {{-- <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td> --}}
                                                     <td>
                                                         {{ $supplier_default_currency_code }}
                                                         {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
@@ -358,7 +408,13 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="16"></td>
+                                                <td colspan="5"></td>
+
+                                                <td class="font-weight-bold">
+                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span class="total-pay-commission-amount">0.00</span>
+                                                    <input type="hidden" name="total_pay_commission_amount" class="total-pay-commission-amount" value="">
+                                                </td>
                                                 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
@@ -374,7 +430,7 @@
                                             </tr>
 
                                             <tr class="mt-2">
-                                                <td colspan="17"></td>
+                                                <td colspan="7"></td>
                                                 <td class="d-flex justify-content-left">
                                                     <button type="submit" class="btn btn-success float-right mr-3"><span class="mr-2 "></span> {{ isset($send_to_agent) && $send_to_agent == 0 ? 'Save & Send to Agent' : 'Pay' }} &nbsp; </button>
                                                     <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>

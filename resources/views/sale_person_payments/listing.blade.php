@@ -66,6 +66,8 @@
                       <th>Sale Person</th>
                       <th>Sale Person Currency</th>
                       <th>Balance Owed</th>
+                      <th>Outstanding Amount</th>
+                      <th>Paid Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -77,15 +79,29 @@
                           <td>
                             {{ isset($sp_payment->getSalePerson->name) && !empty($sp_payment->getSalePerson->name) ? $sp_payment->getSalePerson->name : '' }}
                           </td>
+
                           <td>
                             {{ isset($sp_payment->getSalePersonCurrency->name) && !empty($sp_payment->getSalePersonCurrency->name) ? $sp_payment->getSalePersonCurrency->code.' - '. $sp_payment->getSalePersonCurrency->name : '' }}
                           </td>
+
                           <td>
                             {{ isset($sp_payment->getSalePersonCurrency->code) && !empty($sp_payment->getSalePersonCurrency->code) ? $sp_payment->getSalePersonCurrency->code : '' }}
                             {{ Helper::number_format($sp_payment->balance_owed_amount) }}
                           </td>
+
                           <td>
-                            <a href="{{ route('sale_person_payments.edit', encrypt($sp_payment->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            {{ isset($sp_payment->getSalePersonCurrency->code) && !empty($sp_payment->getSalePersonCurrency->code) ? $sp_payment->getSalePersonCurrency->code : '' }}
+                            {{ Helper::number_format($sp_payment->balance_owed_outstanding_amount) }}
+                          </td>
+
+                          <td>
+                            {{ isset($sp_payment->getSalePersonCurrency->code) && !empty($sp_payment->getSalePersonCurrency->code) ? $sp_payment->getSalePersonCurrency->code : '' }}
+                            {{ Helper::number_format($sp_payment->balance_owed_total_paid_amount) }}
+                          </td>
+
+                          <td>
+                            <a href="{{ route('sale_person_payments.edit', encrypt($sp_payment->id)) }}" class="mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <a href="{{ route('sale_person_payments.account_allocation', [encrypt($sp_payment->id), encrypt($sp_payment->sale_person_id)]) }}" class="mr-2 btn btn-outline-success btn-xs" title="Account Allocation"><i class="fa fa-fw fa-tasks"></i></a>
                           </td>
                         </tr>
                       @endforeach
