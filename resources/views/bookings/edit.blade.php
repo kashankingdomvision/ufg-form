@@ -1886,7 +1886,7 @@
                         </div>
                       </div>
     
-                      <div class="col-md-2 align-items-end">
+                      <div class="col-md-2 align-items-end d-none">
                         <div class="form-group">
                           <div class="input-group">
                             <input type="text" name="sale_person_currency_id" data-currency_code="{{ isset($booking->getSalePersonCurrency->code) && !empty($booking->getSalePersonCurrency->code) ? $booking->getSalePersonCurrency->code : '' }}" 
@@ -1894,6 +1894,7 @@
                           </div>
                         </div>
                       </div>
+
                     </div>
 
                     <div class="form-group row">
