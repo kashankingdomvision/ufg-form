@@ -1279,7 +1279,7 @@ $(document).ready(function () {
       $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(check(outstandingAmountLeft));
     }
   });
-  $(document).on('change', '.deposit-amount', function () {
+  $(document).on('keyup change', '.deposit-amount', function () {
     var quoteKey = $(this).closest('.quote').data('key');
     var financeKey = $(this).closest('.finance-clonning').data('financekey');
     var closestFinance = $(this).closest('.finance');

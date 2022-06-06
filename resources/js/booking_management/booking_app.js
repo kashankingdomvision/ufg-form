@@ -1471,7 +1471,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('change', '.deposit-amount', function() {
+    $(document).on('keyup change', '.deposit-amount', function() {
 
         var quoteKey       = $(this).closest('.quote').data('key');
         var financeKey     = $(this).closest('.finance-clonning').data('financekey');
