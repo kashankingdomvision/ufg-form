@@ -398,6 +398,7 @@ class ReportController extends Controller
         }
 
         $data['quotes'] = $quote->get();
+        
         return view('reports.quote_report', $data);
     }
 
