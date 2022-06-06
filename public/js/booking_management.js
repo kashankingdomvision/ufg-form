@@ -1121,6 +1121,7 @@ $(document).ready(function () {
       $("#quote_".concat(key, "_actual_cost_in_booking_currency")).val(check(calculatedActualCostInBookingCurrency));
 
       if (markupType == 'itemised') {
+        console.log(sellingPrice);
         calculatedMarkupAmount = parseFloat(sellingPrice) - parseFloat(actualCost);
         calculatedMarkupPercentage = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
         calculatedProfitPercentage = (parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice) * 100;

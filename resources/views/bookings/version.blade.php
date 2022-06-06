@@ -907,7 +907,7 @@
                                 <label>Markup % <span class="text-danger">*</span></label>
                                 <div class="input-group">
 
-                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_percentage) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
+                                  <input type="text" step="any" value="{{ \Helper::number_format($booking_detail->markup_percentage) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
                                   <div class="input-group-append">
                                     <div class="input-group-text">%</div>
                                   </div>
