@@ -26,7 +26,6 @@ class UpdateCountryRequest extends FormRequest
     {
         return [
             'name'       => ['required', Rule::unique('countries', 'name')->ignore(decrypt($this->id))],
-            'phone'      => ['required', Rule::unique('countries', 'phone')->ignore(decrypt($this->id))],
             'sort_order' => 'required',
         ];
     }
@@ -35,7 +34,6 @@ class UpdateCountryRequest extends FormRequest
     {
         return [
             'name'       => 'Country Name',
-            'phone'      => 'Phone Code',
             'sort_order' => 'Sort Order',
         ];
     }
