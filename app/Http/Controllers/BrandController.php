@@ -24,23 +24,19 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        
+        $query = Brand::orderBy('id', 'ASC');
 
+        if($request->filled('search')){
 
-        $Brand = Brand::orderBy('id', 'ASC');
-
-        if(count($request->all()) > 0){
-            if($request->has('search') && !empty($request->search)){
-                $Brand->where(function($q) use($request){
-                    $q->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('email', 'like', '%'.$request->search.'%')
-                    ->orWhere('address', 'like', '%'.$request->search.'%')
-                    ->orWhere('phone', 'like', '%'.$request->search.'%');
-                });
-            }
+            $query->where(function($query) use($request){
+                $query->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('email', 'like', '%'.$request->search.'%')
+                ->orWhere('address', 'like', '%'.$request->search.'%')
+                ->orWhere('phone', 'like', '%'.$request->search.'%');
+            });
         }
 
-        $data['brands'] = $Brand->paginate($this->pagination);
+        $data['brands'] = $query->paginate($this->pagination);
 
         return view('brands.listing',$data);
     }
@@ -52,8 +48,6 @@ class BrandController extends Controller
      */
     public function create()
     {
-        // $data['countries'] = Country::orderByService()->orderByAsc()->get();
-
         return view('brands.create');
     }
 
@@ -94,23 +88,7 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        // $request->validate(['name' => 'required|string']);
-
-        // $data = [ 
-        //     'name'      => $request->name,
-        //     'email'     => $request->email,
-        //     'address'   => $request->address,
-        //     'phone'     => $request->full_number,
-        //     'about_us'  => $request->about_us,
-        //     'user_id'   => Auth::id(),
-        // ];
-
-        // if($request->hasFile('logo')) {
-        //     $data['logo'] = $this->fileStore($request);
-        // }
-
         $brand = Brand::create($this->brandArray($request, 'store'));
-        $brand->getSupplierCountries()->sync($request->supplier_country_ids);
 
         return response()->json([ 
             'status'          => true, 
@@ -139,7 +117,6 @@ class BrandController extends Controller
     public function edit($id)
     {
         $data['brand']     = Brand::findOrFail(decrypt($id));
-        // $data['countries'] = Country::orderByService()->orderByAsc()->get();
 
         return view('brands.edit',$data);
     }
@@ -155,8 +132,6 @@ class BrandController extends Controller
     {
 
         $brand = Brand::find(decrypt($id));
-        $brand->getSupplierCountries()->sync($request->supplier_country_ids);
-
         $brand->update($this->brandArray($request, 'update', $brand));
 
         return response()->json([ 
@@ -177,7 +152,6 @@ class BrandController extends Controller
         Brand::findOrFail(decrypt($id))->delete();
 
         return redirect()->route('brands.index')->with('success_message', 'Brand deleted successfully');
-
     }
 
     public function bulkAction(Request $request)
