@@ -82,7 +82,7 @@
               <div class="row">
                 <div class="col-md-4">
                   <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Edit Booking</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">View Booking</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">View Payments</a></li>
                   </ul>
                 </div>
