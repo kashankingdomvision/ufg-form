@@ -86,7 +86,6 @@
                       </th>
                       <th>Country</th>
                       <th>Sort Name</th>
-                      <th>Phone Code</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -102,16 +101,8 @@
                       </td>
                       <td>{{ $country->name }}</td>
                       <td>{{ $country->sort_order }}</td>
-                      <td>{{ $country->phone }}</td>
                       <td>
-                        <form method="post" action="{{ route('countries.destroy', encrypt($country->id)) }}">
                         <a href="{{ route('countries.edit', encrypt($country->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                          @csrf
-                          @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        </form>
                       </td>
                     </tr>
                     @endforeach

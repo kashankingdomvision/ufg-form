@@ -23,13 +23,10 @@ class CountryController extends Controller
     {
         $query = Country::orderBy('sort_order', 'ASC');
 
-        if(count($request->all()) > 0){
-
-            if($request->has('search') && !empty($request->search)){
-                $query->where('name', 'like', '%'.$request->search.'%');
-                $query->orWhere('sort_order', 'like', '%'.$request->search.'%');
-                $query->orWhere('phone', 'like', '%'.$request->search.'%');
-            }
+        if($request->filled('search')){
+            $query->where('name', 'like', '%'.$request->search.'%');
+            $query->orWhere('sort_order', 'like', '%'.$request->search.'%');
+            $query->orWhere('phone', 'like', '%'.$request->search.'%');
         }
 
         $data['countries'] = $query->paginate($this->pagination);
