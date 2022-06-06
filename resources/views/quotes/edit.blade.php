@@ -1217,7 +1217,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-2 align-items-end">
+                  <div class="col-md-2 align-items-end d-none">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="text" name="sale_person_currency_id" 
