@@ -53,7 +53,7 @@
             </div>
 
             <!-- Multi Actions -->
-            <div class="card-header">
+            {{-- <div class="card-header">
               <div class="row">
                 <form method="POST" id="country_bulk_action" action="{{ route('countries.bulk.action') }}" >
                   @csrf
@@ -70,7 +70,7 @@
                   </div>
                 </form>
               </div>
-            </div>
+            </div> --}}
             <!-- End Multi Actions -->
 
             <div class="card-body p-0" id="listing_card_body">
@@ -79,10 +79,10 @@
                   <thead>
                     <tr>
                       <th>
-                        <div class="custom-control custom-checkbox">
+                        {{-- <div class="custom-control custom-checkbox">
                           <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
                           <label for="parent" class="custom-control-label"></label>
-                        </div>
+                        </div> --}}
                       </th>
                       <th>Country</th>
                       <th>Sort Name</th>
@@ -94,10 +94,10 @@
                     @foreach ($countries as $key => $country)
                     <tr>
                       <td>
-                        <div class="custom-control custom-checkbox">
+                        {{-- <div class="custom-control custom-checkbox">
                           <input type="checkbox" id="child_{{$country->id}}" value="{{$country->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
                           <label for="child_{{$country->id}}" class="custom-control-label"></label>
-                        </div>
+                        </div> --}}
                       </td>
                       <td>{{ $country->name }}</td>
                       <td>{{ $country->sort_order }}</td>
