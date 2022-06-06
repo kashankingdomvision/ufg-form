@@ -46,7 +46,7 @@
                                 <div class="card-body">
                                     <div class="row">
 
-                                        <div class="col">
+                                        <div class="col-md-3">
                                             <div class="form-group"> 
                                                 <label>Booking Reference</label>
                                                 <select class="form-control select2-multiple"  data-placeholder="Select Booking Reference" multiple name="quote_ref[]">
@@ -57,7 +57,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Booking Season</label>
                                                 <select class="form-control select2single" name="booking_season">
@@ -69,7 +69,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Transfer Supplier</label>
                                                 <select class="form-control select2single" name="supplier">
@@ -81,14 +81,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Service Date Range</label>
                                                 <input type="text" name="dates" value="{{ request()->get('dates') }}" autocomplete="off" class="form-control date-range-picker">
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Month</label>
                                                 <select class="form-control select2single" name="month">
@@ -108,7 +108,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col">
+
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Year</label>
                                                 <select class="form-control select2single" name="year">
@@ -120,7 +121,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Status</label>
                                                 <select class="form-control select2single" name="status">
@@ -148,7 +149,7 @@
                                             </div>
                                         </div> --}}
 
-                                        <div class="col-md-2" id="more_filter">
+                                        <div class="col-md-3" id="more_filter">
                                             <div class="form-group">
                                                 <div class="d-flex bd-highlight">
                                                     <div class="w-100 bd-highlight"><label>More Filters</label></div>
