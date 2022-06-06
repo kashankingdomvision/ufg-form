@@ -118,9 +118,7 @@ class QuoteController extends Controller
 
         if($request->has('booking_currency') && !empty($request->booking_currency)){
             $quote->whereHas('getCurrency', function($query) use($request){
-                foreach ($request->booking_currency as $currency) {
-                    $query->whereIn('id', $request->booking_currency);
-                }
+                $query->whereIn('currency_id', $request->booking_currency );
             });
         }
 
@@ -132,9 +130,7 @@ class QuoteController extends Controller
 
         if($request->has('brand') && !empty($request->brand)){
             $quote->whereHas('getBrand', function($query) use($request){
-                foreach ($request->brand as $brand) {
-                    $query->where('name', 'like', '%'.$brand.'%' );
-                }
+                $query->whereIn('brand_id', $request->brand );
             });
         }
 

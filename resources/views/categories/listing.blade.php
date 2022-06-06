@@ -94,7 +94,7 @@
                       <td>{{ $category->name }}</td>
                       <td>{{ $category->sort_order }}</td>
 
-                      <td class="d-flex justify-content-center">
+                      <td class="d-flex justify-content-center ml-3">
                         <a href="{{ route('categories.edit', encrypt($category->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('categories.destroy', encrypt($category->id)) }}">
                           @csrf

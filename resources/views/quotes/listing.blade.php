@@ -88,7 +88,7 @@
                     <label>Booking Currency</label>
                     <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
                         @foreach ($currencies as $curren)
-                            <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->code, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
+                            <option value="{{ $curren->id }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->id)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->id, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
                         @endforeach
                     </select>
                 </div>
@@ -98,7 +98,7 @@
                     <label>Brand</label>
                     <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
                         @foreach ($brands as $brand)
-                            <option value="{{ $brand->name }}" {{ (in_array($brand->name,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->name, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
+                            <option value="{{ $brand->id }}" {{ (in_array($brand->name,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->id, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
                         @endforeach
                     </select>
                 </div>

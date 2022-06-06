@@ -235,7 +235,6 @@
                       <tr class="border-bottom">
                         <td colspan="6">
                           <div class="icheck-primary">
-                            
                             <input type="hidden" class="total-credit-amount" data-type="debit" name="current_credit_amount" value="{{ isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0 }}">
                             <input type="hidden" class="remaining-credit-amount"  name="remaining_credit_amount" value="{{ isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0 }}">
                             <input type="hidden" name="currency_id" value="{{ isset($currency_id) && !empty($currency_id) ? $currency_id : '' }}">

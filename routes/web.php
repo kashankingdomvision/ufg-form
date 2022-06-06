@@ -314,7 +314,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store', array('as' => 'store', 'uses' => 'SaleAgentCommissionBatchController@store'));
         Route::get('commission-review', array('as' => 'commission_review', 'uses' => 'SaleAgentCommissionBatchController@commissionReview'));
         
+        
         Route::get('commission-management', array('as' => 'commission_management', 'uses' => 'SaleAgentCommissionBatchController@commissionManagement'));
+        Route::post('view-commission-detail/{booking_id}', array('as' => 'view_commission_detail', 'uses' => 'SaleAgentCommissionBatchController@viewCommissionDetail'));
         Route::patch('commission-action/{type}/{batch_id}/{id}', array('as' => 'commission_action', 'uses' => 'SaleAgentCommissionBatchController@commissionAction' ));
         Route::patch('pay-batch', array('as' => 'pay_batch', 'uses' => 'SaleAgentCommissionBatchController@payBatch' ));
         Route::patch('adjust-commission', array('as' => 'adjust_commission', 'uses' => 'SaleAgentCommissionBatchController@adjustCommission' ));

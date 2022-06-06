@@ -83,4 +83,5 @@ class SaleAgentCommissionBatch extends Model
     public function setTotalOutstandingAmountAttribute( $value ) {
         $this->attributes['total_outstanding_amount'] = str_replace( ',', '', $value );
     }
+
 }
