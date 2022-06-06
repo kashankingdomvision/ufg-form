@@ -32,50 +32,48 @@
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                  <table class="table">
+                                  <table class="table table-hover">
                                     <tbody>
-                                      <tr>
-                                        <th class="w-50">Supplier Name: </th>
-                                        <td>{{ $supplier->name }}</td>
+                                      <tr class="w-30 d-flex">
+                                        <th>Supplier Name: </th>
+                                        <td class="">{{ $supplier->name }}</td>
                                       </tr>
                                       
-                                      <tr>
-                                        <th >Supplier Email: </th>
-                                        <td>{{ $supplier->email }}</td>
+                                      <tr class="w-30 d-flex">
+                                        <th>Supplier Email: </th>
+                                        <td class="">{{ $supplier->email }}</td>
                                       </tr>
                                       
-                                      <tr>
-                                        <th class="w-50"> Supplier Phone: </th>
-                                        <td>{{ $supplier->phone }}</td>
+                                      <tr class="w-30 d-flex">
+                                        <th> Supplier Phone: </th>
+                                        <td class="">{{ $supplier->phone }}</td>
                                       </tr>
                                       
-                                      <tr>
-                                        <th class="w-50">Supplier Currency: </th>
-                                        <td>{{ (isset($supplier->getCurrency))? $supplier->getCurrency->name : NULL }}</td>
+                                      <tr class="w-30 d-flex">
+                                        <th>Supplier Currency: </th>
+                                        <td class="">{{ (isset($supplier->getCurrency))? $supplier->getCurrency->name : NULL }}</td>
                                       </tr>
                                       
-                                      <tr>
-                                        <th class="w-50"> Supplier Categories: </th>
-                                        <td class="td">
+                                      <tr class="w-30 d-flex">
+                                        <th> Supplier Categories: </th>
+                                        <td class="">
                                             @foreach ($supplier->getCategories as $cate)
                                             <span class="badge badge-pill badge-primary ">{{ $cate['name'] }}</span>  
                                             @endforeach
                                         </td>
                                       </tr>
-                                      <tr>
-                                        <th class="w-50"> Supplier Products: </th>
-                                        <td>
+                                      <tr class="w-30 d-flex">
+                                        <th> Supplier Products: </th>
+                                        <td class="">
                                             @foreach ($supplier->getProducts as $prod)
                                             <span class="badge badge-pill badge-primary">{{ $prod['name'] }}</span>  
                                             @endforeach
                                         </td>
                                       </tr>
-                                      <tr>
-                                        <th class="w-50"> Description: </th>
-                                        <td >
-                                            <div class="border border-dark">
-                                                {!! $supplier->description !!}
-                                            </div>
+                                      <tr class="w-30 d-flex">
+                                        <th> Description: </th>
+                                        <td class="">
+                                            {!! $supplier->description !!}
                                         </td>
                                       </tr>
                                     </tbody>

@@ -85,7 +85,7 @@
 
                   <div class="form-group">
                     <label>Price </label>
-                    <input type="text" name="price" class="form-control" placeholder="Price">
+                    <input type="text" name="price" class="form-control remove-zero-values" data-type="currency" placeholder="1,000.00">
                     <span class="text-danger" role="alert"></span>
                   </div>
 

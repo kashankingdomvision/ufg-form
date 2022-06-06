@@ -20,6 +20,8 @@ use App\SupplierBulkPaymentDetail;
 
 class SupplierBulkPaymentController extends Controller
 {
+    public $pagination = 10;
+
     /**
      * Display a listing of the resource.
      *
@@ -158,8 +160,30 @@ class SupplierBulkPaymentController extends Controller
 
     public function view(Request $request)
     {
-        $data['supplier_bulk_payments'] = SupplierBulkPayment::get();
-
+        $supplier_bulk_payments = SupplierBulkPayment::orderBy('id', 'ASC');
+        if (count($request->all()) > 0) {
+                $this->searchFilters($supplier_bulk_payments, $request);
+        }
+        $data['supplier_bulk_payments'] = $supplier_bulk_payments->paginate($this->pagination);
+        $data['suppliers'] = Supplier::all();
+        $data['booking_seasons'] = Season::all();
+        $data['payment_methods']  = PaymentMethod::whereNotIn('id',[3])->get();
         return view('supplier_bulk_payments.view', $data);
     }
+
+    public function searchFilters($supplier_bulk_payments, $request){
+           
+        if ($request->has('supplier') && !empty($request->supplier)) {
+            $supplier_bulk_payments->where('supplier_id', 'like', '%'.$request->supplier.'%');
+        }
+        if ($request->has('payment_date') && !empty($request->payment_date)) {
+            $supplier_bulk_payments->where('payment_date', 'like', '%'.$request->payment_date.'%');
+        }
+        if ($request->has('payment_method') && !empty($request->payment_method)) {
+            $supplier_bulk_payments->where('payment_method_id', 'like', '%'.$request->payment_method.'%');
+        }
+
+        return $supplier_bulk_payments;
+    }
+
 }

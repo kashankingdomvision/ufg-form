@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="d-flex">
-                            <h4>View Supplier Bulk Payments </h4>
+                            <h4>View Supplier Bulk Payments <x-add-new-button :route="route('supplier-bulk-payments.index')" /> </h4>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -26,7 +26,80 @@
                 </div>
             </div>
         </section>
+        <section class="content">
+    <form method="get" action="{{ route('supplier-bulk-payments.view') }}">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="card card-default ">
+                    <button type="button" class="btn btn-tool m-0 text-dark " data-card-widget="collapse">
+                      <div class="card-header">
+                        <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>
+                      </div>
+                    </button>
+                    <div class="card-body">
 
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Supplier</label>
+                            <select class="form-control select2single" name="supplier">
+                                <option value="">Select Supplier </option>
+                                @foreach ($suppliers as $supplier)
+                                  <option value="{{ $supplier->id }}" {{ (old('supplier') == $supplier->id)? 'selected' :((request()->get('supplier') == $supplier->id)? 'selected' : null ) }}>
+                                    {{ $supplier->name }} - 
+                                    {{ isset($supplier->getCurrency->code) && !empty($supplier->getCurrency->code) ? $supplier->getCurrency->code : '' }}
+                                  </option>
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Payment Date</label>
+                            <input type="date" name="payment_date" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Season</label>
+                            <select class="form-control select2single" name="season_id" >
+                                <option value="">Select Season </option>
+                                @foreach ($booking_seasons as $booking_season)
+                                  <option value="{{ $booking_season->id }}" {{ (request()->get('season_id') == $booking_season->id ) ? 'selected' : '' }}>{{ $booking_season->name }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Season</label>
+                            <select class="form-control select2single" name="payment_method" >
+                                <option value="">Payment Method </option>
+                                @foreach ($payment_methods as $payment_method)
+                                  <option value="{{ $payment_method->id }}" {{ (request()->get('payment_method') == $payment_method->id ) ? 'selected' : '' }}>{{ $payment_method->name }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mt-1">
+                        <div class="col-md-12">
+                          <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
+                            <a href="{{ route('supplier-bulk-payments.view') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </form>
+  </section>
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
