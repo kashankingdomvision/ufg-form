@@ -30,8 +30,8 @@ class UpdateUserRequest extends FormRequest
             'name'                => 'required|string',
             'email'               => ['required', Rule::unique('users')->ignore(decrypt($this->id))],
             'role_id'             => 'required',
-            'commission_id'       => 'required',
-            'commission_group_id' => 'required'
+            // 'commission_id'       => 'required',
+            // 'commission_group_id' => 'required'
         ];
     }
 
@@ -42,8 +42,8 @@ class UpdateUserRequest extends FormRequest
             'name'                => 'Name',
             'email'               => 'Email address',
             'role_id'             => 'User Type',
-            'commission_id'       => 'Commission',
-            'commission_group_id' => 'Commission Group'
+            // 'commission_id'       => 'Commission',
+            // 'commission_group_id' => 'Commission Group'
         ];
     }
 }

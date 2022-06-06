@@ -76,7 +76,7 @@
                   <span class="text-danger" role="alert"></span>
                 </div> 
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                   <label>Default Commision <span style="color:red">*</span></label>
                   <select name="commission_id" id="commission_id" class="form-control select2single">
                     <option value="">Select Commission</option>
@@ -85,9 +85,9 @@
                     @endforeach
                   </select>
                   <span class="text-danger" role="alert"></span>
-                </div>
+                </div> --}}
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                   <label>Default Commission Group <span style="color:red">*</span></label>
                   <select name="commission_group_id" id="commission_group_id" class="form-control select2single commission-group-id">
                     <option value="">Select Commission Group</option>
@@ -96,7 +96,7 @@
                     @endforeach
                   </select>
                   <span class="text-danger" role="alert"></span>
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                   <label>Default Currency</label>
@@ -176,8 +176,8 @@
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-success float-right">Submit</button>
-                <a href="{{ route('users.index') }}" class="btn btn-danger float-right mr-2">Cancel</a>
+                <a href="{{ route('users.index') }}" class="btn btn-danger float-right">Cancel</a>
+                <button type="submit" class="mr-2 btn btn-success float-right">Submit</button>
               </div>
             </form>
 

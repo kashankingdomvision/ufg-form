@@ -28,8 +28,8 @@ class UserRequest extends FormRequest
             'email'               => 'required|email|unique:users',
             'password'            => 'required|min:8',
             'role_id'             => 'required',
-            'commission_id'       => 'required',
-            'commission_group_id' => 'required'
+            // 'commission_id'       => 'required',
+            // 'commission_group_id' => 'required'
         ];
     }
     
@@ -40,8 +40,8 @@ class UserRequest extends FormRequest
             'email'               => 'Email address',
             'password'            => 'Password',
             'role_id'             => 'User Type',
-            'commission_id'       => 'Commission',
-            'commission_group_id' => 'Commission Group'
+            // 'commission_id'       => 'Commission',
+            // 'commission_group_id' => 'Commission Group'
         ];
     }
 }

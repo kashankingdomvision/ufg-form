@@ -132,8 +132,8 @@ class UserController extends Controller
             'currency_id'           => $request->currency,
             'brand_id'              => $request->brand,
             'holiday_type_id'       => $request->holiday_type,
-            'commission_id'         => $request->commission_id,
-            'commission_group_id'   => $request->commission_group_id,
+            // 'commission_id'         => $request->commission_id,
+            // 'commission_group_id'   => $request->commission_group_id,
             'rate_type'             => $request->rate_type,
             'markup_type'           => $request->markup_type,
             'supplier_currency_id'  => $request->supplier_currency_id,
@@ -159,8 +159,8 @@ class UserController extends Controller
         $data['roles']             = Role::orderBy('id', 'ASC')->get()->sortBy('name');
         $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
-        $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
-        $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();
+        // $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
+        // $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();
 
         return view('users.create', $data);
     }
