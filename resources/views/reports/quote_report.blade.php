@@ -220,8 +220,7 @@
                                       <tr>
                                   
                                         <th></th>
-                                        <th>User</th>
-                                        <th>Behalf</th>
+                                        <th>Created By</th>
                                         <th>Zoho Ref #</th>
                                         <th width="10">Quote Ref #</th>
                                         <th>Season</th>
@@ -253,8 +252,7 @@
                                                     </button>
                                                 </td>
                                            
-                                                <td>{{ isset($quote->getUser->name) && !empty($quote->getUser->name) ? $quote->getUser->name : '' }}</td>
-                                                <td width="8">{{ isset($quote->getSalePerson->name) && !empty($quote->getSalePerson->name) ? $quote->getSalePerson->name : '' }}</td>
+                                                <td>{{ isset($quote->getCreatedBy->name) && !empty($quote->getCreatedBy->name) ? $quote->getCreatedBy->name : '' }}</td>
                                                 <td>{{ $quote->ref_no }}</td>
                                                 <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
 
@@ -283,39 +281,39 @@
                                                 </td>
                                                 <tbody class="child-row d-none" id="child-row-{{$quote->id}}" >
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <tH>Total Net Price</tH>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->net_price }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Total Markup Amount</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->markup_amount }} </td>
                                                        <td> {{ $quote->markup_percentage.' %' }} </td>
                                                     
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Total Selling Price</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->selling_price }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
                                                      
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Total Profit Percentage</th>
                                                        <td> {{ $quote->profit_percentage.' %' }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Staff Commission</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->commission_amount }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th> Amount Per Person</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->amount_per_person }} </td>
                                                        <td></td>
@@ -325,7 +323,7 @@
                                         @endforeach
 
                                         <tr>
-                                            <td colspan="12"></td>
+                                            <td colspan="11"></td>
                                             <th>Total Profit Percentage</th>
                                             <td>{{ $total_profit_percentage.' %'}}</td>
                                             <td></td>
