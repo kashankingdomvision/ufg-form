@@ -111,11 +111,11 @@
                         <td>{{ $value->phone  }}</td>
                         <td>@if($value->logo)<img src="{{ $value->image_path }}" width="30" height="30" alt="brand logo" /> @endif</td>
                         <td>
-                          <form method="post" action="{{ route('brands.destroy', encrypt($value->id)) }}">
+                          <form method="post" action="{{ route('brands.destroy', encrypt($value->id)) }}" class="delete-brand">
                             <a href="{{ route('brands.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
-                            <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                            <button class="mr-2  btn btn-outline-danger btn-xs" data-id="{{$value->id}}" title="Delete">
                               <span class="fa fa-trash"></span>
                             </button>
                           </form>

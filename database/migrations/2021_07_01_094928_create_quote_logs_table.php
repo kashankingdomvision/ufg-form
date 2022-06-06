@@ -16,7 +16,7 @@ class CreateQuoteLogsTable extends Migration
         Schema::create('quote_logs', function (Blueprint $table) {
          
             $table->id();
-            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('restrict');
             $table->bigInteger('log_no')->nullalbe();
             $table->string('version_no');
             $table->longText('data');

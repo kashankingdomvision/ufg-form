@@ -19,7 +19,7 @@ class AlterFeildsInBookingDetailsTable extends Migration
             $table->string('tour_contact')->nullable()->after('tour_meeting_point');
             $table->string('tour_telephone')->nullable()->after('tour_contact');
             $table->string('tour_address')->nullable()->after('tour_telephone');
-            $table->foreignId('group_owner_id')->after('supplier_country_ids')->nullable()->constrained('group_owners')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('group_owner_id')->after('supplier_country_ids')->nullable()->constrained('group_owners')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

@@ -16,9 +16,9 @@ class CreateBookingPaxDetailsTable extends Migration
         Schema::create('booking_pax_details', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('nationality_id')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('resident_in')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('nationality_id')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('resident_in')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('restrict');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();
             $table->string('contact_number')->nullable();

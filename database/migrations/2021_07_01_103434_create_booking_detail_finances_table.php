@@ -16,8 +16,8 @@ class CreateBookingDetailFinancesTable extends Migration
         Schema::create('booking_detail_finances', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->onUpdate('cascade')->onDelete('restrict');
             $table->double('deposit_amount')->nullable();
             $table->date('deposit_due_date')->nullable();
             $table->date('paid_date')->nullable();
@@ -26,8 +26,8 @@ class CreateBookingDetailFinancesTable extends Migration
             $table->bigInteger('additional_date')->nullable();
             $table->double('outstanding_amount')->nullable();
             $table->enum('status', ['paid','cancelled'])->default('paid');
-            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

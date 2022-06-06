@@ -16,9 +16,9 @@ class CreateBookingCategoryDetailsTable extends Migration
         Schema::create('booking_category_details', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('restrict');
 
             $table->string('type')->nullable();
             $table->string('label')->nullable();

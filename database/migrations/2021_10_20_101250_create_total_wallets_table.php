@@ -16,7 +16,7 @@ class CreateTotalWalletsTable extends Migration
         Schema::create('total_wallets', function (Blueprint $table) {
            
             $table->id();
-            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('restrict');
             $table->double('amount');
             $table->timestamps();
         });

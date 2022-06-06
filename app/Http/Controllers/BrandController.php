@@ -171,11 +171,28 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        Brand::findOrFail(decrypt($id))->delete();
+        $brand = Brand::findOrFail(decrypt($id));
+        try
+        {
+            $brand->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Brand Deleted Successfully.',
+                'redirect_url'    => route('brands.index') 
+            ]);
+        }
 
-        return redirect()->route('brands.index')->with('success_message', 'Brand deleted successfully');
-
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Brand can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
+
 
     public function bulkAction(Request $request)
     {

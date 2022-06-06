@@ -16,7 +16,7 @@ class CreateBookingLogsTable extends Migration
         Schema::create('booking_logs', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
             $table->string('version_no');
             $table->bigInteger('log_no')->nullalbe();
             $table->longText('data');

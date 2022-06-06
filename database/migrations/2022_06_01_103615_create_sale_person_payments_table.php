@@ -15,8 +15,8 @@ class CreateSalePersonPaymentsTable extends Migration
     {
         Schema::create('sale_person_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
             $table->double('balance_owed_amount', 8, 2);
             $table->double('balance_owed_outstanding_amount', 8, 2);
             $table->double('balance_owed_total_paid_amount', 8, 2);
