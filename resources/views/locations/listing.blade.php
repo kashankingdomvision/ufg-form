@@ -117,11 +117,11 @@
                         <td>{{ $value->getCountry->name ?? NULL }}</td>
                         <td>{{ $value->name }}</td>
                         <td>
-                          <form method="post" action="{{ route('locations.destroy', encrypt($value->id)) }}">
-                            <a href="{{ route('locations.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <a href="{{ route('locations.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('locations.destroy', encrypt($value->id)) }}" class="delete-hotel">
                             @csrf
                             @method('delete')
-                            <button class="mr-2 btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                            <button class="mr-2 btn btn-outline-danger btn-xs" title="Delete">
                               <span class="fa fa-trash"></span>
                             </button>
                           </form>

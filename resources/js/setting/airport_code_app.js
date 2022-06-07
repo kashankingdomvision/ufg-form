@@ -74,6 +74,45 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', '.delete-airport', function(event) {
+
+        event.preventDefault();
+        let url = $(this).attr('action');
+        message    = 'You want to Delete Season?';
+        buttonText = 'Delete';
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: `Yes ${buttonText}!`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: url,
+                    data:new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        printListingSuccessMessage(response);
+                    },
+                    error: function(response) {
+                
+                        Toast.fire({
+                            icon: 'warning',
+                            title: response.message
+                        });
+                    }
+                });
+            }
+        })
+    });
+
     $(document).on('click', '.airport-code-bulk-action-item', function() {
 
         let checkedValues  = $('.child:checked').map((i, e) => e.value ).get();

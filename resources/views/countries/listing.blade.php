@@ -104,11 +104,11 @@
                       <td>{{ $country->sort_order }}</td>
                       <td>{{ $country->phone }}</td>
                       <td>
-                        <form method="post" action="{{ route('countries.destroy', encrypt($country->id)) }}">
                         <a href="{{ route('countries.edit', encrypt($country->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('countries.destroy', encrypt($country->id)) }}" class="delete-country-app">
                           @csrf
                           @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                             <span class="fa fa-trash"></span>
                           </button>
                         </form>

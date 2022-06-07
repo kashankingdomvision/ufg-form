@@ -100,8 +100,26 @@ class BankController extends Controller
      */
     public function destroy($id)
     {
-        Bank::findOrFail(decrypt($id))->delete();
-        return redirect()->route('banks.index')->with('success_message', 'Bank deleted successfully'); 
+        $bank = Bank::findOrFail(decrypt($id));
+        try
+        {
+            $bank->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Bank Deleted Successfully.',
+                'redirect_url'    => route('banks.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Bank can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
         
     }
 

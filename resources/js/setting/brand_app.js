@@ -130,15 +130,17 @@ $(document).ready(function() {
 
         event.preventDefault();
         let url = $(this).attr('action');
+        message    = 'You want to Delete Brands?';
+        buttonText = 'Delete';
 
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You want to Delete Brand?',
+            text: message,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#28a745',
             cancelButtonColor: '#dc3545',
-            confirmButtonText: `Yes Delete!`,
+            confirmButtonText: `Yes ${buttonText}!`,
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({

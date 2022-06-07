@@ -117,9 +117,26 @@ class HarbourController extends Controller
      */
     public function destroy($id)
     {
-        Harbour::destroy(decrypt($id));
-        
-        return redirect()->route('harbours.index')->with('success_message', 'Harbours, Train and Points of Interest deleted successfully');
+        $harbour = Harbour::findOrFail(decrypt($id));
+        try
+        {
+            $harbour->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Harbour Deleted Successfully.',
+                'redirect_url'    => route('harbours.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Harbour can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)
