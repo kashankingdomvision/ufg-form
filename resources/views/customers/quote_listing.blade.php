@@ -186,8 +186,9 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12">
-                    <form method="POST" action="{{ route('bulk.action') }}" class="bulk-action">
-                        @csrf @method('PUT')
+                    <form method="POST" action="" class="bulk-action">
+                        @csrf 
+                        @method('PUT')
                         <input  type="hidden" name="table" value="quotes" >
                         <div class="dropdown show">
                             <a class="btn btn-base btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

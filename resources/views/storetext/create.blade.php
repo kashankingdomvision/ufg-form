@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Add Stored Text')
+@section('title','Add Text')
 
 @section('content')
 
@@ -9,7 +9,7 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-6"><h4>Add Stored</h4></div>
+        <div class="col-sm-6"><h4>Add Text</h4></div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>

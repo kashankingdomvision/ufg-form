@@ -101,7 +101,7 @@
                       </td>
                       <td>{{ $value->name }}</td>
                       <td>{{ $value->iata_code }}</td>
-                      <td>
+                      <td class="d-flex ml-5">
                         <a href="{{ route('airport_codes.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('airport_codes.destroy', encrypt($value->id)) }}" class="delete-airport">
                           @csrf

@@ -24,8 +24,8 @@ class HarboursRequest extends FormRequest
     public function rules()
     {
         return [
-            'port_id'  => 'required',        
-            'name'     => 'required',
+            'port_id'  => 'required|unique:harbours',        
+            'name'     => 'required|unique:harbours',
         ];
     }
     

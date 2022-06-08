@@ -90,12 +90,14 @@
                 </div>
 
                 <div class="col-md-8 d-flex align-items-center justify-content-end">
-                  <a href="{{ route('bookings.index') }}" class="btn btn-dark btn-sm float-right mr-2" title="Back">
-                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back to  Listing
+                  <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-success btn-sm" data-title="Edit" title="Edit" >
+                    <i class="fas fa-edit"></i>&nbsp;&nbsp;Edit Booking
                   </a>
-    
                   <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="mr-2 float-right btn btn-primary btn-sm" data-title="Final Quotation" data-target="#Final_Quotation">
                     <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;View Final Quote
+                  </a>
+                  <a href="{{ route('bookings.index') }}" class="btn btn-dark btn-sm float-right mr-2" title="Back">
+                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back to  Listing
                   </a>
     
                   @if($booking->booking_status == 'confirmed')

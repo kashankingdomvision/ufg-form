@@ -85,7 +85,7 @@
                         </div>
                       </th>
                       <th>Country</th>
-                      <th>Sort Name</th>
+                      <th>Sort Order</th>
                       <th>Phone Code</th>
                       <th>Action</th>
                     </tr>
