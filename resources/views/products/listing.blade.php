@@ -95,7 +95,7 @@
                     <td>{{ isset($product->getCategory->name) && !empty($product->getCategory->name) ? $product->getCategory->name : '' }}</td>
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
-                    <td class="d-flex">
+                    <td class="d-flex justify-content-center">
                       <a href="{{ route('products.edit', encrypt($product->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                       <form method="post" action="{{ route('products.destroy', encrypt($product->id)) }}">
                         @csrf

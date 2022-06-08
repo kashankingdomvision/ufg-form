@@ -57,7 +57,7 @@
 
                   <div class="form-group">
                     <label>Duration </label>
-                    <input type="text" name="duration" id="duration" class="form-control" placeholder="Duration">
+                    <input type="number" name="duration" id="duration" class="form-control" placeholder="Duration">
                     <span class="text-danger" role="alert"></span>
                   </div>
 

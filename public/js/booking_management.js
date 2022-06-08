@@ -1121,6 +1121,7 @@ $(document).ready(function () {
       $("#quote_".concat(key, "_actual_cost_in_booking_currency")).val(check(calculatedActualCostInBookingCurrency));
 
       if (markupType == 'itemised') {
+        console.log(sellingPrice);
         calculatedMarkupAmount = parseFloat(sellingPrice) - parseFloat(actualCost);
         calculatedMarkupPercentage = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
         calculatedProfitPercentage = (parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice) * 100;
@@ -1279,7 +1280,7 @@ $(document).ready(function () {
       $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(check(outstandingAmountLeft));
     }
   });
-  $(document).on('change', '.deposit-amount', function () {
+  $(document).on('keyup change', '.deposit-amount', function () {
     var quoteKey = $(this).closest('.quote').data('key');
     var financeKey = $(this).closest('.finance-clonning').data('financekey');
     var closestFinance = $(this).closest('.finance');

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 
 class Brand extends Model
 {
-
     protected $fillable = [
         'name', 'email', 'address', 'phone', 'logo','about_us'
     ];
@@ -21,9 +20,10 @@ class Brand extends Model
     {
         return url(Storage::url($this->logo));
     }
-
-    // public function getSupplierCountries()
-    // {
-    //     return $this->belongsToMany(Country::class, 'brand_supplier_countries', 'brand_id', 'country_id');
-    // }
 }
+
+
+// public function getSupplierCountries()
+// {
+//     return $this->belongsToMany(Country::class, 'brand_supplier_countries', 'brand_id', 'country_id');
+// }

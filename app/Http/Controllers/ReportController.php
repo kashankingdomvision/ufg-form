@@ -104,7 +104,7 @@ class ReportController extends Controller
             'getHolidayType',
             'getSeason',
         ])
-        ->where('booking_status','confirmed')
+        ->where('status','confirmed')
         ->orderBy('id','ASC');
     
         if(request()->filled('booking_currency')){
@@ -398,6 +398,7 @@ class ReportController extends Controller
         }
 
         $data['quotes'] = $quote->get();
+        
         return view('reports.quote_report', $data);
     }
 

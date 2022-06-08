@@ -60,7 +60,7 @@
 
                 <div class="form-group">
                   <label>Duration </label>
-                  <input type="text" name="duration" value="{{ old('duration')??$product->duration }}"  class="form-control @error('duration') is-invalid @enderror" placeholder="Duration" >
+                  <input type="number" name="duration" value="{{ old('duration')??$product->duration }}"  class="form-control @error('duration') is-invalid @enderror" placeholder="Duration" >
                   <span class="text-danger" role="alert"></span>
                 </div>
 
@@ -88,7 +88,7 @@
 
                 <div class="form-group">
                   <label>Price </label>
-                  <input type="text" name="price" value="{{ old('price')??$product->price }}" class="form-control @error('price') is-invalid @enderror" placeholder="Price" >
+                  <input type="text" name="price" value="{{ old('price')??$product->price }}" class="form-control @error('price') is-invalid @enderror" data-type="currency" placeholder="Price" >
                   <span class="text-danger" role="alert"></span>
                 </div>
 

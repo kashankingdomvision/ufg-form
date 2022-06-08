@@ -197,8 +197,12 @@
                                </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
                                 <td>
-                                  {{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} 
-                                  {{ isset($sacb_details->getBooking->sale_person_bonus_amount) && !empty($sacb_details->getBooking->sale_person_bonus_amount) ? Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) : '' }}
+                                  @if(is_null($sacb_details->getBooking->sale_person_bonus_amount))
+                                    -
+                                  @else
+                                    {{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} 
+                                    {{ Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) }}
+                                  @endif
                                 </td>
                                 <td> {!! $sacb_details->formatted_status !!} </td>
                                 <td>

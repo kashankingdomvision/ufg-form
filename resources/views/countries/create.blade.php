@@ -42,12 +42,6 @@
                 </div>
 
                 <div class="form-group">
-                  <label>Phone Code <span style="color:red">*</span></label>
-                  <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone Code">
-                  <span class="text-danger" role="alert"></span>
-                </div>
-
-                <div class="form-group">
                   <label>Sort Order <span style="color:red">*</span></label>
                   <input type="number" name="sort_order" id="sort_order" class="form-control" placeholder="Sort Name">
                   <span class="text-danger" role="alert"></span>

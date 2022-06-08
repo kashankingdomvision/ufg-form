@@ -52,7 +52,7 @@ class CategoryController extends Controller
             // 'quote'                    => $request->quote,
             // 'booking'                  => $request->booking,
             'sort_order'               => $request->sort_order,
-            'set_end_date_of_service'  => $request->set_end_date_of_service,
+            'set_end_date_of_service'  => $request->boolean('set_end_date_of_service') ? $request->set_end_date_of_service : 0,
             'show_tf'                  => $request->show_tf,
             'label_of_time'            => ($request->show_tf == 1) ? $request->label_of_time : NULL,
             'second_tf'                => $request->second_tf,
@@ -73,7 +73,6 @@ class CategoryController extends Controller
     // Request
     public function store(CategoryRequest $request)
     {
-        // dd($request->all());
         Category::create($this->categoryArray($request));
 
         return response()->json([ 

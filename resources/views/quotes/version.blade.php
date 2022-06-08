@@ -1158,7 +1158,7 @@
                       </div>
                     </div>
   
-                    <div class="col-md-2 align-items-end">
+                    <div class="col-md-2 align-items-end d-none">
                       <div class="form-group">
                         <div class="input-group">
                           <input type="text" name="sale_person_currency_id" data-currency_code="{{ ($quote->sale_person_currency_id && $log->getQueryData($quote->sale_person_currency_id, 'Currency')->count()) ? $log->getQueryData($quote->sale_person_currency_id, 'Currency')->first()->code : '' }}" 

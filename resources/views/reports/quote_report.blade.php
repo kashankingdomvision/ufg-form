@@ -88,19 +88,7 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>Commission Type </label>
-                                            <select class="form-control select2single" name="commission_type">
-                                                <option selected value="" >Select Commission Type </option>
-                                                @foreach ($commission_types as $commission_type)
-                                                    <option value="{{ $commission_type->id }}" {{ (old('commission_type') == $commission_type->id) ? 'selected': ((request()->get('commission_type') == $commission_type->id) ? 'selected' : null) }}>{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-                                    </div>
+                      
                                 </div>
 
                                 <div class="row">
@@ -232,15 +220,13 @@
                                       <tr>
                                   
                                         <th></th>
-                                        <th>User</th>
-                                        <th>Behalf</th>
+                                        <th>Created By</th>
                                         <th>Zoho Ref #</th>
                                         <th width="10">Quote Ref #</th>
                                         <th>Season</th>
                                         <th>Brand</th>
                                         <th>Booking Currency</th>
                                         <th>Currency Type</th>
-                                        <th>Commission Type</th>
                                         <th>Pax No.</th>
                                         <th>Status</th>
                                         <th>Booking Date</th>
@@ -266,8 +252,7 @@
                                                     </button>
                                                 </td>
                                            
-                                                <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
-                                                <td width="8">{{ $quote->getSalePerson->name }}</td>
+                                                <td>{{ isset($quote->getCreatedBy->name) && !empty($quote->getCreatedBy->name) ? $quote->getCreatedBy->name : '' }}</td>
                                                 <td>{{ $quote->ref_no }}</td>
                                                 <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
 
@@ -277,7 +262,6 @@
                                                 <td>{{ $quote->getBookingCurrency->code.' - '.$quote->getBookingCurrency->name }}</td>
                                                 <td> {{ $quote->rate_type == 'live' ? 'Live Rate' : 'Manual Rate' }}</td>
 
-                                                <td> {{ $quote->getCommission->name }} ({{ $quote->getCommission->percentage.' %' }}) </td>
                                                 <td> {{ $quote->pax_no }} </td>
                                                 <td>{!! $quote->booking_formated_status !!}</td>
                                                 <td>{{ $quote->formated_booking_date }}</td>
@@ -297,39 +281,39 @@
                                                 </td>
                                                 <tbody class="child-row d-none" id="child-row-{{$quote->id}}" >
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <tH>Total Net Price</tH>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->net_price }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
-                                                       <th>Total Markup Amount (Gross Margin)</th>
+                                                       <td colspan="11"></td>
+                                                       <th>Total Markup Amount</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->markup_amount }} </td>
                                                        <td> {{ $quote->markup_percentage.' %' }} </td>
                                                     
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Total Selling Price</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->selling_price }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
                                                      
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Total Profit Percentage</th>
                                                        <td> {{ $quote->profit_percentage.' %' }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th>Staff Commission</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->commission_amount }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="12"></td>
+                                                       <td colspan="11"></td>
                                                        <th> Amount Per Person</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->amount_per_person }} </td>
                                                        <td></td>
@@ -339,7 +323,7 @@
                                         @endforeach
 
                                         <tr>
-                                            <td colspan="12"></td>
+                                            <td colspan="11"></td>
                                             <th>Total Profit Percentage</th>
                                             <td>{{ $total_profit_percentage.' %'}}</td>
                                             <td></td>

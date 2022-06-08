@@ -15,6 +15,11 @@ class SalePersonPayment extends Model
         'balance_owed_total_paid_amount',
     ];
 
+    public function getSalePersonPaymentDetails()
+    {
+        return $this->hasMany(SalePersonPaymentDetail::class, 'sale_person_payment_id', 'id');
+    }
+
     public function getSalePerson()
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');

@@ -501,7 +501,7 @@ class QuoteController extends Controller
         $data['groups']           = Group::latest()->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['preset_comments']      = PresetComment::orderBy('id', 'ASC')->get();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         
         // $data['commission_types'] = Commission::all();
         // $data['quote_ref']        = Quote::get('quote_ref');
@@ -628,7 +628,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::where('currency_id', $quote->currency_id)->latest()->get();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('id','ASC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         
@@ -759,7 +759,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']->currency_id)->orderBy('id','ASC')->get();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('id','ASC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         
@@ -787,7 +787,7 @@ class QuoteController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
+        $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');

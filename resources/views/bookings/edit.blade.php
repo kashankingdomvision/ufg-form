@@ -82,7 +82,7 @@
               <div class="row">
                 <div class="col-md-4">
                   <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Edit Booking</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">View Booking</a></li>
                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">View Payments</a></li>
                   </ul>
                 </div>
@@ -987,7 +987,7 @@
                                     <div class="form-group">
                                       <label>Markup % <span style="color:red">*</span></label>
                                       <div class="input-group">
-                                        <input type="number" step="any" value="{{ Helper::number_format($booking_detail->markup_percentage) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change remove-zero-values" value="0.00" readonly>
+                                        <input type="text" value="{{ Helper::number_format($booking_detail->markup_percentage) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change remove-zero-values" value="0.00" readonly>
                                         <div class="input-group-append">
                                           <div class="input-group-text">%</div>
                                         </div>
@@ -1886,7 +1886,7 @@
                         </div>
                       </div>
     
-                      <div class="col-md-2 align-items-end">
+                      <div class="col-md-2 align-items-end d-none">
                         <div class="form-group">
                           <div class="input-group">
                             <input type="text" name="sale_person_currency_id" data-currency_code="{{ isset($booking->getSalePersonCurrency->code) && !empty($booking->getSalePersonCurrency->code) ? $booking->getSalePersonCurrency->code : '' }}" 
@@ -1894,6 +1894,7 @@
                           </div>
                         </div>
                       </div>
+
                     </div>
 
                     <div class="form-group row">

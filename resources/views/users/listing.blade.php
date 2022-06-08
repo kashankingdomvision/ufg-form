@@ -129,7 +129,7 @@
                                         @foreach ($users as $key => $value)
                                         <tr class="border-bottom">
                                             <td>
-                                                @if($value->getRole->id != 1)
+                                                @if($value->getRole->slug != "admin")
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" id="child_{{$value->id}}" value="{{$value->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
                                                         <label for="child_{{$value->id}}" class="custom-control-label"></label>
@@ -147,9 +147,11 @@
                                                 <a href="{{ route('users.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
-                                                        <span class="fa fa-trash"></span>
-                                                    </button>
+                                                    @if($value->getRole->slug != "admin")
+                                                        <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                            <span class="fa fa-trash"></span>
+                                                        </button>
+                                                    @endif
                                                 </form>
                                             </td>
                                         </tr>

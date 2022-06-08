@@ -18,11 +18,17 @@ class CabinTypeController extends Controller
      */
     public $pagination = 10;
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['cabins'] = CabinType::paginate($this->pagination);
+        $query = CabinType::query();
 
-        return view('cabins.listing',$data);
+        if($request->filled('search')){
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+
+        $data['cabins'] = $query->paginate($this->pagination);
+
+        return view('cabins.listing', $data);
     }
 
     /**
