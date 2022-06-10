@@ -13,7 +13,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item active">Store Text</li>
+            <li class="breadcrumb-item active">Stored Text</li>
           </ol>
         </div>
       </div>

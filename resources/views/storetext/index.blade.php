@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="d-flex">
-                        <h4>Store Text <x-add-new-button :route="route('store_texts.create')" /> </h4>
+                        <h4>Stored Text <x-add-new-button :route="route('store_texts.create')" /> </h4>
                     </div>
                 </div>
                 <div class="col-sm-6">

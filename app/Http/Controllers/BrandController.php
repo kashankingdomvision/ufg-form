@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -66,15 +67,25 @@ class BrandController extends Controller
         if($method == 'store'){
 
             if($request->hasFile('logo')) {
+
                 $data['logo'] = $this->fileStore($request);
             }
         }
 
-        if($method == 'update'){
+        if($method == 'update' && $request->delete_logo == null){
 
             if($request->hasFile('logo')) {
                 $data['logo'] = $this->fileStore($request, $brand);
             }
+        }
+
+        if($method == 'update' && $request->delete_logo == 1){
+
+            // if($request->hasFile('logo')) {
+                File::delete($brand->logo);
+                $data['logo'] = null;
+                // $data['logo'] = $this->fileStore($request, $brand);
+            // }
         }
     
         return $data;
@@ -213,11 +224,22 @@ class BrandController extends Controller
                 Storage::delete($old->getOriginal('logo'));
             }
             //storage url
-            $file_path = url(Storage::url($path));
+            url(Storage::url($path));
             //storage url
             return $path;
         }
         return;
+        // $request->validate([
+        //     'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // ]);
+    
+        // $imageName = time().'.'.$request->logo->extension();  
+     
+        // $request->logo->move(public_path('brand_images'), $imageName);
+  
+        /* Store $imageName name in DATABASE from HERE */
+        // dd($imageName);
+        
     }
  
 }

@@ -76,7 +76,7 @@
 
                 <div class="form-group">
                   <label>Logo</label>
-                  <input type="file" name="logo" value="{{ old('logo') }}" class="form-control">
+                  <input type="file" name="logo" value="{{ old('logo') }}" class="form-control" id="files">
                   <span class="text-danger" role="alert"></span>
                 </div>
 

@@ -27,6 +27,7 @@ class UpdateBrandRequest extends FormRequest
         return [
             'name'  => ['required', Rule::unique('brands','name')->ignore(decrypt($this->id))],
             'phone' => 'required',
+            // 'logo'  => 'required'
         ];
     }
 
@@ -35,6 +36,7 @@ class UpdateBrandRequest extends FormRequest
         return [
             'name'  => 'Brand Name',
             'phone' => 'Contact Number',
+            // 'logo'  => 'Logo Image'
         ];
     }
 }
