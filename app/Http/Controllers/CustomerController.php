@@ -22,6 +22,20 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
+
+        $a = Quote::groupBy('lead_passenger_email')->where('agency', '0')
+        
+        ->select(
+            'lead_passenger_name',
+            'lead_passenger_email',
+            DB::raw("sum(case when status = 'quote' then amount else 0 end) Where lead_passenger_email =I.CONTACT_ID) as quote_count"),
+        )
+        ->get();
+
+        dd($a);
+
+
+
         $emails = DB::table('quotes')->where('agency', '0')->groupBy('lead_passenger_email');
 
         if ($request->has('search') && !empty($request->search)) {

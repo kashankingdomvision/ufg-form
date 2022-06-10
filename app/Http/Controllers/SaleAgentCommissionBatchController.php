@@ -17,6 +17,7 @@ use App\Booking;
 use App\CurrencyConversion;
 use App\SaleAgentCommissionBatch;
 use App\SaleAgentCommissionBatchDetails;
+use App\Bank;
 
 use App\Http\Requests\SaleAgentCommissionBatchRequest;
 
@@ -45,6 +46,7 @@ class SaleAgentCommissionBatchController extends Controller
         $data['users']            = User::role(['sales-agent'])->get();
         $data['seasons']          = Season::all();
         $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
+        $data['banks']            = Bank::get();
 
         if($request->filled('sale_person_id') && $request->filled('season')){
 
@@ -96,8 +98,13 @@ class SaleAgentCommissionBatchController extends Controller
 
             $data['sale_person_id'] = $request->sale_person_id;
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
+            $data['sale_person_currency_code'] = User::find($request->sale_person_id)->getCurrency->code;
+
+
+
             $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
+
 
         }
 
