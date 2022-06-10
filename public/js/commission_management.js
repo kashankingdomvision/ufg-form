@@ -377,6 +377,12 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  // function getTotalPayCommissionAmount() {
+  //     let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+  //     let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
+  //     $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
+  //     return totalPayCommissionAmount;
+  // }
   function getTotalPaidAmount() {
     var valesArray = $('.row-total-paid-amount').map(function (i, e) {
       return parseFloat(removeComma(e.value));
@@ -404,13 +410,9 @@ $(document).ready(function () {
     commissionRow.find('.finance-child').prop('checked', false).val('0');
     commissionRow.find('.row-total-paid-amount').val('0.00');
     commissionRow.find('.row-total-outstanding-amount').val('0.00');
-  } // function getTotalPayCommissionAmount() {
-  //     let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
-  //     let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
-  //     $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
-  //     return totalPayCommissionAmount;
-  // }
-
+    commissionRow.find('.deposited-amount-value').val('0.00');
+    commissionRow.find('.bank-amount-value').val('0.00');
+  }
 
   function getRowTotalPaidAmount(commissionRow) {
     var totalPaidAmountYet = removeComma(commissionRow.find('.total-paid-amount-yet').val());
@@ -551,17 +553,15 @@ $(document).ready(function () {
       commissionRow.find('.pay-commission-amount').val(outstandingAmountLeft);
       getRowTotalPaidAmount(commissionRow);
       getRowTotalOutstandingAmount(commissionRow);
-      var totalDepositAmountLeftToAllocateValue = parseFloat($('.total-deposit-amount-left-to-allocate').val());
-
-      if (parseFloat(outstandingAmountLeft) > totalDepositAmountLeftToAllocateValue) {
-        var bankAmountValue = parseFloat(outstandingAmountLeft) - totalDepositAmountLeftToAllocateValue;
-        commissionRow.find('.deposited-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
-        commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
-      }
-
-      if (parseFloat(outstandingAmountLeft) <= totalDepositAmountLeftToAllocateValue) {
-        commissionRow.find('.deposited-amount-value').val(check(parseFloat(outstandingAmountLeft)));
-      }
+      calDepositAndBankAmountValue(commissionRow); // let totalDepositAmountLeftToAllocateValue = parseFloat($('.total-deposit-amount-left-to-allocate').val());
+      // if(parseFloat(outstandingAmountLeft) > totalDepositAmountLeftToAllocateValue){
+      //     let bankAmountValue = parseFloat(outstandingAmountLeft) - totalDepositAmountLeftToAllocateValue;
+      //     commissionRow.find('.deposited-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
+      //     commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+      // }
+      // if(parseFloat(outstandingAmountLeft) <= totalDepositAmountLeftToAllocateValue){
+      //     commissionRow.find('.deposited-amount-value').val(check(parseFloat(outstandingAmountLeft)));
+      // }
     } else {
       resetCommissionRow(commissionRow); // let bookingCommissionTotalPaidAmount = getTotalPaidAmount();
       // let totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
@@ -579,6 +579,22 @@ $(document).ready(function () {
     getTotalPaidAmount();
     getTotalOutstandingAmount();
   });
+
+  function calDepositAndBankAmountValue(commissionRow) {
+    var totalDepositAmountLeftToAllocateValue = parseFloat($('.total-deposit-amount-left-to-allocate').val());
+    var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
+
+    if (parseFloat(outstandingAmountLeft) > totalDepositAmountLeftToAllocateValue) {
+      var bankAmountValue = parseFloat(outstandingAmountLeft) - totalDepositAmountLeftToAllocateValue;
+      commissionRow.find('.deposited-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
+      commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+    }
+
+    if (parseFloat(outstandingAmountLeft) <= totalDepositAmountLeftToAllocateValue) {
+      commissionRow.find('.deposited-amount-value').val(check(parseFloat(outstandingAmountLeft)));
+    }
+  }
+
   $(document).on('submit', '#store_pay_commission', function (event) {
     event.preventDefault();
     var checkedValues = $('.finance-child:checked').map(function (i, e) {
