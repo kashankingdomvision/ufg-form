@@ -69,6 +69,12 @@
                 </div>
 
                 <div class="form-group">
+                  <label>About Us</label>
+                  <textarea name="about_us" class="form-control summernote">{{$brand->about_us}}</textarea>
+                  <span class="text-danger" role="alert"></span>
+                </div>
+                
+                <div class="form-group">
                   <label>Logo</label>
                   <input type="file" name="logo" class="form-control" id="files">
                   <span class="text-danger" role="alert"></span>
@@ -81,13 +87,8 @@
                     <a href="javascript:void(0)" class="remove-logo">Remove image</a>
                     <input class="delete_image" type="hidden" name="delete_logo" value="">
                   @endif
-                  </div>
-                <div class="form-group">
-                  <label>About Us</label>
-                  <textarea name="about_us" class="form-control summernote">{{$brand->about_us}}</textarea>
-                  <span class="text-danger" role="alert"></span>
                 </div>
-                
+
               </div>
 
               <div class="card-footer">
