@@ -18,6 +18,7 @@ use App\CurrencyConversion;
 use App\SaleAgentCommissionBatch;
 use App\SaleAgentCommissionBatchDetails;
 use App\Bank;
+use App\SalePersonPayment;
 
 use App\Http\Requests\SaleAgentCommissionBatchRequest;
 
@@ -42,7 +43,6 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function create(Request $request)
     {
-
         $data['users']            = User::role(['sales-agent'])->get();
         $data['seasons']          = Season::all();
         $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
@@ -94,27 +94,29 @@ class SaleAgentCommissionBatchController extends Controller
             // ->take(1)
             ;
 
-            // dd($bookings);
-
             $data['sale_person_id'] = $request->sale_person_id;
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
             $data['sale_person_currency_code'] = User::find($request->sale_person_id)->getCurrency->code;
-
-
+            $data['sale_person'] = User::find($request->sale_person_id);
 
             $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
-
-
         }
 
         return view('sale_agent_commission_batches.create', $data);
+    }
+    
+    public function payDepositAmount(Request $request) {
+
+        dd($request);
+
     }
 
     public function store(SaleAgentCommissionBatchRequest $request)
     {
         // dd($request->boolean('send_to_agent'));
-        // dd($request->all());
+        // dd($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0);
+        // dd(Carbon::today()->toDateString());
 
         $status = '';
 
@@ -127,8 +129,26 @@ class SaleAgentCommissionBatchController extends Controller
             'sale_person_id'           => $request->sale_person_id,
             'sale_person_currency_id'  => $request->sale_person_currency_id,
             'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid',
-            'deposit_date'             => $request->send_to_agent == 1 ? Carbon::today()->toDateString() : null
+            // 'deposit_date'             => $request->send_to_agent == 1 ? Carbon::today()->toDateString() : null
+
+            'sp_deposit_amount' => $request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0 ? $request->sp_deposit_amount : null,
+            'sp_deposit_date'   => $request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0 ? Carbon::today()->toDateString() : null,
         ]);
+
+        if($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0){
+
+            SalePersonPayment::create([
+    
+                'sale_person_id'          => $request->sale_person_id,
+                'sale_person_currency_id' => $request->sale_person_currency_id,
+                'deposit_date'            => Carbon::today()->toDateString(),
+                'total_deposited_amount'  => $request->sp_deposit_amount,
+                'current_deposited_total_outstanding_amount'  => $request->sp_deposit_amount,
+                'total_deposited_outstanding_amount'  => $request->sp_deposit_amount,
+                'total_deposit_amount'  => $request->sp_deposit_amount,
+            ]);
+        }
+
 
         foreach ($request->finance as $key => $finance) {
 

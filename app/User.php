@@ -50,6 +50,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getSalePersonPayment()
+    {
+        return $this->hasOne(SalePersonPayment::class, 'sale_person_id', 'id');
+    }
     
     public function getSaleAgent()
     {

@@ -734,10 +734,8 @@ $(document).ready(function() {
 
     });
 
-
-    $("#add_deposit_payment").click(function(){
-        
-        $("#deposit_payment_row").toggle();
+    $("#pay_deposit_amount_row").hide();
+    $("#pay_deposit_amount").click(function(){
+        $("#pay_deposit_amount_row").toggle();
     });
-
 });

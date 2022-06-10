@@ -143,25 +143,26 @@
 
                                     <div class="col-md-6"></div>
 
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <div class="input-group d-flex justify-content-center">
-                                                <label>
-                                                    Amount Paid
-                                                </label>
-                                            </div>
-
-                                            <div class="input-group d-flex justify-content-center">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        USD
-                                                    </span>
+                                    @if(isset($sale_person) && !is_null($sale_person->getSalePersonPayment))
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group d-flex justify-content-center">
+                                                    <label>
+                                                        Amount Paid
+                                                    </label>
                                                 </div>
-        
-                                                <input type="text" name="bank_total_amount_paid" id="bank_total_amount_paid" class="form-control remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 150px;" readonly>
+
+                                                <div class="input-group d-flex justify-content-center">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            USD
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="bank_total_amount_paid" id="bank_total_amount_paid" class="form-control remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 150px;" readonly>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
 
                                 @endif
 
@@ -186,90 +187,145 @@
            
 
                         <div class="card-body p-0" id="listing_card_body">
-                            <table class="table table-hover text-nowrap mb-0">
-                                <thead>
-                                    <tr class="border-top">
-                                        <th></th>
-                                        <th>Deposited On</th>
-                                        {{-- <th>Reference</th> --}}
-                                        <th>Total Dep Amount</th>
-                                        <th>Current Total O/S Amount</th>
-                                        <th>Outstanding Amount</th>
-                                        <th>Total Paid Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="deposited_amount_payments" id="deposited_amount_payments" value="0" class="deposited-amount-payments zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
-                                                <label for="deposited_amount_payments" class="custom-control-label"></label>
-                                            </div>
-                                        </td>
-    
-                                        <td>
-                                            17/08/2020
-                                        </td>
-    
-                                        {{-- <td>
-                                            USD 2000 - Deposited
-                                        </td> --}}
-                                        
-                                        <td class="form-group">
-                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        USD
-                                                    </span>
-                                                </div>
-                                                <input type="text" name="total_deposited_amount" id="total_deposited_amount" class="form-control total-deposited-amount remove-zero-values hide-arrows" data-type="currency" value="80.00" style="max-width: 100px;" readonly>
-                                            </div>
-                                        </td>
-    
-                                        <td class="form-group">
-                                            <div class="input-group d-flex justify-content-center">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        USD
-                                                    </span>
+                   
+                            @if(isset($sale_person_id) && !empty($sale_person_id))
+
+                                @if(isset($sale_person) && is_null($sale_person->getSalePersonPayment))
+                                    <div class="row p-3 border-top d-flex align-items-center">
+                                        <div class="col-md-12">
+                                            <button type="button" id="pay_deposit_amount" class="btn btn-outline-success btn-xs font-weight-bold">
+                                            <i class="fas fa-plus"></i>
+                                                Pay Deposit Amount
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" id="pay_deposit_amount_row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group d-flex justify-content-center">
+                                                    <label>
+                                                        Deposit Amount
+                                                    </label>
                                                 </div>
     
-                                                <input type="text" name="current_deposited_total_outstanding_amount" id="current_deposited_total_outstanding_amount" value="80.00" class="form-control currect-total-outstanding-amount remove-zero-values hide-arrows" style="max-width: 100px;" readonly>
-                                            </div>
-                                        </td>
-    
-                                        <td class="form-group">
-                                            <div class="input-group d-flex justify-content-center">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        USD
-                                                    </span>
+                                                <div class="input-group d-flex justify-content-center">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            USD
+                                                        </span>
+                                                    </div>
+            
+                                                    <input type="text" name="sp_deposit_amount" id="sp_deposit_amount" class="form-control remove-zero-values hide-arrows" data-type="currency" value="" style="max-width: 150px;">
                                                 </div>
-    
-                                                <input type="text" name="total_deposited_outstanding_amount" id="total_deposited_outstanding_amount" class="form-control remove-zero-values hide-arrows" data-type="currency" value="80.00" style="max-width: 100px;" readonly>
                                             </div>
-                                        </td>
-    
-                                        <td class="d-flex">
-                                            <div class="input-group d-flex justify-content-center">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        USD
-                                                    </span>
-                                                </div>
-                                                <input type="text" name="total_deposit_amount" id="total_deposit_amount" data-sale_person_currency_code="USD" class="form-control total-deposit-amount remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
-                                            </div>
-    
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" class="adjust-deposited-amount btn btn-outline-success btn-xs" data-target="#edit" title="Adjust Deposit Amount">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-    
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </div>
+                                
+                                    </div>
+                                @endif
+
+                                @if(isset($sale_person) && !is_null($sale_person->getSalePersonPayment))
+                                    <table class="table table-hover text-nowrap mb-0">
+                                        <thead>
+                                            <tr class="border-top">
+                                                <th></th>
+                                                <th>Deposited On</th>
+                                                <th>Reference</th>
+                                                <th>Total Dep Amount</th>
+                                                <th>Current Total O/S Amount</th>
+                                                <th>Outstanding Amount</th>
+                                                <th>Total Paid Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" name="deposited_amount_payments" id="deposited_amount_payments" value="0" class="deposited-amount-payments zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                                        <label for="deposited_amount_payments" class="custom-control-label"></label>
+                                                    </div>
+                                                </td>
+            
+                                                <td>
+                                                    {{ 
+                                                        isset($sale_person->getSalePersonPayment->deposit_date) && !empty($sale_person->getSalePersonPayment->deposit_date) ? $sale_person->getSalePersonPayment->deposit_date : ''
+                                                    }}
+                                                </td>
+            
+                                                <td>
+                                                    {{
+                                                        isset($sale_person->getSalePersonPayment->getSalePersonCurrency->code) && !empty($sale_person->getSalePersonPayment->getSalePersonCurrency->code) ? $sale_person->getSalePersonPayment->getSalePersonCurrency->code : ''
+                                                    }}
+
+                                                    {{
+                                                        isset($sale_person->getSalePersonPayment->total_deposited_amount) && !empty($sale_person->getSalePersonPayment->total_deposited_amount) ? Helper::number_format($sale_person->getSalePersonPayment->total_deposited_amount).' - Deposited' : ''
+                                                    }}
+                                                   
+                                                </td>
+                                                
+                                                <td class="form-group">
+                                                    <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                {{
+                                                                    isset($sale_person->getSalePersonPayment->getSalePersonCurrency->code) && !empty($sale_person->getSalePersonPayment->getSalePersonCurrency->code) ? $sale_person->getSalePersonPayment->getSalePersonCurrency->code : ''
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                        
+                                                        <input type="text" name="total_deposited_amount" id="total_deposited_amount" class="form-control total-deposited-amount remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sale_person->getSalePersonPayment->total_deposited_amount) && !empty($sale_person->getSalePersonPayment->total_deposited_amount) ? Helper::number_format($sale_person->getSalePersonPayment->total_deposited_amount) : '' }}" style="max-width: 100px;" readonly>
+                                                    </div>
+                                                </td>
+            
+                                                <td class="form-group">
+                                                    <div class="input-group d-flex justify-content-center">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                {{
+                                                                    isset($sale_person->getSalePersonPayment->getSalePersonCurrency->code) && !empty($sale_person->getSalePersonPayment->getSalePersonCurrency->code) ? $sale_person->getSalePersonPayment->getSalePersonCurrency->code : ''
+                                                                }}
+                                                            </span>
+                                                        </div>
+            
+                                                        <input type="text" name="current_deposited_total_outstanding_amount" id="current_deposited_total_outstanding_amount" value="{{ isset($sale_person->getSalePersonPayment->current_deposited_total_outstanding_amount) && !empty($sale_person->getSalePersonPayment->current_deposited_total_outstanding_amount) ? Helper::number_format($sale_person->getSalePersonPayment->current_deposited_total_outstanding_amount) : '' }}" class="form-control currect-total-outstanding-amount remove-zero-values hide-arrows" style="max-width: 100px;" readonly>
+                                                    </div>
+                                                </td>
+            
+                                                <td class="form-group">
+                                                    <div class="input-group d-flex justify-content-center">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                USD
+                                                            </span>
+                                                        </div>
+            
+                                                        <input type="text" name="total_deposited_outstanding_amount" id="total_deposited_outstanding_amount" class="form-control remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sale_person->getSalePersonPayment->total_deposited_outstanding_amount) && !empty($sale_person->getSalePersonPayment->total_deposited_outstanding_amount) ? Helper::number_format($sale_person->getSalePersonPayment->total_deposited_outstanding_amount) : '' }}" style="max-width: 100px;" readonly>
+                                                    </div>
+                                                </td>
+            
+                                                <td class="d-flex">
+                                                    <div class="input-group d-flex justify-content-center">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                USD
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" name="total_deposit_amount" id="total_deposit_amount" data-sale_person_currency_code="USD" class="form-control total-deposit-amount remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sale_person->getSalePersonPayment->total_deposit_amount) && !empty($sale_person->getSalePersonPayment->total_deposit_amount) ? Helper::number_format($sale_person->getSalePersonPayment->total_deposit_amount) : '' }}" style="max-width: 100px;" readonly>
+                                                    </div>
+            
+                                                    <div class="d-flex align-items-center">
+                                                        <button type="button" class="adjust-deposited-amount btn btn-outline-success btn-xs" data-target="#edit" title="Adjust Deposit Amount">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                @endif
+
+                            @endif
+
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
@@ -296,8 +352,10 @@
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
                                             <th>Outstanding Amount Left</th>
-                                            <th>Deposited Amount Value</th>
-                                            <th>Bank Amount Value</th>
+                                            @if(isset($sale_person) && !is_null($sale_person->getSalePersonPayment))
+                                                <th>Deposited Amount Value</th>
+                                                <th>Bank Amount Value</th>
+                                            @endif
                                             <th>Pay Commission Amount</th>
                                             <th style="min-width: 250px;">Total Paid Amount</th>
                                             <th>Total Outstanding Amount</th>
@@ -309,24 +367,6 @@
                                     </thead>
                                     <tbody>
                                         @if(isset($bookings) && $bookings->count())
-                                            {{-- <tr>
-                                                <td></td>
-                                                <td>
-                                                    <button type="button" id="add_deposit_payment" class="btn btn-outline-dark btn-sm pull-right mr-half"><i class="fa fa-plus" aria-hidden="true"></i> Deposit Payment</button>
-                                                </td>
-                                            </tr>
-
-                                            <tr id="deposit_payment_row">
-                                                <td></td>
-                                                <td>
-                                                    <div class="input-group d-flex justify-content-center">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">{{ $sale_person_currency_code }}</span>
-                                                        </div>
-                                                      <input type="text" name="sale_person_deposit_amount" class="form-control remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;">
-                                                    </div>
-                                                </td>
-                                            </tr> --}}
                                             @foreach($bookings as $key => $booking)
                                                 @php
                                                     $supplier_default_currency_code = isset($booking->getSalePerson->getCurrency->code) ? $booking->getSalePerson->getCurrency->code : '';
@@ -413,25 +453,31 @@
                                                         @endif
                                                     </td> 
 
-                                                    <td class="form-group">
-                                                        <div class="input-group mx-sm-3 d-flex justify-content-center">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
-                                                            </div>
-                                                            <input type="text" name="finance[{{$key}}][deposited_amount_value]" id="finance_{{$key}}_deposited_amount_value" class="form-control deposited-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
-                                                        </div>
-                                                        <small class="text-danger"></small>
-                                                    </td>
 
-                                                    <td class="form-group">
-                                                        <div class="input-group mx-sm-3 d-flex justify-content-center">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                    @if(isset($sale_person) && !is_null($sale_person->getSalePersonPayment))
+
+                                                        <td class="form-group">
+                                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                                </div>
+                                                                <input type="text" name="finance[{{$key}}][deposited_amount_value]" id="finance_{{$key}}_deposited_amount_value" class="form-control deposited-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
                                                             </div>
-                                                            <input type="text" name="finance[{{$key}}][bank_amount_value]" id="finance_{{$key}}_bank_amount_value" class="form-control bank-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
-                                                        </div>
-                                                        <small class="text-danger"></small>
-                                                    </td>
+                                                            <small class="text-danger"></small>
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                                </div>
+                                                                <input type="text" name="finance[{{$key}}][bank_amount_value]" id="finance_{{$key}}_bank_amount_value" class="form-control bank-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </td>
+
+                                                    @endif
+
 
                                                     <td class="form-group">
                                                         <div class="input-group mx-sm-3 d-flex justify-content-center">
@@ -511,16 +557,17 @@
                                                 </td>
                                             </tr>
 
-                                            <tr>
-                                                <td colspan="6"></td>
-                                                <td class="font-weight-bold">
-                                                    <span class="pr-1">Left to Allocate</span>
-                                                    <span>{{ $supplier_default_currency_code }}</span>
-                                                    <span class="total-deposit-amount-left-to-allocate">0.00</span>
-                                                    <input type="hidden" name="total_deposit_amount_left_to_allocate" id="total_deposit_amount_left_to_allocate" class="total-deposit-amount-left-to-allocate" value="">
-                                                </td>
-                                            </tr>
-
+                                            @if(isset($sale_person) && !is_null($sale_person->getSalePersonPayment))
+                                                <tr>
+                                                    <td colspan="6"></td>
+                                                    <td class="font-weight-bold">
+                                                        <span class="pr-1">Left to Allocate</span>
+                                                        <span>{{ $supplier_default_currency_code }}</span>
+                                                        <span class="total-deposit-amount-left-to-allocate">0.00</span>
+                                                        <input type="hidden" name="total_deposit_amount_left_to_allocate" id="total_deposit_amount_left_to_allocate" class="total-deposit-amount-left-to-allocate" value="">
+                                                    </td>
+                                                </tr>
+                                            @endif
 
                                             <tr class="mt-2">
                                                 <td colspan="8"></td>
@@ -555,6 +602,9 @@
     @include('sale_agent_commission_batches.includes.update_sale_person_commission_modal')
     @include('sale_agent_commission_batches.includes.store_sale_person_bonus_modal')
     @include('sale_agent_commission_batches.includes.adjust_deposited_amount')
+
+    {{-- @include('sale_agent_commission_batches.includes.pay_deposit_amount') --}}
+
 
 </div>
 @endsection

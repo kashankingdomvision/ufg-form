@@ -329,6 +329,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-sale-person-payment', array('as' => 'store_sale_person_payment', 'uses' => 'SaleAgentCommissionBatchController@storeSalePersonPayment' ));
 
 
+        Route::post('pay-deposit-amount', array('as' => 'pay_deposit_amount', 'uses' => 'SaleAgentCommissionBatchController@payDepositAmount' ));
+
+
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
         // Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
         // Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));

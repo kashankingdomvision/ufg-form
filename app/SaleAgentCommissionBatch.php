@@ -18,7 +18,9 @@ class SaleAgentCommissionBatch extends Model
         'sale_person_id',
         'sale_person_currency_id',
         'status',
-        'deposit_date'
+        'sp_deposit_amount',
+        'sp_deposit_date',
+        'sp_deposit_paid_date',
     ];
 
     public function getFormattedStatusAttribute()

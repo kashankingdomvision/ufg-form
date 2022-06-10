@@ -70,6 +70,7 @@
                       <th>Status</th>
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
+                      <th>Deposit Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -89,6 +90,9 @@
                           <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
+                          <td>
+                            {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->sp_deposit_amount) : '' }}
+                          </td>
                           <td>
                             @if($sac_batch->status == 'confirmed')
                               <button type="button" class="pay-batch btn btn-outline-info btn-xs mr-2" data-batch_id="{{ $sac_batch->id }}" title="Pay Batch"><i class="fa fa-money-bill-alt"></i></button>
