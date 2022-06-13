@@ -167,13 +167,12 @@ $(document).ready(function() {
     $("#files").on("change", function(e) {
         $('.remove-logo').parent().remove();
         $('.delete_image').val('');
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
+            var fileReader = new FileReader();
+            fileReader.onload = (function(e) {
             var file = e.target;
-            $("<div class=\"form-group new-image text-center mt-3\" id=\"old_logo\">" +
-              "<img class=\"imageThumb\" width=\"100\" height=\"100\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+            $("<div class=\"form-group new-image text-center mt-3\" id=\"new_logo\">" +
+              "<img class=\"imageThumb\" width=\"100\" height=\"100\" src=\"" + file.result + "\" title=\"" + 'brand logo' + "\"/>" +
               "<br/><a href=\"javascript:void(0)\" class=\"remove-new-image remove-logo\">Remove image</a>" +
-              "<input class=\"delete_image\" type=\"hidden\" name=\"delete_logo\" value=\"\">"+
               "</div>").insertAfter("#files");
             $(".remove-new-image").click(function(){
               $(this).parent(".new-image").remove();

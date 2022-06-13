@@ -76,13 +76,13 @@
                 
                 <div class="form-group">
                   <label>Logo</label>
-                  <input type="file" name="logo" class="form-control" id="files">
                   <input class="delete_image" type="hidden" name="delete_logo" value="">
+                  <input type="file" name="logo" class="form-control" id="files">
                 </div>
 
                 <div class="form-group text-center" id="old_logo">
                   @if($brand->logo)
-                    <img src="{{ $brand->image_path }}" width="100" height="100" alt="brand logo" />
+                    <img src="{{ $brand->image_path }}" width="100" height="100" alt="brand logo" tile="brand logo  " />
                     <br>
                     <a href="javascript:void(0)" class="remove-logo">Remove image</a>
                   @endif
