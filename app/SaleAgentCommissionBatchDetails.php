@@ -22,7 +22,9 @@ class SaleAgentCommissionBatchDetails extends Model
         'total_paid_amount',
         'total_outstanding_amount',
         'status',
-        'dispute_detail'
+        'dispute_detail',
+        'deposited_amount_value',
+        'bank_amount_value',
     ];
 
 
@@ -87,6 +89,14 @@ class SaleAgentCommissionBatchDetails extends Model
 
     public function setTotalOutstandingAmountAttribute( $value ) {
         $this->attributes['total_outstanding_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepositedAmountValueAttribute( $value ) {
+        $this->attributes['deposited_amount_value'] = str_replace( ',', '', $value );
+    }
+
+    public function setBankAmountValueAttribute( $value ) {
+        $this->attributes['bank_amount_value'] = str_replace( ',', '', $value );
     }
 
     public function setDepositDateAttribute( $value ) {

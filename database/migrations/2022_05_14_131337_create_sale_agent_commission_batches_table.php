@@ -26,6 +26,7 @@ class CreateSaleAgentCommissionBatchesTable extends Migration
             $table->double('sp_deposit_amount', 8, 2)->nullable();
             $table->date('sp_deposit_date')->nullable();
             $table->date('sp_deposit_paid_date')->nullable();
+            $table->double('bank_total_amount_paid', 8, 2)->nullable();
             $table->timestamps();
         });
     }

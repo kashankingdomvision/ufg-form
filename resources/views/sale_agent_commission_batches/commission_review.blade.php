@@ -88,8 +88,14 @@
                           <td>{{ isset($sac_batch->getSalePerson->name) && !empty($sac_batch->getSalePerson->name) ? $sac_batch->getSalePerson->name : '' }}</td>
                           <td>{{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' - '.$sac_batch->getSalePersonCurrency->name : '' }}</td>
                           <td>{!! $sac_batch->formatted_status !!}</td>
-                          <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
-                          <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
+                          <td>
+                            {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code : '' }}
+                            {{ Helper::number_format($sac_batch->total_paid_amount) }}
+                          </td>
+                          <td>
+                            {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code : '' }}
+                            {{ Helper::number_format($sac_batch->total_outstanding_amount) }}
+                          </td>
                           <td>
                             {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->sp_deposit_amount) : '' }}
                           </td>

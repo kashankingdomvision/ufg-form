@@ -542,7 +542,7 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="7"></td>
+                                                <td colspan="4"></td>
 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>

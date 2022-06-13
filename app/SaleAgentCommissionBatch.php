@@ -21,6 +21,7 @@ class SaleAgentCommissionBatch extends Model
         'sp_deposit_amount',
         'sp_deposit_date',
         'sp_deposit_paid_date',
+        'bank_total_amount_paid',
     ];
 
     public function getFormattedStatusAttribute()

@@ -114,6 +114,8 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function store(SaleAgentCommissionBatchRequest $request)
     {
+        // dd($request->all());
+
         // dd($request->boolean('send_to_agent'));
         // dd($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0);
         // dd(Carbon::today()->toDateString());
@@ -175,6 +177,8 @@ class SaleAgentCommissionBatchController extends Controller
                     'pay_commission_amount'                     => $finance['pay_commission_amount'],
                     'total_paid_amount'                         => $finance['row_total_paid_amount'],
                     'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
+                    'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
+                    'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
                     'status'                                    => $status
                 ]);
 
