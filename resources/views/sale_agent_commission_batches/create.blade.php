@@ -232,7 +232,7 @@
                                                 <th>Deposited On</th>
                                                 <th>Reference</th>
                                                 <th>Total Dep Amount</th>
-                                                <th>Current Total O/S Amount</th>
+                                                <th hidden>Current Total O/S Amount</th>
                                                 <th>Outstanding Amount</th>
                                                 <th>Total Paid Amount</th>
                                             </tr>
@@ -277,7 +277,7 @@
                                                     </div>
                                                 </td>
             
-                                                <td class="form-group">
+                                                <td class="form-group" hidden>
                                                     <div class="input-group d-flex justify-content-center">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text">
@@ -461,7 +461,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                                 </div>
-                                                                <input type="text" name="finance[{{$key}}][deposited_amount_value]" id="finance_{{$key}}_deposited_amount_value" class="form-control deposited-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
+                                                                <input type="text" name="finance[{{$key}}][deposited_amount_value]" id="finance_{{$key}}_deposited_amount_value" class="form-control deposited-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
                                                             </div>
                                                             <small class="text-danger"></small>
                                                         </td>
@@ -471,7 +471,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                                 </div>
-                                                                <input type="text" name="finance[{{$key}}][bank_amount_value]" id="finance_{{$key}}_bank_amount_value" class="form-control bank-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
+                                                                <input type="text" name="finance[{{$key}}][bank_amount_value]" id="finance_{{$key}}_bank_amount_value" class="form-control bank-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
                                                             </div>
                                                             <small class="text-danger"></small>
                                                         </td>
@@ -542,7 +542,7 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="4"></td>
+                                                <td colspan="{{ isset($sale_person) && !is_null($sale_person->getSalePersonPayment) ? 7 : 5 }}"></td>
 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
