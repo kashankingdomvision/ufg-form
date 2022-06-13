@@ -145,19 +145,26 @@ class SeasonController extends Controller
      */
     public function destroy($id)
     {
-        $quotes                      = DB::table('quotes')->where('season_id', decrypt($id))->count();
-        $bookings                    = DB::table('bookings')->where('season_id', decrypt($id))->count();
-        $commission_criteria_seasons = DB::table('commission_criteria_seasons')->where('season_id', decrypt($id))->count();
-        $supplier_bulk_payments      = DB::table('supplier_bulk_payments')->where('season_id', decrypt($id))->count();
-        $supplier_rate_sheets        = DB::table('supplier_rate_sheets')->where('season_id', decrypt($id))->count();
-        $templates                   = DB::table('templates')->where('season_id', decrypt($id))->count();
-
-        if($quotes == 0 && $bookings == 0 && $commission_criteria_seasons == 0 && $supplier_bulk_payments == 0 && $supplier_rate_sheets == 0 && $templates == 0){
-            Season::destroy(decrypt($id));
-            return redirect()->route('seasons.index')->with('success_message', 'Season deleted successfully');
+        $season = Season::findOrFail(decrypt($id));
+        try
+        {
+            $season->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Season Deleted Successfully.',
+                'redirect_url'    => route('seasons.index') 
+            ]);
         }
 
-        return redirect()->route('seasons.index')->with('success_message', "Season can not deleted beacuse it is associated one or more record.");
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Season can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

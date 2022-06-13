@@ -15,8 +15,8 @@ class CreateSupplierRateSheetsTable extends Migration
     {
         Schema::create('supplier_rate_sheets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('restrict');
             $table->string('file')->nullable();
             $table->timestamps();
         });

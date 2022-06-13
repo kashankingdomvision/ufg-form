@@ -17,7 +17,7 @@ class CreateCommissionCriteriasTable extends Migration
             $table->id();
             $table->string('name');
             $table->double('percentage');
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

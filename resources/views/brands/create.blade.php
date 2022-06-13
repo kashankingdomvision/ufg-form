@@ -76,11 +76,8 @@
 
                 <div class="form-group">
                   <label>Logo</label>
-                  <input type="file" name="logo" value="{{ old('logo') }}" class="form-control">
-                  <span class="text-danger" role="alert"></span>
+                  <input type="file" name="logo" value="{{ old('logo') }}" class="form-control" id="files">
                 </div>
-
-              </div>
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>

@@ -430,7 +430,7 @@
                   </div>
 
                   <div class="col-md-12 col-offset-md-4">
-                    <button type="button" class="add-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button type="button" class="add-pax-column btn btn-sm btn-dark float-right">Add Passenger </button>
                   </div>
                 </div>
 

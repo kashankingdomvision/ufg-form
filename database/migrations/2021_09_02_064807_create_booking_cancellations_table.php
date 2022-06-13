@@ -16,11 +16,11 @@ class CreateBookingCancellationsTable extends Migration
         Schema::create('booking_cancellations', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
             $table->double('cancellation_charges');
             $table->string('cancellation_reason');
             $table->double('total_refund_amount');
-            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

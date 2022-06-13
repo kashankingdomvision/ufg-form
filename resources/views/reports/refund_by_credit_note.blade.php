@@ -53,7 +53,7 @@
 
                                                 <div class="col">
                                                     <div class="form-group">
-                                                        <label>Credit Note Received By By</label>
+                                                        <label>Credit Note Received By</label>
                                                         <select class="form-control select2single" name="credit_note_recieved_by">
                                                             <option value="">Select User</option>
                                                             @foreach ($users as $user)

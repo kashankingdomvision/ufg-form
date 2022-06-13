@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -70,11 +71,17 @@ class BrandController extends Controller
             }
         }
 
-        if($method == 'update'){
+        if($method == 'update' && $request->delete_logo == null){
 
             if($request->hasFile('logo')) {
                 $data['logo'] = $this->fileStore($request, $brand);
             }
+        }
+
+        if($method == 'update' && $request->delete_logo == 1){
+
+                File::delete($brand->logo);
+                $data['logo'] = null;
         }
     
         return $data;
@@ -149,10 +156,28 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        Brand::findOrFail(decrypt($id))->delete();
+        $brand = Brand::findOrFail(decrypt($id));
+        try
+        {
+            $brand->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Brand Deleted Successfully.',
+                'redirect_url'    => route('brands.index') 
+            ]);
+        }
 
-        return redirect()->route('brands.index')->with('success_message', 'Brand deleted successfully');
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Brand can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
+
 
     public function bulkAction(Request $request)
     {
@@ -192,11 +217,22 @@ class BrandController extends Controller
                 Storage::delete($old->getOriginal('logo'));
             }
             //storage url
-            $file_path = url(Storage::url($path));
+            url(Storage::url($path));
             //storage url
             return $path;
         }
         return;
+        // $request->validate([
+        //     'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // ]);
+    
+        // $imageName = time().'.'.$request->logo->extension();  
+     
+        // $request->logo->move(public_path('brand_images'), $imageName);
+  
+        /* Store $imageName name in DATABASE from HERE */
+        // dd($imageName);
+        
     }
  
 }

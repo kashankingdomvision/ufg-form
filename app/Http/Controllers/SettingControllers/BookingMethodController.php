@@ -100,8 +100,26 @@ class BookingMethodController extends Controller
      */
     public function destroy($id)
     {
-        BookingMethod::destroy(decrypt($id));
-        return redirect()->route('booking_methods.index')->with('success_message', 'Booking method deleted successfully'); 
+        $booking_method = BookingMethod::findOrFail(decrypt($id));
+        try
+        {
+            $booking_method->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Booking Method Deleted Successfully.',
+                'redirect_url'    => route('booking_methods.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Booking Method can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
         
     }
 

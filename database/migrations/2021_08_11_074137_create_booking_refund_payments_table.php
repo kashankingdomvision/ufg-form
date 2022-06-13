@@ -16,15 +16,15 @@ class CreateBookingRefundPaymentsTable extends Migration
         Schema::create('booking_refund_payments', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('restrict');
             $table->double('refund_amount')->nullable();
             $table->date('refund_date')->nullable();
-            $table->foreignId('refund_confirmed_by')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('bank_id')->constrained('banks')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('refund_confirmed_by')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('bank_id')->constrained('banks')->onUpdate('cascade')->onDelete('restrict');
             $table->enum('refund_recieved', [0,1])->default(0)->nullable();
             $table->date('refund_recieved_date')->nullable();
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -16,9 +16,9 @@ class CreateQuotePaxDetailsTable extends Migration
         Schema::create('quote_pax_details', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('nationality_id')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('resident_in')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('nationality_id')->nullable()->constrained('countries')->onUpdate('restrict')->onDelete('restrict');
+            $table->foreignId('resident_in')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('restrict');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();
             $table->string('contact_number')->nullable();

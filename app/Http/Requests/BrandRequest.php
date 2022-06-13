@@ -26,6 +26,7 @@ class BrandRequest extends FormRequest
         return [
             'name'  => 'required|unique:brands',
             'phone' => 'required',
+            // 'logo'  =>  'required'
         ];
     }
 
@@ -34,6 +35,7 @@ class BrandRequest extends FormRequest
         return [
             'name'  => 'Brand Name',
             'phone' => 'Contact Number',
+            // 'logo'  => 'Logo'
         ];
     }
 }

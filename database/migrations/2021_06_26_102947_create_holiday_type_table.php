@@ -15,7 +15,7 @@ class CreateHolidayTypeTable extends Migration
     {
         Schema::create('holiday_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('brand_id')->constrained('brands')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained('brands')->onUpdate('cascade')->onDelete('restrict');
             $table->string('name');
             $table->timestamps();
         });

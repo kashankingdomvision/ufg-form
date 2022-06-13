@@ -15,7 +15,7 @@ class CreateSupplierTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('currency_id')->nullable()->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->nullable()->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

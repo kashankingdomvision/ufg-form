@@ -107,8 +107,26 @@ class StationController extends Controller
      */
     public function destroy($id)
     {
-        Station::findOrFail(decrypt($id))->delete();
-        return redirect()->route('stations.index')->with('success_message', 'Station Deleted Successfully'); 
+        $station = Station::findOrFail(decrypt($id));
+        try
+        {
+            $station->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Station Deleted Successfully.',
+                'redirect_url'    => route('stations.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Station can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

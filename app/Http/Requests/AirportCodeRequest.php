@@ -24,8 +24,8 @@ class AirportCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => 'required',
-            'iata_code'  => 'required'        
+            'name'       => 'required|unique:airport_codes',
+            'iata_code'  => 'required|unique:airport_codes'        
         ];
     }
 

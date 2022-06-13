@@ -15,8 +15,8 @@ class CreateQuoteCountryDestinationsTable extends Migration
     {
         Schema::create('quote_country_destinations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

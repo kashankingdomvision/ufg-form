@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UpdateHarboursRequest extends FormRequest
 {
@@ -24,8 +26,8 @@ class UpdateHarboursRequest extends FormRequest
     public function rules()
     {
         return [
-            'port_id'  => 'required',        
-            'name'     => 'required',
+            'port_id'  => ['required', Rule::unique('harbours','port_id')->ignore(decrypt($this->id))],        
+            'name'     => ['required', Rule::unique('harbours','name')->ignore(decrypt($this->id))],  
         ];
     }
     

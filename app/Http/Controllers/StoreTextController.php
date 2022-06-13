@@ -94,9 +94,26 @@ class StoreTextController extends Controller
      */
     public function destroy($slug)
     {
-        $storeText = StoreText::where('slug', $slug)->firstOrFail();
-        $storeText->delete();
-        return redirect()->route('store_texts.index')->with('success_message', 'Store Text deleted successfully');
+        $store_text = StoreText::findOrFail(decrypt($slug));
+        try
+        {
+            $store_text->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Store Text Deleted Successfully.',
+                'redirect_url'    => route('store_texts.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Store Text can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

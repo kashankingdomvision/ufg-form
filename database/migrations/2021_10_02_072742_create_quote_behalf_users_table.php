@@ -15,9 +15,9 @@ class CreateQuoteBehalfUsersTable extends Migration
     {
         Schema::create('quote_behalf_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('behalf_user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('behalf_user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

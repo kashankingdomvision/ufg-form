@@ -102,11 +102,11 @@
                       </td>
                       <td>{{ $cabin->name }}</td>
                       <td>
-                        <form method="post" action="{{ route('cabins.destroy', encrypt($cabin->id)) }}">
                         <a href="{{ route('cabins.edit', encrypt($cabin->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('cabins.destroy', encrypt($cabin->id)) }}" class="delete-cabin-type">
                           @csrf
                           @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                             <span class="fa fa-trash"></span>
                           </button>
                         </form>
