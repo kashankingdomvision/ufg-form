@@ -52,7 +52,7 @@ class SaleAgentCommissionBatch extends Model
 
     public function getFormattedDepositDateAttribute()
     {
-        return is_null($this->attributes['deposit_date']) ? '-' : Carbon::parse($this->attributes['deposit_date'])->format('d/m/Y');
+        return !isset($this->attributes['sp_deposit_date']) && is_null($this->attributes['sp_deposit_date']) ? '-' : Carbon::parse($this->attributes['sp_deposit_date'])->format('d/m/Y');
     }
 
     public function getSalePerson()

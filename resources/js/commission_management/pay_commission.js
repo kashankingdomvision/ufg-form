@@ -1,11 +1,11 @@
 $(document).ready(function() {
 
-    // function getTotalPayCommissionAmount() {
-    //     let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
-    //     let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
-    //     $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
-    //     return totalPayCommissionAmount;
-    // }
+    function getTotalPayCommissionAmount() {
+        let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+        let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
+        $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
+        return totalPayCommissionAmount;
+    }
 
     function getTotalPaidAmount() {
         let valesArray = $('.row-total-paid-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
@@ -63,7 +63,7 @@ $(document).ready(function() {
 
         if(typeof depositedAmountPayments != 'undefined' && depositedAmountPayments){
 
-            let bookingCommissionTotalPaidAmount = getTotalPaidAmount();
+            let bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
             let totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
 
             if(bookingCommissionTotalPaidAmount > totalDepositAmount){
@@ -189,7 +189,7 @@ $(document).ready(function() {
 
         if(depositedAmountPayments){
 
-            let bookingCommissionTotalPaidAmount = getTotalPaidAmount();
+            let bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
             let totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
 
             if(totalDepositAmount > bookingCommissionTotalPaidAmount) {
@@ -231,8 +231,8 @@ $(document).ready(function() {
 
         if (financeChild) {
 
-            let outstandingAmountLeft = commissionRow.find('.outstanding-amount-left').val();
-            commissionRow.find('.pay-commission-amount').val(outstandingAmountLeft);
+            let outstandingAmountLeft = parseFloat(commissionRow.find('.outstanding-amount-left').val());
+            commissionRow.find('.pay-commission-amount').val(check(outstandingAmountLeft));
 
             getRowTotalPaidAmount(commissionRow);
             getRowTotalOutstandingAmount(commissionRow);

@@ -542,7 +542,13 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="6"></td>
+                                                <td colspan="7"></td>
+
+                                                <td class="font-weight-bold">
+                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span class="total-pay-commission-amount">0.00</span>
+                                                    <input type="hidden" name="total_pay_commission_amount" class="total-pay-commission-amount" value="">
+                                                </td>
                                                 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
@@ -559,7 +565,7 @@
 
                                             @if(isset($sale_person) && !is_null($sale_person->getSalePersonPayment))
                                                 <tr>
-                                                    <td colspan="6"></td>
+                                                    <td colspan="4"></td>
                                                     <td class="font-weight-bold">
                                                         <span class="pr-1">Left to Allocate</span>
                                                         <span>{{ $supplier_default_currency_code }}</span>

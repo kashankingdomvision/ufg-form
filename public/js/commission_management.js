@@ -377,12 +377,17 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  // function getTotalPayCommissionAmount() {
-  //     let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
-  //     let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
-  //     $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
-  //     return totalPayCommissionAmount;
-  // }
+  function getTotalPayCommissionAmount() {
+    var valesArray = $('.pay-commission-amount').map(function (i, e) {
+      return parseFloat(removeComma(e.value));
+    }).get();
+    var totalPayCommissionAmount = valesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
+    return totalPayCommissionAmount;
+  }
+
   function getTotalPaidAmount() {
     var valesArray = $('.row-total-paid-amount').map(function (i, e) {
       return parseFloat(removeComma(e.value));
@@ -432,7 +437,7 @@ $(document).ready(function () {
     var depositedAmountPayments = $("#deposited_amount_payments").prop('checked');
 
     if (typeof depositedAmountPayments != 'undefined' && depositedAmountPayments) {
-      var bookingCommissionTotalPaidAmount = getTotalPaidAmount();
+      var bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
       var totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
 
       if (bookingCommissionTotalPaidAmount > totalDepositAmount) {
@@ -524,7 +529,7 @@ $(document).ready(function () {
     var depositedAmountPayments = $("#deposited_amount_payments").prop('checked');
 
     if (depositedAmountPayments) {
-      var bookingCommissionTotalPaidAmount = getTotalPaidAmount();
+      var bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
       var totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
 
       if (totalDepositAmount > bookingCommissionTotalPaidAmount) {
@@ -549,8 +554,8 @@ $(document).ready(function () {
     var financeChild = commissionRow.find('.finance-child').prop('checked');
 
     if (financeChild) {
-      var outstandingAmountLeft = commissionRow.find('.outstanding-amount-left').val();
-      commissionRow.find('.pay-commission-amount').val(outstandingAmountLeft);
+      var outstandingAmountLeft = parseFloat(commissionRow.find('.outstanding-amount-left').val());
+      commissionRow.find('.pay-commission-amount').val(check(outstandingAmountLeft));
       getRowTotalPaidAmount(commissionRow);
       getRowTotalOutstandingAmount(commissionRow);
       calDepositAndBankAmountValue(commissionRow); // let totalDepositAmountLeftToAllocateValue = parseFloat($('.total-deposit-amount-left-to-allocate').val());
