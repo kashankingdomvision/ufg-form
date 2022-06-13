@@ -67,7 +67,6 @@ class BrandController extends Controller
         if($method == 'store'){
 
             if($request->hasFile('logo')) {
-
                 $data['logo'] = $this->fileStore($request);
             }
         }
@@ -81,11 +80,8 @@ class BrandController extends Controller
 
         if($method == 'update' && $request->delete_logo == 1){
 
-            // if($request->hasFile('logo')) {
                 File::delete($brand->logo);
                 $data['logo'] = null;
-                // $data['logo'] = $this->fileStore($request, $brand);
-            // }
         }
     
         return $data;
@@ -180,9 +176,6 @@ class BrandController extends Controller
                 ]);
             }
         }
-        Brand::findOrFail(decrypt($id))->delete();
-
-        return redirect()->route('brands.index')->with('success_message', 'Brand deleted successfully');
     }
 
 

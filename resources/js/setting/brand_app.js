@@ -154,7 +154,6 @@ $(document).ready(function() {
                         printListingSuccessMessage(response);
                     },
                     error: function(response) {
-                
                         Toast.fire({
                             icon: 'warning',
                             title: response.message
@@ -166,27 +165,27 @@ $(document).ready(function() {
     });
 
     $("#files").on("change", function(e) {
-        $('#old_logo').addClass('d-none');
-        $('#old_logo .delete_image').val('');
+        $('.remove-logo').parent().remove();
+        $('.delete_image').val('');
           var fileReader = new FileReader();
           fileReader.onload = (function(e) {
             var file = e.target;
             $("<div class=\"form-group new-image text-center mt-3\" id=\"old_logo\">" +
               "<img class=\"imageThumb\" width=\"100\" height=\"100\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><a href=\"javascript:void(0)\" class=\"remove-new remove-logo\">Remove image</a>" +
+              "<br/><a href=\"javascript:void(0)\" class=\"remove-new-image remove-logo\">Remove image</a>" +
               "<input class=\"delete_image\" type=\"hidden\" name=\"delete_logo\" value=\"\">"+
               "</div>").insertAfter("#files");
-            $(".remove-new").click(function(){
+            $(".remove-new-image").click(function(){
               $(this).parent(".new-image").remove();
-              $('#old_logo .delete_image').val('1');
+              $('.delete_image').val('1');
               $('#files').val(null);
             });
           });
           fileReader.readAsDataURL(this.files[0]);
-      });
+    });
 
-      $('#old_logo .remove-logo').on('click', function () {
-        $('#old_logo').addClass('d-none');
+    $('.remove-logo').on('click', function () {
+        $(this).parent().remove();
         $('.delete_image').val('1');
     });
 });
