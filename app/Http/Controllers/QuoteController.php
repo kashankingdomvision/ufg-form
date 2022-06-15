@@ -51,6 +51,8 @@ use App\Template;
 use App\User;
 use App\Harbour;
 use App\GroupOwner;
+use App\SaleAgentCommissionBatchDetails;
+use App\SaleAgentCommissionBatchTransDetail;
 
 class QuoteController extends Controller
 {
@@ -1063,6 +1065,28 @@ class QuoteController extends Controller
         $quote->update([
             'status' => 'booked',
             'booking_date'   => Carbon::now()
+        ]);
+
+
+        $sacbtd = SaleAgentCommissionBatchTransDetail::create([
+            'type' => 'booking_commission'
+        ]);
+
+        SaleAgentCommissionBatchDetails::create([
+
+            'sac_batch_trans_detail_id' => $sacbtd->id,
+            'booking_id' => $booking->id,
+            'sac_batch_id' => null,
+            'sale_person_id' => $booking->sale_person_id,
+            'sale_person_currency_id' => $booking->sale_person_currency_id,
+            'total_paid_amount_yet' => 0.00,
+            'outstanding_amount_left' => $booking->id,
+            'pay_commission_amount' => 0.00,
+            'total_paid_amount' => 0.00,
+            'total_outstanding_amount' => 0.00,
+            'deposited_amount_value' => 0.00,
+            'bank_amount_value' => 0.00,
+            'status' => 'pending',
         ]);
     }
 

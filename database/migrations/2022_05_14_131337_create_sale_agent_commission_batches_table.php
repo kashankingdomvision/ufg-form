@@ -19,14 +19,15 @@ class CreateSaleAgentCommissionBatchesTable extends Migration
             $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->double('commission_amount_in_sale_person_currency', 8, 2);
+            $table->double('sp_deposit_amount', 8, 2)->nullable();
+            $table->double('total_pay_commission_amount', 8, 2);
+            $table->double('bank_total_amount_paid', 8, 2)->nullable();
             $table->double('total_paid_amount', 8, 2);
             $table->double('total_outstanding_amount', 8, 2);
             $table->enum('status', ['pending' , 'paid', 'partial', 'confirmed', 'disputed'])->default('pending');
-            
-            $table->double('sp_deposit_amount', 8, 2)->nullable();
             $table->date('sp_deposit_date')->nullable();
             $table->date('sp_deposit_paid_date')->nullable();
-            $table->double('bank_total_amount_paid', 8, 2)->nullable();
             $table->timestamps();
         });
     }
