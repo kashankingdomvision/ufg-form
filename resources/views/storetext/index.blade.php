@@ -97,7 +97,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ $value->name }}</td>
-                                            <td>
+                                            <td class="d-flex justify-content-center ml-2">
                                                 <a href="{{ route('store_texts.edit', $value->slug) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                                                 <form method="post" action="{{ route('store_texts.destroy', $value->slug) }}" class="delete-store-text">
                                                     @csrf

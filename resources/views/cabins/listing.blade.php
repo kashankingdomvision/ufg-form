@@ -101,7 +101,7 @@
                         </div>
                       </td>
                       <td>{{ $cabin->name }}</td>
-                      <td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('cabins.edit', encrypt($cabin->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('cabins.destroy', encrypt($cabin->id)) }}" class="delete-cabin-type">
                           @csrf

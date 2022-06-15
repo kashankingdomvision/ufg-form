@@ -146,15 +146,6 @@ $(document).ready(function() {
         var currencyID                = $('.booking-currency-id').val();
         var seasonID                  = $('.season-id').val();
 
-        // console.log(totalNetPrice);
-        // console.log(commissionID);
-        // console.log(commissionGroupID);
-        // console.log(brandID);
-        // console.log(holidayTypeID);
-        // console.log(seasonID);
-        // console.log(currencyID);
-
-
         if(agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
             netValue = removeComma($('.total-net-margin').val());
         }

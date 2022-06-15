@@ -22,19 +22,13 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-
-        $a = Quote::groupBy('lead_passenger_email')->where('agency', '0')
-        
-        ->select(
-            'lead_passenger_name',
-            'lead_passenger_email',
-            DB::raw("sum(case when status = 'quote' then amount else 0 end) Where lead_passenger_email =I.CONTACT_ID) as quote_count"),
-        )
-        ->get();
-
-        dd($a);
-
-
+        // $a = Quote::groupBy('lead_passenger_email')->where('agency', '0')
+        // ->select(
+        //     'lead_passenger_name',
+        //     'lead_passenger_email',
+        //     DB::raw("sum(case when status = 'quote' then amount else 0 end) Where lead_passenger_email =I.CONTACT_ID) as quote_count"),
+        // )
+        // ->get();
 
         $emails = DB::table('quotes')->where('agency', '0')->groupBy('lead_passenger_email');
 
@@ -50,9 +44,7 @@ class CustomerController extends Controller
 
         $customers_data = [];
         if($emails && count($emails) > 0){
-
             foreach($emails as $key => $email){
-
                 $customers_data[$key]['name']    = $email->lead_passenger_name;
                 $customers_data[$key]['email']   = $email->lead_passenger_email;
                 $customers_data[$key]['quotes']  = DB::table('quotes')->where('lead_passenger_email',$email->lead_passenger_email)->count();

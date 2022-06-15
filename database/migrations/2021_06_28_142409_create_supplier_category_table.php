@@ -15,8 +15,8 @@ class CreateSupplierCategoryTable extends Migration
     {
         Schema::create('supplier_categories', function (Blueprint $table) {
 
-            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->primary(['supplier_id', 'category_id']);
         });
     }

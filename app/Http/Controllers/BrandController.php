@@ -95,7 +95,7 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        $brand = Brand::create($this->brandArray($request, 'store'));
+        Brand::create($this->brandArray($request, 'store'));
 
         return response()->json([ 
             'status'          => true, 
@@ -198,13 +198,14 @@ class BrandController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Brand can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
     
@@ -222,17 +223,6 @@ class BrandController extends Controller
             return $path;
         }
         return;
-        // $request->validate([
-        //     'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        // ]);
-    
-        // $imageName = time().'.'.$request->logo->extension();  
-     
-        // $request->logo->move(public_path('brand_images'), $imageName);
-  
-        /* Store $imageName name in DATABASE from HERE */
-        // dd($imageName);
-        
     }
  
 }

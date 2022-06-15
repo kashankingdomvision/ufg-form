@@ -130,7 +130,7 @@ $(document).ready(function() {
 
         event.preventDefault();
         let url = $(this).attr('action');
-        message    = 'You want to Delete Brands?';
+        message    = 'You want to Delete Brand?';
         buttonText = 'Delete';
 
         Swal.fire({

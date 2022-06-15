@@ -221,19 +221,26 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        $bcn_count = DB::table('booking_credit_notes')->where('supplier_id', decrypt($id))->count();
-        $bt_count  = DB::table('booking_transactions')->where('supplier_id', decrypt($id))->count();
-        $w_count   = DB::table('wallets')->where('supplier_id', decrypt($id))->count();
-        $srs_count = DB::table('supplier_rate_sheets')->where('supplier_id', decrypt($id))->count();
-        $tw_count  = DB::table('total_wallets')->where('supplier_id', decrypt($id))->count();
-        $sbp_count = DB::table('supplier_bulk_payments')->where('supplier_id', decrypt($id))->count();
-
-        if($bcn_count == 0 && $bt_count == 0 && $w_count == 0 && $srs_count == 0 && $tw_count == 0 && $sbp_count == 0){
-            Supplier::destroy(decrypt($id));
-            return redirect()->route('suppliers.index')->with('success_message', 'Supplier deleted successfully');
+        $Supplier = Supplier::findOrFail(decrypt($id));
+        try
+        {
+            $Supplier->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Supplier Deleted Successfully.',
+                'redirect_url'    => route('suppliers.index') 
+            ]);
         }
 
-        return redirect()->route('suppliers.index')->with('error_message', "Supplier can not deleted beacuse it is associated one or more record.");
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Supplier can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)
@@ -255,13 +262,14 @@ class SupplierController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Supplier can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
 }

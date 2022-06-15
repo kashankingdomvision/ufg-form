@@ -99,7 +99,7 @@
                         </div>
                       </td>
                       <td>{{ $station->name }}</td>
-                      <td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('stations.edit', encrypt($station->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('stations.destroy', encrypt($station->id)) }}" class="delete-station">
                           @csrf

@@ -114,8 +114,26 @@ class GroupOwnerController extends Controller
      */
     public function destroy($id)
     {
-        GroupOwner::destroy(decrypt($id));
-        return redirect()->route('group_owners.index')->with('success_message', 'Group Owner deleted successfully'); 
+        $GroupOwner = GroupOwner::findOrFail(decrypt($id));
+        try
+        {
+            $GroupOwner->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Group Owner Deleted Successfully.',
+                'redirect_url'    => route('group_owners.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Group Owner can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

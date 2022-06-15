@@ -101,7 +101,7 @@
                       </td>
                       <td>{{ $value->port_id }}</td>
                       <td>{{ $value->name }}</td>
-                      <td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('harbours.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('harbours.destroy', encrypt($value->id)) }}" class="delete-harbours">
                           @csrf

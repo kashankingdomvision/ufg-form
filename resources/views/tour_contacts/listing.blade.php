@@ -101,7 +101,7 @@
                         </div>
                       </td>
                       <td>{{ $contact->name }}</td>
-                      <td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('tour_contacts.edit', encrypt($contact->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('tour_contacts.destroy', encrypt($contact->id)) }}" class="delete-tour-contact">
                           @csrf

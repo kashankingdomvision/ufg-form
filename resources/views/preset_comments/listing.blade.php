@@ -100,7 +100,7 @@
                         </div>
                       </td>
                       <td>{{ $value->comment }}</td>
-                      <td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('preset_comments.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('preset_comments.destroy', encrypt($value->id)) }}" class="delete-preset-comments">
                           @csrf

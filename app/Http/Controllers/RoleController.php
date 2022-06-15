@@ -99,14 +99,13 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $role = Role::destroy(decrypt($id));
+        Role::destroy(decrypt($id));
         return redirect()->route('roles.index')->with('success_message', 'Role deleted successfully');
     }
 
     public function bulkAction(Request $request)
     {
         try {
-
             $message = "";
             $bulk_action_ids  = $request->bulk_action_ids;
             $bulk_action_type = $request->bulk_action_type;

@@ -15,8 +15,8 @@ class CreateSupplierProductsTable extends Migration
     {
         Schema::create('supplier_products', function (Blueprint $table) {
 
-            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
             $table->primary(['supplier_id', 'product_id']);
         });
     }

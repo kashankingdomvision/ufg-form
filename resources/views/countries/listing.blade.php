@@ -102,7 +102,8 @@
                       </td>
                       <td>{{ $country->name }}</td>
                       <td>{{ $country->sort_order }}</td>
-                      <td>
+                      <td></td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('countries.edit', encrypt($country->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('countries.destroy', encrypt($country->id)) }}" class="delete-country-app">
                           @csrf
@@ -117,7 +118,6 @@
                   @else
                     <tr align="center"><td colspan="100%">No record found.</td></tr>
                   @endif
-                    
                   </tbody>
                 </table>
               </div>

@@ -26,7 +26,6 @@ class HolidayTypeController extends Controller
                 $query->select('id','name');
             }
         ])->orderBy('id', 'ASC');
-
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
                 $HolidayType->where(function($q) use($request){
@@ -51,7 +50,6 @@ class HolidayTypeController extends Controller
     public function create()
     {
         $data['brands'] = Brand::get();
-        
         return view('holiday_types.create', $data);
     }
 
@@ -112,9 +110,26 @@ class HolidayTypeController extends Controller
      */
     public function destroy($id)
     {
-        HolidayType::destroy(decrypt($id));
+        $holidaytype = HolidayType::findOrFail(decrypt($id));
+        try
+        {
+            $holidaytype->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Holiday Type Deleted Successfully.',
+                'redirect_url'    => route('holiday_types.index') 
+            ]);
+        }
 
-        return redirect()->route('holiday_types.index')->with('success_message', 'Holiday type deleted successfully'); 
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Holiday Type can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)
