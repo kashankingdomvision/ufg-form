@@ -11,17 +11,31 @@ class SaleAgentCommissionBatch extends Model
 
     protected $fillable = [
         
+        // 'name',
+        // 'payment_method_id',
+        // 'total_paid_amount',
+        // 'total_outstanding_amount',
+        // 'sale_person_id',
+        // 'sale_person_currency_id',
+        // 'status',
+        // 'sp_deposit_amount',
+        // 'sp_deposit_date',
+        // 'sp_deposit_paid_date',
+        // 'bank_total_amount_paid',
+
         'name',
-        'payment_method_id',
-        'total_paid_amount',
-        'total_outstanding_amount',
-        'sale_person_id',
-        'sale_person_currency_id',
-        'status',
-        'sp_deposit_amount',
+        'payment_method_id',	
+        'sale_person_id',	
+        'sale_person_currency_id',	
+        'commission_amount_in_sale_person_currency',	
+        'sp_deposit_amount',	
+        'total_pay_commission_amount',	
+        'bank_total_amount_paid',	
+        'total_paid_amount',	
+        'total_outstanding_amount',	
+        'status',	
         'sp_deposit_date',
         'sp_deposit_paid_date',
-        'bank_total_amount_paid',
     ];
 
     public function getFormattedStatusAttribute()

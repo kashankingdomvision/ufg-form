@@ -51,7 +51,8 @@ use App\Template;
 use App\User;
 use App\Harbour;
 use App\GroupOwner;
-use App\SaleAgentBatchTransDetail;
+use App\SaleAgentCommissionBatchDetails;
+use App\SaleAgentCommissionBatchTransDetail;
 
 class QuoteController extends Controller
 {

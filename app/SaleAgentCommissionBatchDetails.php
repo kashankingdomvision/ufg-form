@@ -11,20 +11,35 @@ class SaleAgentCommissionBatchDetails extends Model
 
     protected $fillable = [
         
-        'sac_batch_id',
+        // 'sac_batch_id',
+        // 'booking_id',
+        // 'sale_person_id',
+        // 'sale_person_currency_id',
+        // 'commission_amount_in_sale_person_currency',
+        // 'total_paid_amount_yet',
+        // 'outstanding_amount_left',
+        // 'pay_commission_amount',
+        // 'total_paid_amount',
+        // 'total_outstanding_amount',
+        // 'status',
+        // 'dispute_detail',
+        // 'deposited_amount_value',
+        // 'bank_amount_value',
+        
+        'sac_batch_trans_detail_id',
         'booking_id',
+        'sac_batch_id',
+        'sale_person_id',
         'sale_person_id',
         'sale_person_currency_id',
-        'commission_amount_in_sale_person_currency',
         'total_paid_amount_yet',
         'outstanding_amount_left',
         'pay_commission_amount',
         'total_paid_amount',
         'total_outstanding_amount',
-        'status',
-        'dispute_detail',
         'deposited_amount_value',
         'bank_amount_value',
+        'status',
     ];
 
 
