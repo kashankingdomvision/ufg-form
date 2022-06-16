@@ -19,6 +19,7 @@ use App\SaleAgentCommissionBatch;
 use App\SaleAgentCommissionBatchDetails;
 use App\Bank;
 use App\SalePersonPayment;
+use App\SaleAgentBatchTransDetail;
 
 use App\Http\Requests\SaleAgentCommissionBatchRequest;
 
@@ -101,6 +102,13 @@ class SaleAgentCommissionBatchController extends Controller
 
             $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
+
+
+            $a = SaleAgentBatchTransDetail::where('sale_person_id', $request->sale_person_id)
+            ->get()
+            ;
+
+            // dd($a);
         }
 
         return view('sale_agent_commission_batches.create', $data);
@@ -139,7 +147,7 @@ class SaleAgentCommissionBatchController extends Controller
 
         if($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0){
 
-            SalePersonPayment::create([
+            $spp = SalePersonPayment::create([
     
                 'sale_person_id'          => $request->sale_person_id,
                 'sale_person_currency_id' => $request->sale_person_currency_id,
@@ -149,8 +157,12 @@ class SaleAgentCommissionBatchController extends Controller
                 'total_deposited_outstanding_amount'  => $request->sp_deposit_amount,
                 'total_deposit_amount'  => $request->sp_deposit_amount,
             ]);
-        }
 
+            SaleAgentBatchTransDetail::create([
+                'sale_person_id' => $spp->sale_person_id,
+                'type' => 'sale_person_payments',
+            ]);
+        }
 
         foreach ($request->finance as $key => $finance) {
 
@@ -165,7 +177,7 @@ class SaleAgentCommissionBatchController extends Controller
                 if($request->send_to_agent == 0 && $finance['total_paid_amount_yet'] > 0)
                     $status = 'confirmed';
 
-                SaleAgentCommissionBatchDetails::create([
+                $sacbd = SaleAgentCommissionBatchDetails::create([
 
                     'sac_batch_id'                              => $sac_batch->id,
                     'booking_id'                                => $finance['booking_id'],
@@ -182,6 +194,11 @@ class SaleAgentCommissionBatchController extends Controller
                     'status'                                    => $status
                 ]);
 
+
+                SaleAgentBatchTransDetail::create([
+                    'sale_person_id' => $sacbd->sale_person_id,
+                    'type' => 'sac_batch_details',
+                ]);
 
                 // if($finance['row_total_outstanding_amount'] > 0){
                 //     Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 1 ]);

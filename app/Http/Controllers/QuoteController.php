@@ -51,6 +51,7 @@ use App\Template;
 use App\User;
 use App\Harbour;
 use App\GroupOwner;
+use App\SaleAgentBatchTransDetail;
 
 class QuoteController extends Controller
 {
@@ -1064,6 +1065,12 @@ class QuoteController extends Controller
             'status' => 'booked',
             'booking_date'   => Carbon::now()
         ]);
+
+        // SaleAgentBatchTransDetail::create([
+        //     'foreign_id' => $booking->id,
+        //     'sale_person_id' => $booking->sale_person_id,
+        //     'type'       => 'bookings',
+        // ]);
     }
 
     public function cancelQuote($id){
