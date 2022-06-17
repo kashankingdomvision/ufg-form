@@ -9,6 +9,7 @@ class SalePersonPayment extends Model
 {
     protected $fillable = [
         
+        'sac_batch_trans_detail_id',
         'sale_person_id',
         'sale_person_currency_id',
         'deposit_date',

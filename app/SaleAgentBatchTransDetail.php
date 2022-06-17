@@ -16,4 +16,8 @@ class SaleAgentBatchTransDetail extends Model
         'type',
     ];
 
+    public function batchDetails()
+    {
+        return $this->hasOne(SaleAgentCommissionBatchDetails::class, 'sac_batch_trans_detail_id');
+    }
 }

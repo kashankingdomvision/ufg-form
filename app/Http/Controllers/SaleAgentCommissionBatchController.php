@@ -62,7 +62,7 @@ class SaleAgentCommissionBatchController extends Controller
                 'getLastSaleAgentCommissionBatchDetails',
             ])
             ->where('season_id', $request->season)
-            ->whereIn('sale_person_payment_status', [0,1])
+            ->where('sale_person_payment_status', 0)
             ->where('commission_amount', '>', 0);
 
             $query->when($request->departure_date, function ($query) use ($request) {
@@ -104,11 +104,45 @@ class SaleAgentCommissionBatchController extends Controller
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
 
 
-            $a = SaleAgentBatchTransDetail::where('sale_person_id', $request->sale_person_id)
-            ->get()
-            ;
+            // dd($bookings);
 
-            // dd($a);
+            $data['sac_batch_trans_details'] = SaleAgentBatchTransDetail::where('sac_batch_trans_details.sale_person_id', $request->sale_person_id)
+            ->with([
+                
+            ])
+            ->leftJoin('sac_batch_details', 'sac_batch_trans_details.id', '=', 'sac_batch_details.sac_batch_trans_detail_id')
+            ->leftJoin('sale_person_payments', 'sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
+            ->select([
+                'sac_batch_trans_details.id as sac_batch_trans_detail_id',
+                'sac_batch_trans_details.type',
+    
+                'sac_batch_details.sac_batch_id',
+                'sac_batch_details.sale_person_id as sac_batch_detail_sale_person',
+                'sac_batch_details.sale_person_currency_id as sac_batch_detail_sale_person_currency_id',
+                'sac_batch_details.booking_id',
+                'sac_batch_details.commission_amount_in_sale_person_currency',
+                'sac_batch_details.total_paid_amount_yet',
+                'sac_batch_details.outstanding_amount_left',
+                'sac_batch_details.pay_commission_amount',
+                'sac_batch_details.total_paid_amount',
+                'sac_batch_details.total_outstanding_amount',
+                'sac_batch_details.deposited_amount_value',
+                'sac_batch_details.bank_amount_value',
+                'sac_batch_details.status as batch_detail_status',
+                'sac_batch_details.dispute_detail',
+    
+                'sale_person_payments.sale_person_id',
+                'sale_person_payments.sale_person_currency_id',
+                'sale_person_payments.total_deposited_amount',
+                'sale_person_payments.current_deposited_total_outstanding_amount',
+                'sale_person_payments.total_deposited_outstanding_amount',
+                'sale_person_payments.total_deposit_amount',
+            ])
+            ->orderBy('sac_batch_trans_detail_id','DESC')
+            ->get();
+
+
+            dd($data['sac_batch_trans_details']);
         }
 
         return view('sale_agent_commission_batches.create', $data);
@@ -122,47 +156,25 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function store(SaleAgentCommissionBatchRequest $request)
     {
-        // dd($request->all());
-
-        // dd($request->boolean('send_to_agent'));
-        // dd($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0);
-        // dd(Carbon::today()->toDateString());
-
         $status = '';
 
         $sac_batch = SaleAgentCommissionBatch::create([
 
-            'name'                     => $request->batch_name,
-            'payment_method_id'        => $request->payment_method_id,
-            'total_paid_amount'        => $request->total_paid_amount,
-            'total_outstanding_amount' => $request->total_outstanding_amount,
+            'name'              => $request->batch_name,
             'sale_person_id'           => $request->sale_person_id,
             'sale_person_currency_id'  => $request->sale_person_currency_id,
-            'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid',
-            // 'deposit_date'             => $request->send_to_agent == 1 ? Carbon::today()->toDateString() : null
+            'sp_deposit_amount' => $request->sp_deposit_amount,
+            'total_pay_commission_amount' => $request->total_pay_commission_amount,
+            'booking_commission_total_paid_amount' => $request->booking_commission_total_paid_amount,
+            'total_outstanding_amount' => $request->total_outstanding_amount,
+            'total_paid_amount' => $request->total_paid_amount,
 
-            'sp_deposit_amount' => $request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0 ? $request->sp_deposit_amount : null,
+            'payment_method_id'      => $request->filled('payment_method_id') ? $request->payment_method_id : null,
+            'bank_total_amount_paid' => $request->filled('bank_total_amount_paid') ? $request->bank_total_amount_paid : null,
+            'status'                 => 'pending',
+
             'sp_deposit_date'   => $request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0 ? Carbon::today()->toDateString() : null,
         ]);
-
-        if($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0){
-
-            $spp = SalePersonPayment::create([
-    
-                'sale_person_id'          => $request->sale_person_id,
-                'sale_person_currency_id' => $request->sale_person_currency_id,
-                'deposit_date'            => Carbon::today()->toDateString(),
-                'total_deposited_amount'  => $request->sp_deposit_amount,
-                'current_deposited_total_outstanding_amount'  => $request->sp_deposit_amount,
-                'total_deposited_outstanding_amount'  => $request->sp_deposit_amount,
-                'total_deposit_amount'  => $request->sp_deposit_amount,
-            ]);
-
-            SaleAgentBatchTransDetail::create([
-                'sale_person_id' => $spp->sale_person_id,
-                'type' => 'sale_person_payments',
-            ]);
-        }
 
         foreach ($request->finance as $key => $finance) {
 
@@ -177,8 +189,14 @@ class SaleAgentCommissionBatchController extends Controller
                 if($request->send_to_agent == 0 && $finance['total_paid_amount_yet'] > 0)
                     $status = 'confirmed';
 
+                $sabtd = SaleAgentBatchTransDetail::create([
+                    'sale_person_id' => $finance['sale_person_id'],
+                    'type'           => 'sac_batch_details',
+                ]);
+
                 $sacbd = SaleAgentCommissionBatchDetails::create([
 
+                    'sac_batch_trans_detail_id'                 => $sabtd->id,
                     'sac_batch_id'                              => $sac_batch->id,
                     'booking_id'                                => $finance['booking_id'],
                     'sale_person_id'                            => $finance['sale_person_id'],
@@ -195,19 +213,28 @@ class SaleAgentCommissionBatchController extends Controller
                 ]);
 
 
-                SaleAgentBatchTransDetail::create([
-                    'sale_person_id' => $sacbd->sale_person_id,
-                    'type' => 'sac_batch_details',
-                ]);
-
-                // if($finance['row_total_outstanding_amount'] > 0){
-                //     Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 1 ]);
-                // }
-
-                // if($finance['row_total_outstanding_amount'] == 0){
-                //     Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 2 ]);
-                // }
+                Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 1 ]);
             }
+        }
+
+        if($request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0){
+
+            $sabtd = SaleAgentBatchTransDetail::create([
+                'sale_person_id' => $request->sale_person_id,
+                'type' => 'sale_person_payments',
+            ]);
+
+            $spp = SalePersonPayment::create([
+    
+                'sac_batch_trans_detail_id' => $sabtd->id,
+                'sale_person_id'          => $request->sale_person_id,
+                'sale_person_currency_id' => $request->sale_person_currency_id,
+                'deposit_date'            => Carbon::today()->toDateString(),
+                'total_deposited_amount'  => $request->sp_deposit_amount,
+                'current_deposited_total_outstanding_amount' => $request->sp_deposit_amount,
+                'total_deposited_outstanding_amount'  => $request->sp_deposit_amount,
+                'total_deposit_amount'  => $request->sp_deposit_amount,
+            ]);
         }
 
         return response()->json([ 
