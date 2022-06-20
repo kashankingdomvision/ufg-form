@@ -63,7 +63,7 @@ $(document).ready(function() {
 
     function getTotalPaidAmount() {
 
-        let spDepositAmount = $('#sp_deposit_amount').val() ;
+        let spDepositAmount = $('#sp_deposit_amount').val() == '' ? 0.00 : removeComma($('#sp_deposit_amount').val());
         let totalPaidAmount = parseFloat(getBookingCommissionTotalPaidAmount()) + parseFloat(spDepositAmount);
 
         $('.total-paid-amount')
@@ -186,7 +186,7 @@ $(document).ready(function() {
 
     $(document).on('change', '#sp_deposit_amount', function(event) {
 
-        let spDepositAmount = parseFloat($(this).val());
+        let spDepositAmount = $(this).val() == '' ? 0.00 : parseFloat(removeComma($('#sp_deposit_amount').val()));
 
         $('.sp-deposit-amount')
             .html(check(spDepositAmount))

@@ -424,7 +424,7 @@ $(document).ready(function () {
   }
 
   function getTotalPaidAmount() {
-    var spDepositAmount = $('#sp_deposit_amount').val();
+    var spDepositAmount = $('#sp_deposit_amount').val() == '' ? 0.00 : removeComma($('#sp_deposit_amount').val());
     var totalPaidAmount = parseFloat(getBookingCommissionTotalPaidAmount()) + parseFloat(spDepositAmount);
     $('.total-paid-amount').html(check(totalPaidAmount)).val(check(totalPaidAmount));
     return totalPaidAmount;
@@ -525,7 +525,7 @@ $(document).ready(function () {
     getTotalPaidAmount();
   });
   $(document).on('change', '#sp_deposit_amount', function (event) {
-    var spDepositAmount = parseFloat($(this).val());
+    var spDepositAmount = $(this).val() == '' ? 0.00 : parseFloat(removeComma($('#sp_deposit_amount').val()));
     $('.sp-deposit-amount').html(check(spDepositAmount)).val(check(spDepositAmount));
     getTotalPaidAmount();
   });

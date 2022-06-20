@@ -142,7 +142,7 @@ class SaleAgentCommissionBatchController extends Controller
             ->get();
 
 
-            dd($data['sac_batch_trans_details']);
+            // dd($data['sac_batch_trans_details']);
         }
 
         return view('sale_agent_commission_batches.create', $data);
