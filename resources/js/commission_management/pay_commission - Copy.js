@@ -163,26 +163,28 @@ $(document).ready(function() {
         totalDepositAmountLeftToAllocate();
     });
 
-    $(document).on('change', '#deposited_amount_payments', function(event) {
+    $(document).on('change', '.deposited-amount-payments', function(event) {
 
-        let depositedAmountPayments = $("#deposited_amount_payments").prop('checked');
+        console.log('deposited-amount-payments here ');
 
-        if (depositedAmountPayments) {
+        // let depositedAmountPayments = $("#deposited_amount_payments").prop('checked');
 
-            let totalOutstandingAmount = parseFloat(removeComma($('#current_deposited_total_outstanding_amount').val()));
-            $('#total_deposit_amount').val(check(totalOutstandingAmount));
-            $('#total_deposited_outstanding_amount').val('0.00');
-        } 
-        else {
+        // if (depositedAmountPayments) {
 
-            let totalOutstandingAmount = parseFloat(removeComma($('#current_deposited_total_outstanding_amount').val()));
+        //     let totalOutstandingAmount = parseFloat(removeComma($('#current_deposited_total_outstanding_amount').val()));
+        //     $('#total_deposit_amount').val(check(totalOutstandingAmount));
+        //     $('#total_deposited_outstanding_amount').val('0.00');
+        // } 
+        // else {
 
-            $('#total_deposited_outstanding_amount').val(check(totalOutstandingAmount));
-            $('#total_deposit_amount').val('0.00');
-        }
+        //     let totalOutstandingAmount = parseFloat(removeComma($('#current_deposited_total_outstanding_amount').val()));
 
-        getBankTotalAmountPaid();
-        totalDepositAmountLeftToAllocate();
+        //     $('#total_deposited_outstanding_amount').val(check(totalOutstandingAmount));
+        //     $('#total_deposit_amount').val('0.00');
+        // }
+
+        // getBankTotalAmountPaid();
+        // totalDepositAmountLeftToAllocate();
     });
 
     function totalDepositAmountLeftToAllocate() {

@@ -213,11 +213,15 @@
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
                                             <th>Outstanding Amount Left</th>
+                                            
+                                            <th>Deposited Amount Value</th>
+                                            <th>Bank Amount Value</th>
+
                                             <th>Pay Commission Amount</th>
-                                            <th style="min-width: 200px;">Total Paid Amount</th>
+                                            <th style="min-width: 250px;">Total Paid Amount</th>
                                             <th>Total Outstanding Amount</th>
-                                            <th>Agent's Bonus</th>
-                                            <th>Action</th>
+                                            {{-- <th>Agent's Bonus</th> --}}
+                                            {{-- <th>Action</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -299,23 +303,184 @@
 
                                             @endforeach
 
+ 
+  
+                                        @endif
+
+                                        @if(isset($sac_batch_trans_details) && $sac_batch_trans_details->count())
+                                            @foreach($sac_batch_trans_details as $key => $sac_batch_trans_detail)
+                                                @php
+                                                    $sa_currency = isset($sac_batch_trans_detail->getSACommissionBatch->getSalePersonCurrency) ? $sac_batch_trans_detail->getSACommissionBatch->getSalePersonCurrency : '';
+                                                @endphp
+
+                                                @if($sac_batch_trans_detail->type == 'sale_person_payments')
+
+                                                    <tr class="commission-row">
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" name="finance[{{$key}}][finance_child]" id="child_{{ $loop->iteration }}" value="0" class="deposited-amount-payments zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                                                <label for="child_{{ $loop->iteration }}" class="custom-control-label"></label>
+                                                            </div>
+                                                        </td>
+
+
+                                                        <td>{{ $sac_batch_trans_detail->deposit_date }}</td>
+
+                                                        <td colspan="3">
+                                                            {{ $sa_currency->code }}
+                                                            {{ Helper::number_format($sac_batch_trans_detail->total_deposited_amount)." - Deposit" }}
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        {{ $sa_currency->code }}
+                                                                    </span>
+                                                                </div>
+                    
+                                                                <input type="text" name="finance[{{$key}}][total_paid_amount_yet]" name="current_deposited_total_outstanding_amount" value="{{ isset($sac_batch_trans_detail->current_deposited_total_outstanding_amount) && !empty($sac_batch_trans_detail->current_deposited_total_outstanding_amount) ? Helper::number_format($sac_batch_trans_detail->current_deposited_total_outstanding_amount) : '' }}" class="current-deposited-total-outstanding-amount form-control remove-zero-values hide-arrows" style="max-width: 100px;" readonly>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        USD
+                                                                    </span>
+                                                                </div>
+                    
+                                                                <input type="text" name="total_deposited_outstanding_amount" class="total-deposited-outstanding-amount form-control remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sac_batch_trans_detail->total_deposited_outstanding_amount) && !empty($sac_batch_trans_detail->total_deposited_outstanding_amount) ? Helper::number_format($sac_batch_trans_detail->total_deposited_outstanding_amount) : '' }}" style="max-width: 100px;" readonly>
+                                                            </div>
+                                                        </td>
+                    
+                                                        <td class="d-flex">
+                                                            <div class="input-group d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        USD
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text" name="total_deposit_amount" data-sale_person_currency_code="USD" class="form-control total-deposit-amount remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sac_batch_trans_detail->total_deposit_amount) && !empty($sac_batch_trans_detail->total_deposit_amount) ? Helper::number_format($sac_batch_trans_detail->total_deposit_amount) : '' }}" style="max-width: 100px;" readonly>
+                                                            </div>
+                    
+                                                            {{-- <div class="d-flex align-items-center">
+                                                                <button type="button" class="adjust-deposited-amount btn btn-outline-success btn-xs" data-target="#edit" title="Adjust Deposit Amount">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                            </div> --}}
+                                                        </td>
+
+                                                    </tr>
+                                                @endif
+
+                                                @if($sac_batch_trans_detail->type == 'sac_batch_details')
+                                                    <tr class="commission-row">
+   
+                                                        <!-- Hidden feilds -->
+                                                        <td class="d-none">
+                                                            <input type="text" name="finance[{{$key}}][total_paid_amount_yet]" class="total-paid-amount-yet" value="{{ is_null($sac_batch_trans_detail->getBooking->getLastSaleAgentCommissionBatchDetails) ? Helper::number_format(0) : $sac_batch_trans_detail->getBooking->getLastSaleAgentCommissionBatchDetails->total_paid_amount }}">
+                                                            {{-- <input type="text" name="finance[{{$key}}][commission_amount_in_sale_person_currency]" value="{{ Helper::number_format($booking->commission_amount_in_sale_person_currency)  }}"> --}}
+                                                            <input type="text" name="finance[{{$key}}][outstanding_amount_left]" class="outstanding-amount-left remove-zero-values hide-arrows" value="{{ is_null($sac_batch_trans_detail->getBooking->getLastSaleAgentCommissionBatchDetails) ? Helper::number_format($sac_batch_trans_detail->getBooking->commission_amount_in_sale_person_currency) : $sac_batch_trans_detail->getBooking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount }}" style="max-width: 100px;">
+                                                            {{-- <input type="text" name="finance[{{$key}}][booking_id]" value="{{ $booking->id }}"> --}}
+                                                            {{-- <input type="text" name="finance[{{$key}}][sale_person_currency_id]" value="{{ $booking->getSalePerson->getCurrency->id }}"> --}}
+                                                            {{-- <input type="text" name="finance[{{$key}}][sale_person_id]" value="{{ $booking->sale_person_id }}"> --}}
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" name="finance[{{$key}}][finance_child]" id="child_{{ $loop->iteration }}" value="0" class="finance-child zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                                                <label for="child_{{ $loop->iteration }}" class="custom-control-label"></label>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>{{ $sac_batch_trans_detail->getBooking->ref_no }}</td>
+
+                                                        <td>
+                                                            {{ $sa_currency->code }}
+                                                            {{ Helper::number_format($sac_batch_trans_detail->commission_amount_in_sale_person_currency) }}
+                                                        </td>
+
+                                                        <td>
+                                                            {{ $sa_currency->code }}
+                                                            {{ Helper::number_format($sac_batch_trans_detail->getBooking->getLastSaleAgentCommissionBatchDetails->total_paid_amount) }}
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            {{ $sa_currency->code }}
+                                                            {{ Helper::number_format($sac_batch_trans_detail->getBooking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $sa_currency->code }}</span>
+                                                                </div>
+                                                                <input type="text" name="finance[{{$key}}][pay_commission_amount]" id="finance_{{$key}}_pay_commission_amount" class="form-control pay-commission-amount remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $sa_currency->code }}</span>
+                                                                </div>
+                                                                <input type="text" name="finance[{{$key}}][deposited_amount_value]" id="finance_{{$key}}_deposited_amount_value" class="form-control deposited-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $sa_currency->code }}</span>
+                                                                </div>
+                                                                <input type="text" name="finance[{{$key}}][bank_amount_value]" id="finance_{{$key}}_bank_amount_value" class="form-control bank-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $sa_currency->code }}</span>
+                                                                </div>
+                                                            <input type="text" name="finance[{{$key}}][row_total_paid_amount]" class="form-control row-total-paid-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="form-group">
+                                                            <div class="input-group d-flex justify-content-center">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">{{ $sa_currency->code }}</span>
+                                                                </div>
+                                                            <input type="text" name="finance[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                @endif
+                                            @endforeach
+
                                             <tr class="border-top border-bottom">
                                                 <td colspan="5"></td>
 
                                                 <td class="font-weight-bold">
-                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span>{{ $sa_currency->code }}</span>
                                                     <span class="total-pay-commission-amount">0.00</span>
                                                     <input type="hidden" name="total_pay_commission_amount" class="total-pay-commission-amount" value="">
                                                 </td>
                                                 
                                                 <td class="font-weight-bold">
-                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span>{{ $sa_currency->code }}</span>
                                                     <span class="booking-commission-total-paid-amount">0.00</span>
                                                     <input type="hidden" name="booking_commission_total_paid_amount" class="booking-commission-total-paid-amount" value="">
                                                 </td>
 
                                                 <td class="font-weight-bold">
-                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span>{{ $sa_currency->code }}</span>
                                                     <span class="total-outstanding-amount">0.00</span>
                                                     <input type="hidden" name="total_outstanding_amount" class="total-outstanding-amount" value="">
                                                 </td>
@@ -331,7 +496,7 @@
                                                 </td>
 
                                                 <td class="font-weight-bold">
-                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span>{{ $sa_currency->code }}</span>
                                                     <span class="sp-deposit-amount">0.00</span>
                                                     <input type="hidden" name="show_sp_deposit_amount" class="sp-deposit-amount" value="">
                                                 </td>
@@ -349,12 +514,22 @@
                                                 </td>
 
                                                 <td class="font-weight-bold">
-                                                    <span>{{ $supplier_default_currency_code }}</span>
+                                                    <span>{{ $sa_currency->code }}</span>
                                                     <span class="total-paid-amount">0.00</span>
                                                     <input type="hidden" name="total_paid_amount" class="total-paid-amount" value="">
                                                 </td>
 
                                                 <td></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="4"></td>
+                                                <td class="font-weight-bold">
+                                                    <span class="pr-1">Left to Allocate</span>
+                                                    <span>{{ $sa_currency->code }}</span>
+                                                    <span class="total-deposit-amount-left-to-allocate">0.00</span>
+                                                    <input type="hidden" name="total_deposit_amount_left_to_allocate" id="total_deposit_amount_left_to_allocate" class="total-deposit-amount-left-to-allocate" value="">
+                                                </td>
                                             </tr>
 
                                             <tr class="mt-2">
@@ -364,23 +539,6 @@
                                                     <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
                                                 </td>
                                             </tr>
-                                        @else
-                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
-                                        @endif
-
-                                        @if(isset($sac_batch_trans_details) && $sac_batch_trans_details->count())
-                                            @foreach($sac_batch_trans_details as $key => $sac_batch_trans_detail)
-                                                <tr class="commission-row">
-                                                    <td>
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" name="finance[{{$key}}][finance_child]" id="child_{{ $loop->iteration }}" value="0" class="finance-child zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
-                                                            <label for="child_{{ $loop->iteration }}" class="custom-control-label"></label>
-                                                        </div>
-                                                    </td>
-
-                                                    <td>{{ $sac_batch_trans_detail->getBooking->ref_no }}</td>
-                                                </tr>
-                                            @endforeach
                                         @endif
                                     </tbody>
                                 </table>

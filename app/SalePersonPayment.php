@@ -9,6 +9,7 @@ class SalePersonPayment extends Model
 {
     protected $fillable = [
         
+        'sac_batch_id',
         'sac_batch_trans_detail_id',
         'sale_person_id',
         'sale_person_currency_id',
@@ -62,6 +63,11 @@ class SalePersonPayment extends Model
 
 
     public function getDepositDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+
+
+    public function getDeposit_DateAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
 }

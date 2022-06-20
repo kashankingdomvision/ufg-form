@@ -108,17 +108,20 @@ class SaleAgentCommissionBatchController extends Controller
 
             $data['sac_batch_trans_details'] = SaleAgentBatchTransDetail::where('sac_batch_trans_details.sale_person_id', $request->sale_person_id)
             ->with([
-                
+                'getBooking',
+                'getBooking.getLastSaleAgentCommissionBatchDetails',
+
+                'getSACommissionBatch.getSalePersonCurrency',
             ])
             ->leftJoin('sac_batch_details', 'sac_batch_trans_details.id', '=', 'sac_batch_details.sac_batch_trans_detail_id')
             ->leftJoin('sale_person_payments', 'sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
             ->select([
                 'sac_batch_trans_details.id as sac_batch_trans_detail_id',
                 'sac_batch_trans_details.type',
+                'sac_batch_trans_details.sac_batch_id',
     
-                'sac_batch_details.sac_batch_id',
-                'sac_batch_details.sale_person_id as sac_batch_detail_sale_person',
-                'sac_batch_details.sale_person_currency_id as sac_batch_detail_sale_person_currency_id',
+                // 'sac_batch_details.sale_person_id as sac_batch_detail_sale_person',
+                // 'sac_batch_details.sale_person_currency_id as sac_batch_detail_sale_person_currency_id',
                 'sac_batch_details.booking_id',
                 'sac_batch_details.commission_amount_in_sale_person_currency',
                 'sac_batch_details.total_paid_amount_yet',
@@ -131,12 +134,13 @@ class SaleAgentCommissionBatchController extends Controller
                 'sac_batch_details.status as batch_detail_status',
                 'sac_batch_details.dispute_detail',
     
-                'sale_person_payments.sale_person_id',
-                'sale_person_payments.sale_person_currency_id',
+                // 'sale_person_payments.sale_person_id',
+                // 'sale_person_payments.sale_person_currency_id',
                 'sale_person_payments.total_deposited_amount',
                 'sale_person_payments.current_deposited_total_outstanding_amount',
                 'sale_person_payments.total_deposited_outstanding_amount',
                 'sale_person_payments.total_deposit_amount',
+                'sale_person_payments.deposit_date',
             ])
             ->orderBy('sac_batch_trans_detail_id','DESC')
             ->get();
@@ -149,9 +153,7 @@ class SaleAgentCommissionBatchController extends Controller
     }
     
     public function payDepositAmount(Request $request) {
-
         dd($request);
-
     }
 
     public function store(SaleAgentCommissionBatchRequest $request)
@@ -190,8 +192,10 @@ class SaleAgentCommissionBatchController extends Controller
                     $status = 'confirmed';
 
                 $sabtd = SaleAgentBatchTransDetail::create([
+
                     'sale_person_id' => $finance['sale_person_id'],
                     'type'           => 'sac_batch_details',
+                    'sac_batch_id'   => $sac_batch->id
                 ]);
 
                 $sacbd = SaleAgentCommissionBatchDetails::create([
@@ -212,7 +216,6 @@ class SaleAgentCommissionBatchController extends Controller
                     'status'                                    => $status
                 ]);
 
-
                 Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 1 ]);
             }
         }
@@ -222,10 +225,12 @@ class SaleAgentCommissionBatchController extends Controller
             $sabtd = SaleAgentBatchTransDetail::create([
                 'sale_person_id' => $request->sale_person_id,
                 'type' => 'sale_person_payments',
+                'sac_batch_id'   => $sac_batch->id
             ]);
 
             $spp = SalePersonPayment::create([
     
+                'sac_batch_id'              => $sac_batch->id,
                 'sac_batch_trans_detail_id' => $sabtd->id,
                 'sale_person_id'          => $request->sale_person_id,
                 'sale_person_currency_id' => $request->sale_person_currency_id,
