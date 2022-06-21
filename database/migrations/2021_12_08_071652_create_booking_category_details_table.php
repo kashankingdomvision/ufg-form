@@ -17,7 +17,7 @@ class CreateBookingCategoryDetailsTable extends Migration
             $table->id();
 
             $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('restrict');
 
             $table->string('type')->nullable();

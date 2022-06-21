@@ -11,12 +11,26 @@ class StoreTextController extends Controller
 {
     public $pagination = 10;
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['storetexts'] = StoreText::paginate($this->pagination,['name', 'id', 'slug']);
+        $query = StoreText::orderBy('id','ASC');
+
+        if(count($request->all()) > 0){
+            $query = $this->searchFilters($query, $request);
+        }
+
+        $data['storetexts'] = $query->paginate($this->pagination);
         return view('storetext.index', $data);
+
     }
 
+    public function searchFilters($query, $request)
+    {
+        if($request->has('search') && !empty($request->search)){
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+        return $query;
+    }
     /**
      * Show the form for creating a new resource.
      *

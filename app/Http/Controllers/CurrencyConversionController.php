@@ -19,7 +19,7 @@ class CurrencyConversionController extends Controller
         if(count($request->all()) > 0){
             
             if($request->has('from') && !empty($request->from)){
-                $currency_conver = $currency_conver->where('from' , 'like', '%'.$request->form.'%');
+                $currency_conver = $currency_conver->where('from' , 'like', '%'.$request->from.'%');
             }
             if($request->has('to') && !empty($request->to)){
                 $currency_conver = $currency_conver->where('to' , 'like', '%'.$request->to.'%');

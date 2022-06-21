@@ -143,13 +143,14 @@ class CountryController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Country can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
 

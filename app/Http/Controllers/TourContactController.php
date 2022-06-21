@@ -30,7 +30,7 @@ class TourContactController extends Controller
             $query = $this->searchFilters($query, $request);
         }
 
-        $data['contacts'] = TourContact::paginate($this->pagination);
+        $data['contacts'] = $query->paginate($this->pagination);
         return view('tour_contacts.listing',$data);
     }
 

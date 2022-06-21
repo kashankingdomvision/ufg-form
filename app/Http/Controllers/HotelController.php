@@ -26,6 +26,7 @@ class HotelController extends Controller
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
                 $query->where('name', 'like', '%'.$request->search.'%');
+                $query->orWhere('accom_code', 'like', '%'.$request->search.'%');
             }
         }
 

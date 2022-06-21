@@ -27,7 +27,7 @@ class CreateCategoryDetailsTable extends Migration
             
             $table->id();
             $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('quote_detail_id')->constrained('quote_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('quote_detail_id')->constrained('quote_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('restrict');
 
             $table->string('type')->nullable();

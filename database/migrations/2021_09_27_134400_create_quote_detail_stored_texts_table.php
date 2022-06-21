@@ -16,7 +16,7 @@ class CreateQuoteDetailStoredTextsTable extends Migration
         Schema::create('quote_detail_stored_texts', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('quote_detail_id')->constrained('quote_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('quote_detail_id')->constrained('quote_details')->onUpdate('cascade')->onDelete('cascade');
             $table->longText('stored_text')->nullable();
             $table->date('action_date')->nullable();
             $table->timestamps();

@@ -16,8 +16,8 @@ class CreateTemplateTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->string('title');
             $table->enum('rate_type', ['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');

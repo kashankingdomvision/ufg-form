@@ -162,5 +162,5 @@ $(document).ready(function() {
                 });
             }
         })
-      });
+    });
 });

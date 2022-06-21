@@ -16,7 +16,7 @@ class CreateBookingRefundPaymentsTable extends Migration
         Schema::create('booking_refund_payments', function (Blueprint $table) {
             
             $table->id();
-            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->double('refund_amount')->nullable();
             $table->date('refund_date')->nullable();
             $table->foreignId('refund_confirmed_by')->constrained('users')->onUpdate('cascade')->onDelete('restrict');

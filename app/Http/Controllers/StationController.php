@@ -18,11 +18,25 @@ class StationController extends Controller
      */
     public $pagination = 10;
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['stations'] = Station::paginate($this->pagination);
+        $query = Station::orderBy('id','ASC');
 
+        if(count($request->all()) > 0){
+            $query = $this->searchFilters($query, $request);
+        }
+
+        $data['stations'] = $query->paginate($this->pagination);
         return view('stations.listing',$data);
+
+    }
+
+    public function searchFilters($query, $request)
+    {
+        if($request->has('search') && !empty($request->search)){
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+        return $query;
     }
 
     /**

@@ -17,7 +17,7 @@ class CreateBookingCreditNotes extends Migration
             
             $table->id();
             $table->unsignedBigInteger('booking_detail_id');
-            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->double('credit_note_amount')->nullable();
             $table->string('credit_note_no')->nullable();
             $table->date('credit_note_recieved_date')->nullable();

@@ -16,7 +16,7 @@ class CreateSaleAgentCommissionBatchDetailsTable extends Migration
         Schema::create('sac_batch_details', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('sac_batch_id')->constrained('sac_batches')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('sac_batch_id')->constrained('sac_batches')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
