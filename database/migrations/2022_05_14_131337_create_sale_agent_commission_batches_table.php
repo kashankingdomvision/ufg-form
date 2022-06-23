@@ -23,7 +23,7 @@ class CreateSaleAgentCommissionBatchesTable extends Migration
             $table->double('total_pay_commission_amount', 8, 2);
             $table->double('booking_commission_total_paid_amount', 8, 2)->nullable();
             $table->double('bank_total_amount_paid', 8, 2)->nullable();
-            $table->double('total_paid_amount', 8, 2);
+            $table->double('deposit_and_pay_commission_total', 8, 2);
             $table->double('total_outstanding_amount', 8, 2);
             $table->enum('status', ['pending' , 'paid', 'partial', 'confirmed', 'disputed'])->default('pending');
             $table->date('sp_deposit_date')->nullable();

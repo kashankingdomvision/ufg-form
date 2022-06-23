@@ -1,45 +1,72 @@
 $(document).ready(function() {
 
+    function totalDepositAmountValues() {
+
+        let values = $('.deposit-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
+        values = values.reduce((a, b) => (a + b), 0);
+
+        $('.booking-commission-total-deposit-amount')
+            .html(check(values))
+            .val(check(values));
+
+        return values;
+    }
+
+    function totalDepositAmountValues() {
+
+        let values = $('.deposit-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
+        values = values.reduce((a, b) => (a + b), 0);
+
+        $('.booking-commission-total-deposit-amount')
+            .html(check(values))
+            .val(check(values));
+
+        return values;
+    }
+
+    function totalDepositedAmount() {
+
+        let valesArray = $('.deposited-amount-payments:checked').parents('.commission-row').find('.total-deposit-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+        valesArray = valesArray.reduce((a, b) => (a + b), 0);
+
+        return valesArray;
+    }
+
     function totalDepositAmountLeftToAllocate() {
 
-        let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
+        let totalDepositAmount = totalDepositedAmount();
 
-        if(depositedAmountPayments){
+        $('.total-deposit-amount-left-to-allocate')
+            .html(check(totalDepositAmount))
+            .val(check(totalDepositAmount));
+    }
 
+    function calTotalDepositAmountLeftToAllocate() {
+
+        let totalDepositAmount = totalDepositedAmount();
+
+        if(totalDepositAmount > 0){
+            
             let bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
 
-            // let totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
+            if(totalDepositAmount > bookingCommissionTotalPaidAmount) {
 
-            console.log(bookingCommissionTotalPaidAmount);
+                let totalDepositAmountLeftToAllocate = totalDepositAmount - bookingCommissionTotalPaidAmount;
 
-            // if(totalDepositAmount > bookingCommissionTotalPaidAmount) {
+                $('.total-deposit-amount-left-to-allocate')
+                    .html(check(totalDepositAmountLeftToAllocate))
+                    .val(check(totalDepositAmountLeftToAllocate));
 
-            //     let totalDepositAmountLeftToAllocate = totalDepositAmount - bookingCommissionTotalPaidAmount;
+                return totalDepositAmountLeftToAllocate;
+            }
 
-            //     $('.total-deposit-amount-left-to-allocate')
-            //         .html(check(totalDepositAmountLeftToAllocate))
-            //         .val(check(totalDepositAmountLeftToAllocate));
+            if(totalDepositAmount <= bookingCommissionTotalPaidAmount){
+                $('.total-deposit-amount-left-to-allocate')
+                    .html('0.00')
+                    .val('0.00');
 
-
-            //     return totalDepositAmountLeftToAllocate;
-                    
-            // }
-
-            // if( totalDepositAmount <= bookingCommissionTotalPaidAmount ){
-            //     $('.total-deposit-amount-left-to-allocate')
-            //         .html('0.00')
-            //         .val('0.00');
-
-            //     return 0.00;
-            // }
-
-        }else{
-
-            $('.total-deposit-amount-left-to-allocate')
-                .html('0.00')
-                .val('0.00');
-
-            return 0.00;
+                return 0.00;
+            }
         }
     }
 
@@ -65,16 +92,16 @@ $(document).ready(function() {
         return rowsTotalPaidAmount;
     }
 
-    function getTotalPaidAmount() {
+    function getDepositAndPayCommissionTotal() {
 
         let spDepositAmount = $('#sp_deposit_amount').val() == '' ? 0.00 : removeComma($('#sp_deposit_amount').val());
-        let totalPaidAmount = parseFloat(getBookingCommissionTotalPaidAmount()) + parseFloat(spDepositAmount);
+        let depositAndPayCommissionTotal = parseFloat(getTotalPayCommissionAmount()) + parseFloat(spDepositAmount);
 
-        $('.total-paid-amount')
-            .html(check(totalPaidAmount))
-            .val(check(totalPaidAmount));
+        $('.deposit-and-pay-commission-total')
+            .html(check(depositAndPayCommissionTotal))
+            .val(check(depositAndPayCommissionTotal));
 
-        return totalPaidAmount;
+        return depositAndPayCommissionTotal;
     }
 
     function getTotalPayCommissionAmount() {
@@ -105,24 +132,30 @@ $(document).ready(function() {
 
     function getBankTotalAmountPaid() {
 
-        let depositedAmountPayments = $("#deposited_amount_payments").prop('checked');
+        let depositedAmountPayments = $('.deposited-amount-payments').prop('checked');
 
         if(typeof depositedAmountPayments != 'undefined' && depositedAmountPayments){
 
-            let bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
-            let totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
+            let bankTotalAmountPaid = $('.bank-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
+            bankTotalAmountPaid = bankTotalAmountPaid.reduce((a, b) => (a + b), 0);
+      
+            console.log(bankTotalAmountPaid);
 
-            if(bookingCommissionTotalPaidAmount > totalDepositAmount){
-                let bankTotalAmountPaid = bookingCommissionTotalPaidAmount - totalDepositAmount;
-                $('#bank_total_amount_paid').val(check(bankTotalAmountPaid));
-            }else{
-                $('#bank_total_amount_paid').val('0.00');
-            }
-    
+            $('#bank_total_amount_paid').val(check(bankTotalAmountPaid));
+
+            // let bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
+            // let totalDepositAmount = parseFloat(removeComma($('#total_deposit_amount').val()));
+
+            // if(bookingCommissionTotalPaidAmount > totalDepositAmount){
+            //     let bankTotalAmountPaid = bookingCommissionTotalPaidAmount - totalDepositAmount;
+            //     $('#bank_total_amount_paid').val(check(bankTotalAmountPaid));
+            // }else{
+            //     $('#bank_total_amount_paid').val('0.00');
+            // }
         }
         else{
 
-            $('#bank_total_amount_paid').val(check(getBookingCommissionTotalPaidAmount()));
+            $('#bank_total_amount_paid').val(check(getTotalPayCommissionAmount()));
         }
     }
 
@@ -133,16 +166,21 @@ $(document).ready(function() {
         if(depositedAmountPayments) {
 
             let totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
-            let outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
+            let outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
+        
+            console.log(outstandingAmountLeft);
     
-            if(parseFloat(outstandingAmountLeft) > totalDepositAmountLeftToAllocateValue){
-                let bankAmountValue = parseFloat(outstandingAmountLeft) - totalDepositAmountLeftToAllocateValue;
-                commissionRow.find('.deposited-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
+            if(outstandingAmountLeft > totalDepositAmountLeftToAllocateValue){
+                let bankAmountValue = outstandingAmountLeft - totalDepositAmountLeftToAllocateValue;
+
+                console.log(bankAmountValue);
+
+                commissionRow.find('.deposit-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
                 commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
             }
     
-            if(parseFloat(outstandingAmountLeft) <= totalDepositAmountLeftToAllocateValue){
-                commissionRow.find('.deposited-amount-value').val(check(parseFloat(outstandingAmountLeft)));
+            if(outstandingAmountLeft <= totalDepositAmountLeftToAllocateValue){
+                commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
             }
         }
 
@@ -153,7 +191,7 @@ $(document).ready(function() {
         commissionRow.find('.finance-child').prop('checked', false).val('0');
         commissionRow.find('.row-total-paid-amount').val('0.00');
         commissionRow.find('.row-total-outstanding-amount').val('0.00');
-        commissionRow.find('.deposited-amount-value').val('0.00');
+        commissionRow.find('.deposit-amount-value').val('0.00');
         commissionRow.find('.bank-amount-value').val('0.00');
     }
 
@@ -185,7 +223,10 @@ $(document).ready(function() {
         getTotalPayCommissionAmount();
         getBookingCommissionTotalPaidAmount();
         getTotalOutstandingAmount();
-        getTotalPaidAmount();
+        getDepositAndPayCommissionTotal();
+        calDepositAndBankAmountValue(commissionRow);
+        calTotalDepositAmountLeftToAllocate();
+        totalDepositAmountValues();
     });
 
     $(document).on('change', '#sp_deposit_amount', function(event) {
@@ -196,7 +237,7 @@ $(document).ready(function() {
             .html(check(spDepositAmount))
             .val(check(spDepositAmount));
 
-        getTotalPaidAmount();
+        getDepositAndPayCommissionTotal();
     });
 
     $(document).on('change', '.deposited-amount-payments', function(event) {
@@ -205,6 +246,7 @@ $(document).ready(function() {
         let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
 
         let totalOutstandingAmount = parseFloat(removeComma(commissionRow.find('.current-deposited-total-outstanding-amount').val()));
+        let totalDepositAmount = totalDepositedAmount();
 
         if (depositedAmountPayments) {
 
@@ -243,11 +285,17 @@ $(document).ready(function() {
         }
 
         getTotalPayCommissionAmount();
-        totalDepositAmountLeftToAllocate();
+        // totalDepositAmountLeftToAllocate();
         getBankTotalAmountPaid();
         getBookingCommissionTotalPaidAmount();
         getTotalOutstandingAmount();
-        getTotalPaidAmount();
+        getDepositAndPayCommissionTotal();
+
+
+        calTotalDepositAmountLeftToAllocate();
+
+
+        totalDepositAmountValues();
     });
 
 

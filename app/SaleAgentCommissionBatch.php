@@ -44,7 +44,7 @@ class SaleAgentCommissionBatch extends Model
         'total_pay_commission_amount',
         'booking_commission_total_paid_amount',
         'total_outstanding_amount',
-        'total_paid_amount',
+        'deposit_and_pay_commission_total',
         'payment_method_id',
         'bank_total_amount_paid',
         'status',

@@ -95,16 +95,22 @@ class SaleAgentCommissionBatchController extends Controller
             // ->take(1)
             ;
 
-            $data['sale_person_id'] = $request->sale_person_id;
-            $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
-            $data['sale_person_currency_code'] = User::find($request->sale_person_id)->getCurrency->code;
-            $data['sale_person'] = User::find($request->sale_person_id);
+
+            // $data['sale_person_id'] = $request->sale_person_id;
+            // $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
+            // $data['sale_person_currency_code'] = User::find($request->sale_person_id)->getCurrency->code;
+            
+            $data['sale_person'] = User::
+            with([
+                'getCurrency'
+            ])
+            ->find($request->sale_person_id);
+
+            $data['sale_person_batch_exist'] = SaleAgentCommissionBatch::where('sale_person_id', $request->sale_person_id)->exists();
 
             $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
 
-
-            // dd($bookings);
 
             $data['sac_batch_trans_details'] = SaleAgentBatchTransDetail::where('sac_batch_trans_details.sale_person_id', $request->sale_person_id)
             ->with([
@@ -145,31 +151,27 @@ class SaleAgentCommissionBatchController extends Controller
             ->orderBy('sac_batch_trans_detail_id','DESC')
             ->get();
 
-
-            // dd($data['sac_batch_trans_details']);
         }
 
         return view('sale_agent_commission_batches.create', $data);
     }
     
-    public function payDepositAmount(Request $request) {
-        dd($request);
-    }
-
     public function store(SaleAgentCommissionBatchRequest $request)
     {
+        // dd($request->all());
+
         $status = '';
 
         $sac_batch = SaleAgentCommissionBatch::create([
 
-            'name'              => $request->batch_name,
+            'name'                     => $request->batch_name,
             'sale_person_id'           => $request->sale_person_id,
             'sale_person_currency_id'  => $request->sale_person_currency_id,
-            'sp_deposit_amount' => $request->sp_deposit_amount,
-            'total_pay_commission_amount' => $request->total_pay_commission_amount,
+            'sp_deposit_amount'        => $request->sp_deposit_amount,
+            'total_pay_commission_amount'          => $request->total_pay_commission_amount,
             'booking_commission_total_paid_amount' => $request->booking_commission_total_paid_amount,
-            'total_outstanding_amount' => $request->total_outstanding_amount,
-            'total_paid_amount' => $request->total_paid_amount,
+            'total_outstanding_amount'             => $request->total_outstanding_amount,
+            'deposit_and_pay_commission_total'     => $request->deposit_and_pay_commission_total,
 
             'payment_method_id'      => $request->filled('payment_method_id') ? $request->payment_method_id : null,
             'bank_total_amount_paid' => $request->filled('bank_total_amount_paid') ? $request->bank_total_amount_paid : null,
@@ -247,6 +249,10 @@ class SaleAgentCommissionBatchController extends Controller
             'success_message' => 'Save & Send Successfully.',
             'redirect_url'    => route('pay_commissions.commission_review') 
         ]);
+    }
+
+    public function payDepositAmount(Request $request) {
+        dd($request);
     }
 
     public function payBatch(PayBatchRequest $request){
