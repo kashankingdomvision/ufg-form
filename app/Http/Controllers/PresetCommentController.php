@@ -118,9 +118,26 @@ class PresetCommentController extends Controller
     */
     public function destroy($id)
     {
-        PresetComment::destroy(decrypt($id));
+        $preset_comment = PresetComment::findOrFail(decrypt($id));
+        try
+        {
+            $preset_comment->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message'         => 'Preset Comment Deleted Successfully.',
+                'redirect_url'    => route('preset_comments.index') 
+            ]);
+        }
 
-        return redirect()->route('preset_comments.index')->with('success_message', 'Preset Comment deleted successfully'); 
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Preset Comment can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        } 
     }
 
     public function bulkAction(Request $request)

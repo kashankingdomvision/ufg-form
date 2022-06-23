@@ -98,8 +98,26 @@ class PaymentMethodController extends Controller
      */
     public function destroy($id)
     {
-        PaymentMethod::destroy(decrypt($id));
-        return redirect()->route('payment_methods.index')->with('success_message', 'Payment method deleted successfully'); 
+        $payment_method = PaymentMethod::findOrFail(decrypt($id));
+        try
+        {
+            $payment_method->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message'         => 'Payment Method Deleted Successfully.',
+                'redirect_url'    => route('payment_methods.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Payment Method can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
         
     }
 

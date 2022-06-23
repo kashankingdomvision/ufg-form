@@ -85,7 +85,8 @@
                         </div> --}}
                       </th>
                       <th>Country</th>
-                      <th>Sort Name</th>
+                      <th>Sort Order</th>
+                      <th>Phone Code</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -101,15 +102,22 @@
                       </td>
                       <td>{{ $country->name }}</td>
                       <td>{{ $country->sort_order }}</td>
-                      <td>
+                      <td></td>
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('countries.edit', encrypt($country->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('countries.destroy', encrypt($country->id)) }}" class="delete-country-app">
+                          @csrf
+                          @method('delete')
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
+                            <span class="fa fa-trash"></span>
+                          </button>
+                        </form>
                       </td>
                     </tr>
                     @endforeach
                   @else
                     <tr align="center"><td colspan="100%">No record found.</td></tr>
                   @endif
-                    
                   </tbody>
                 </table>
               </div>

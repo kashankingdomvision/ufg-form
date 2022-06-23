@@ -99,12 +99,12 @@
                         </div>
                       </td>
                       <td>{{ $value->name }}</td>
-                      <td>
-                        <form method="post" action="{{ route('payment_methods.destroy', encrypt($value->id)) }}">
+                      <td class="d-flex justify-content-center ml-2">
                         <a href="{{ route('payment_methods.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('payment_methods.destroy', encrypt($value->id)) }}" class="delete-payment-method">
                           @csrf
                           @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                             <span class="fa fa-trash"></span>
                           </button>
                         </form>

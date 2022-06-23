@@ -202,6 +202,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-airport', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Season?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.airport-code-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -320,6 +357,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-bank', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Bank?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });
@@ -444,6 +518,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-booking-method', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Booking Method?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.booking-method-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -509,6 +620,7 @@ $(document).ready(function () {
   | Store Brand 
   |--------------------------------------------------------------------------------
   */
+  // $('.input-images-1').imageUploader();
   $(document).on('submit', '#store_brand', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
@@ -613,6 +725,64 @@ $(document).ready(function () {
       }
     }
   });
+  $(document).on('click', '.delete-brand', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Brand?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
+  $("#files").on("change", function (e) {
+    $('.remove-logo').parent().remove();
+    $('.delete_image').val('');
+    var fileReader = new FileReader();
+
+    fileReader.onload = function (e) {
+      var file = e.target;
+      $("<div class=\"form-group new-image text-center mt-3\" id=\"new_logo\">" + "<img class=\"imageThumb\" width=\"100\" height=\"100\" src=\"" + file.result + "\" title=\"" + 'brand logo' + "\"/>" + "<br/><a href=\"javascript:void(0)\" class=\"remove-new-image remove-logo\">Remove image</a>" + "</div>").insertAfter("#files");
+      $(".remove-new-image").click(function () {
+        $(this).parent(".new-image").remove();
+        $('.delete_image').val('1');
+        $('#files').val(null);
+      });
+    };
+
+    fileReader.readAsDataURL(this.files[0]);
+  });
+  $('.remove-logo').on('click', function () {
+    $(this).parent().remove();
+    $('.delete_image').val('1');
+  });
 });
 
 /***/ }),
@@ -683,6 +853,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-cabin-type', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Cabin Type?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });
@@ -925,6 +1132,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-country-app', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Country?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });
@@ -1216,6 +1460,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-harbours', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Harbour?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.harbour-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -1385,6 +1666,43 @@ $(document).ready(function () {
       }
     }
   });
+  $(document).on('click', '.delete-holiday-type', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Holiday Type?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
 });
 
 /***/ }),
@@ -1455,6 +1773,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-hotel', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Hotel?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });
@@ -1579,6 +1934,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-harbours', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Location?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.location-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -1697,6 +2089,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-payment-method', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Payment Method?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });
@@ -1821,6 +2250,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-preset-comments', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Preset Comments?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.preset-comment-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -1939,6 +2405,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-season', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Season?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });
@@ -2064,6 +2567,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-station', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Station?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.station-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -2185,6 +2725,43 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.delete-store-text', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You Want to Delete Store Text?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.store-text-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
@@ -2303,6 +2880,43 @@ $(document).ready(function () {
       error: function error(response) {
         removeFormLoadingStyles();
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.delete-tour-contact', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Contact?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
       }
     });
   });

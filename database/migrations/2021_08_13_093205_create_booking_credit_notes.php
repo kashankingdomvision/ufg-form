@@ -21,10 +21,10 @@ class CreateBookingCreditNotes extends Migration
             $table->double('credit_note_amount')->nullable();
             $table->string('credit_note_no')->nullable();
             $table->date('credit_note_recieved_date')->nullable();
-            $table->foreignId('credit_note_recieved_by')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('credit_note_recieved_by')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

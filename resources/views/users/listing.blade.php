@@ -142,7 +142,7 @@
                                             <td>{{ !empty($value->getCurrency->code) && !empty($value->getCurrency->name) ? $value->getCurrency->code . ' - ' . $value->getCurrency->name : null }}</td>
                                             <td>{{ $value->getBrand->name ?? null }}</td>
                                             <td>{{ $value->getSupervisor->name ?? null }}</td>
-                                            <td>
+                                            <td class="d-flex justify-content-center ml-2">
                                                 <form method="post" action="{{ route('users.delete', encrypt($value->id)) }}">
                                                 <a href="{{ route('users.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                                                     @csrf

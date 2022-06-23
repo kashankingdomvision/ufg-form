@@ -17,7 +17,7 @@ class CreateBookingDetailCancellationsTable extends Migration
             
             $table->id();
             $table->foreignId('booking_detail_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('cancelled_by_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('cancelled_by_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

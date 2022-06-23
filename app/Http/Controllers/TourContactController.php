@@ -30,7 +30,7 @@ class TourContactController extends Controller
             $query = $this->searchFilters($query, $request);
         }
 
-        $data['contacts'] = TourContact::paginate($this->pagination);
+        $data['contacts'] = $query->paginate($this->pagination);
         return view('tour_contacts.listing',$data);
     }
 
@@ -121,8 +121,26 @@ class TourContactController extends Controller
      */
     public function destroy($id)
     {
-        TourContact::findOrFail(decrypt($id))->delete();
-        return redirect()->route('tour_contacts.index')->with('success_message', 'Tour Contact deleted successfully'); 
+        $tour_contact = TourContact::findOrFail(decrypt($id));
+        try
+        {
+            $tour_contact->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Store Text Deleted Successfully.',
+                'redirect_url'    => route('tour_contacts.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Tour Contact can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

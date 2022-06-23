@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAirportCodeRequest extends FormRequest
 {
@@ -25,8 +26,8 @@ class UpdateAirportCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => 'required',
-            'iata_code'  => 'required'        
+            'name'       => ['required', Rule::unique('airport_codes','name')->ignore(decrypt($this->id))],
+            'iata_code'  => ['required', Rule::unique('airport_codes','iata_code')->ignore(decrypt($this->id))],      
         ];
     }
 

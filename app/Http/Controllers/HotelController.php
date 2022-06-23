@@ -26,6 +26,7 @@ class HotelController extends Controller
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
                 $query->where('name', 'like', '%'.$request->search.'%');
+                $query->orWhere('accom_code', 'like', '%'.$request->search.'%');
             }
         }
 
@@ -117,8 +118,26 @@ class HotelController extends Controller
      */
     public function destroy($id)
     {
-        Hotel::destroy(decrypt($id));
-        return redirect()->route('hotels.index')->with('success_message', 'Hotel deleted successfully'); 
+        $hotel = Hotel::findOrFail(decrypt($id));
+        try
+        {
+            $hotel->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Hotel Deleted Successfully.',
+                'redirect_url'    => route('hotels.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Hotel can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

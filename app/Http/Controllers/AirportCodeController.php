@@ -125,9 +125,26 @@ class AirportCodeController extends Controller
      */
     public function destroy($id)
     {
-        AirportCode::destroy(decrypt($id));
+        $airport = AirportCode::findOrFail(decrypt($id));
+        try
+        {
+            $airport->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Airport Code Deleted Successfully.',
+                'redirect_url'    => route('airport_codes.index') 
+            ]);
+        }
 
-        return redirect()->route('airport_codes.index')->with('success_message', 'Airport deleted successfully'); 
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Airport Code can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

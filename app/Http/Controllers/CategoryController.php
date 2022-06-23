@@ -156,8 +156,26 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::destroy(decrypt($id));
-        return redirect()->back()->with('success_message', 'Category deleted successfully'); 
+        $category = Category::findOrFail(decrypt($id));
+        try
+        {
+            $category->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Category Deleted Successfully.',
+                'redirect_url'    => route('categories.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Category can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        } 
     }
 
     public function bulkAction(Request $request)
@@ -168,7 +186,6 @@ class CategoryController extends Controller
             $bulk_action_ids  = $request->bulk_action_ids;
             $bulk_action_type = $request->bulk_action_type;
             $bulk_action_ids  = explode(",", $bulk_action_ids);
-    
             if($bulk_action_type == 'delete'){
                 DB::table("categories")->whereIn('id', $bulk_action_ids)->delete();
                 $message = "Categories Deleted Successfully.";
@@ -179,13 +196,14 @@ class CategoryController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
-        }
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Category can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        } 
     }
 }

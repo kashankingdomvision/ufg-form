@@ -26,8 +26,8 @@ class CreateBookingDetailFinancesTable extends Migration
             $table->bigInteger('additional_date')->nullable();
             $table->double('outstanding_amount')->nullable();
             $table->enum('status', ['paid','cancelled'])->default('paid');
-            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

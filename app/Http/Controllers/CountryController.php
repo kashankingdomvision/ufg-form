@@ -100,6 +100,30 @@ class CountryController extends Controller
         ]);
     }
 
+    public function destroy($id)
+    {
+        $country = Country::findOrFail(decrypt($id));
+        try
+        {
+            $country->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Country Deleted Successfully.',
+                'redirect_url'    => route('countries.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Country can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
+    }
+
     public function bulkAction(Request $request)
     {
         try {
@@ -119,13 +143,14 @@ class CountryController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Country can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
 

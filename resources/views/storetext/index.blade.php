@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="d-flex">
-                        <h4>Store Text <x-add-new-button :route="route('store_texts.create')" /> </h4>
+                        <h4>Stored Text <x-add-new-button :route="route('store_texts.create')" /> </h4>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -97,12 +97,12 @@
                                                 </div>
                                             </td>
                                             <td>{{ $value->name }}</td>
-                                            <td>
-                                                <form method="post" action="{{ route('store_texts.destroy', $value->slug) }}">
+                                            <td class="d-flex justify-content-center ml-2">
                                                 <a href="{{ route('store_texts.edit', $value->slug) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                                <form method="post" action="{{ route('store_texts.destroy', $value->slug) }}" class="delete-store-text">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                    <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                                                     <span class="fa fa-trash"></span>
                                                     </button>
                                                 </form>

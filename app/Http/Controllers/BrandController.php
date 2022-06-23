@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -70,11 +71,17 @@ class BrandController extends Controller
             }
         }
 
-        if($method == 'update'){
+        if($method == 'update' && $request->delete_logo == null){
 
             if($request->hasFile('logo')) {
                 $data['logo'] = $this->fileStore($request, $brand);
             }
+        }
+
+        if($method == 'update' && $request->delete_logo == 1){
+
+                File::delete($brand->logo);
+                $data['logo'] = null;
         }
     
         return $data;
@@ -88,7 +95,7 @@ class BrandController extends Controller
      */
     public function store(BrandRequest $request)
     {
-        $brand = Brand::create($this->brandArray($request, 'store'));
+        Brand::create($this->brandArray($request, 'store'));
 
         return response()->json([ 
             'status'          => true, 
@@ -149,10 +156,28 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        Brand::findOrFail(decrypt($id))->delete();
+        $brand = Brand::findOrFail(decrypt($id));
+        try
+        {
+            $brand->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Brand Deleted Successfully.',
+                'redirect_url'    => route('brands.index') 
+            ]);
+        }
 
-        return redirect()->route('brands.index')->with('success_message', 'Brand deleted successfully');
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Brand can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
+
 
     public function bulkAction(Request $request)
     {
@@ -173,13 +198,14 @@ class BrandController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Brand can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
     
@@ -192,7 +218,7 @@ class BrandController extends Controller
                 Storage::delete($old->getOriginal('logo'));
             }
             //storage url
-            $file_path = url(Storage::url($path));
+            url(Storage::url($path));
             //storage url
             return $path;
         }

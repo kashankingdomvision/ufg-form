@@ -16,9 +16,9 @@ class CreateSaleAgentCommissionBatchesTable extends Migration
         Schema::create('sac_batches', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('payment_method_id')->nullable()->constrained('payment_methods')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
             $table->double('sp_deposit_amount', 8, 2)->nullable();
             $table->double('total_pay_commission_amount', 8, 2);
             $table->double('booking_commission_total_paid_amount', 8, 2)->nullable();

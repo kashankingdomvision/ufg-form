@@ -112,8 +112,26 @@ class CabinTypeController extends Controller
      */
     public function destroy($id)
     {
-        CabinType::findOrFail(decrypt($id))->delete();
-        return redirect()->route('cabins.index')->with('success_message', 'Cabin Type Deleted Successfully'); 
+        $cabin_type = CabinType::findOrFail(decrypt($id));
+        try
+        {
+            $cabin_type->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Cabin Type Deleted Successfully.',
+                'redirect_url'    => route('cabins.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Cabin type can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)

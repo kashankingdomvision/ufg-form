@@ -189,13 +189,12 @@
                         <span class="badge badge-info">{{ $season->name }}</span>
                         @endforeach
                       </td>
-
-                      <td>
-                        <form method="post" action="{{ route('commission_criterias.destroy', encrypt($commission_criteria->id)) }}">
-                          <a href="{{ route('commission_criterias.edit', encrypt($commission_criteria->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                      <td class="d-flex justify-content-center ml-2">
+                        <a href="{{ route('commission_criterias.edit', encrypt($commission_criteria->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('commission_criterias.destroy', encrypt($commission_criteria->id)) }}" class="delete-commission-criteria">
                           @csrf
                           @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                             <span class="fa fa-trash"></span>
                           </button>
                         </form>

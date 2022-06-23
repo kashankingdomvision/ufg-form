@@ -396,7 +396,7 @@
 
                         <li class="nav-item">
                             <a href="{{ route('banks.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['banks.index', 'banks.create', 'banks.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
+                                <i class="nav-icon fa fa-university"></i>
                                 <p>
                                     Banks
                                 </p>
@@ -405,7 +405,7 @@
 
                         <li class="nav-item">
                             <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['brands.index', 'brands.create', 'brands.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
+                                <i class="nav-icon fas fa-image"></i>
                                 <p>
                                     Brands
                                 </p>
@@ -457,16 +457,6 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Cabin Type
-                                </p>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item">
                             <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest" class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Harbours, Train & POI </p>
@@ -475,7 +465,7 @@
 
                         <li class="nav-item">
                             <a href="{{ route('holiday_types.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['holiday_types.index', 'holiday_types.create', 'holiday_types.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
+                                <i class="nav-icon fa fa-list"></i>
                                 <p>
                                     Holiday Types
                                 </p>

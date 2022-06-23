@@ -15,8 +15,8 @@ class CreateBookingCountryDestinationsTable extends Migration
     {
         Schema::create('booking_country_destinations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

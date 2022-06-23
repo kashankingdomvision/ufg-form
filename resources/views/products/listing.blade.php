@@ -97,10 +97,10 @@
                     <td>{{ $product->name }}</td>
                     <td class="d-flex justify-content-center">
                       <a href="{{ route('products.edit', encrypt($product->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                      <form method="post" action="{{ route('products.destroy', encrypt($product->id)) }}">
+                      <form method="post" action="{{ route('products.destroy', encrypt($product->id)) }}" class="delete-product">
                         @csrf
                         @method('delete')
-                        <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                        <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                           <span class="fa fa-trash"></span>
                         </button>
                       </form>

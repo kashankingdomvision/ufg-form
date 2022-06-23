@@ -15,7 +15,7 @@ class CreateQuoteDocumentsTable extends Migration
     {
         Schema::create('quote_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->unsignedBigInteger('quote_id');
             $table->longText('data')->nullable();
             $table->timestamps();

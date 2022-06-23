@@ -27720,6 +27720,43 @@ $(document).ready(function () {
       }
     }
   });
+  $(document).on('click', '.delete-category', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Category?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
 });
 
 /***/ }),
@@ -27840,6 +27877,43 @@ $(document).ready(function () {
         printListingErrorMessage("Please Check Atleast One Record.");
       }
     }
+  });
+  $(document).on('click', '.delete-group-owner', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Group Owner?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
   });
 });
 
@@ -28110,6 +28184,43 @@ $(document).ready(function () {
       }
     }
   });
+  $(document).on('click', '.delete-product', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Product?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
+  });
 });
 
 /***/ }),
@@ -28251,6 +28362,43 @@ $(document).ready(function () {
         printListingErrorMessage("Please Check Atleast One Record.");
       }
     }
+  });
+  $(document).on('click', '.delete-supplier', function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    message = 'You want to Delete Supplier?';
+    buttonText = 'Delete';
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes ".concat(buttonText, "!")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'DELETE',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printListingSuccessMessage(response);
+          },
+          error: function error(response) {
+            Toast.fire({
+              icon: 'warning',
+              title: response.message
+            });
+          }
+        });
+      }
+    });
   });
 });
 

@@ -264,8 +264,26 @@ class CommissionCriteriaController extends Controller
      */
     public function destroy($id)
     {
-        CommissionCriteria::destroy(decrypt($id));
-        return redirect()->route('commission_criterias.index')->with('success_message', 'Commission Criteria Deleted Successfully'); 
+        $CommissionCriteria = CommissionCriteria::findOrFail(decrypt($id));
+        try
+        {
+            $CommissionCriteria->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Commission Criteria Deleted Successfully.',
+                'redirect_url'    => route('commission_criterias.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Commission Criteria can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        } 
     }
 
     public function bulkAction(Request $request)

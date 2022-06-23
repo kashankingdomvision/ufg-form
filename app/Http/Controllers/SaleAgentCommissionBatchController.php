@@ -34,7 +34,7 @@ class SaleAgentCommissionBatchController extends Controller
             'getSaleAgentCommissionBatchDetails.getBooking.getCurrency',
             'getSaleAgentCommissionBatchDetails.getBooking.getBrand',
             'getSaleAgentCommissionBatchDetails.getBooking.getHolidayType',
-            'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
+            'getSaleAgentCommissionBatchDetails.getBooking.getSeason'
         ])
         ->where('status', 'paid')
         ->get();
@@ -536,16 +536,12 @@ class SaleAgentCommissionBatchController extends Controller
                 'redirect_url'    => ''
             ]);
         }
-
-
     }
 
     public function salePersonCommissionBulkAction(Request $request)
     {
-        // dd($request->all());
 
-        // try {
-
+        try {
             $message = "";
             $bulk_action_type = $request->bulk_action_type;
 
@@ -554,8 +550,6 @@ class SaleAgentCommissionBatchController extends Controller
 
             if($bulk_action_type == 'confirmed'){
                 $this->confirmedCommission($bulk_action_ids);
-
-
 
                 $this->updateBulkBatchStatus($batch_ids);
                 $message = 'Commission Update Successfully.';
@@ -566,23 +560,20 @@ class SaleAgentCommissionBatchController extends Controller
                 'message' => $message,
             ]);
           
-        // } catch (\Exception $e) {
+        } catch (\Exception $e) {
 
-        //     // $e->getMessage(),
-        //     return response()->json([ 
-        //         'status'  => false, 
-        //         'message' => "Something Went Wrong, Please Try Again."
-        //     ]);
-        // }
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 
     public function viewCommissionDetail($booking_id)
     {
-        // $data['detail'] = SaleAgentCommissionBatchDetails::select('sac_batch_details.sac_batch_id')->selectRaw("SUM(total_paid_amount) as total_batch")->groupBy('sac_batch_id')->get();
-        // dd($data['detail']);
-
         $data['detail'] = SaleAgentCommissionBatchDetails::select('sac_batches.name','sac_batch_details.commission_amount_in_sale_person_currency','sac_batch_details.pay_commission_amount',
-        'sac_batch_details.total_paid_amount','sac_batch_details.total_outstanding_amount','sac_batch_details.status','sac_batches.deposit_date')
+        'sac_batch_details.total_paid_amount','sac_batch_details.total_outstanding_amount','sac_batch_details.status','sac_batches.sp_deposit_date')
         ->leftJoin('sac_batches', 'sac_batches.id', '=', 'sac_batch_details.sac_batch_id')
         ->where('booking_id', $booking_id)->get();
 

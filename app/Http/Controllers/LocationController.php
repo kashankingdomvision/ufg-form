@@ -126,14 +126,31 @@ class LocationController extends Controller
      */
     public function destroy($id)
     {
-        Location::destroy(decrypt($id));
-        return redirect()->route('locations.index')->with('success_message', 'Location deleted successfully');
+        $location = Location::findOrFail(decrypt($id));
+        try
+        {
+            $location->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message'         => 'Location Deleted Successfully.',
+                'redirect_url'    => route('locations.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Location can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)
     {
         try {
-
             $message = "";
             $bulk_action_ids  = $request->bulk_action_ids;
             $bulk_action_type = $request->bulk_action_type;
@@ -149,13 +166,14 @@ class LocationController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Location can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
 }

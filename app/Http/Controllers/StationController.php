@@ -18,11 +18,25 @@ class StationController extends Controller
      */
     public $pagination = 10;
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['stations'] = Station::paginate($this->pagination);
+        $query = Station::orderBy('id','ASC');
 
+        if(count($request->all()) > 0){
+            $query = $this->searchFilters($query, $request);
+        }
+
+        $data['stations'] = $query->paginate($this->pagination);
         return view('stations.listing',$data);
+
+    }
+
+    public function searchFilters($query, $request)
+    {
+        if($request->has('search') && !empty($request->search)){
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+        return $query;
     }
 
     /**
@@ -107,8 +121,26 @@ class StationController extends Controller
      */
     public function destroy($id)
     {
-        Station::findOrFail(decrypt($id))->delete();
-        return redirect()->route('stations.index')->with('success_message', 'Station Deleted Successfully'); 
+        $station = Station::findOrFail(decrypt($id));
+        try
+        {
+            $station->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Station Deleted Successfully.',
+                'redirect_url'    => route('stations.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Station can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)
