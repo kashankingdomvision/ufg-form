@@ -158,7 +158,7 @@ class SaleAgentCommissionBatchController extends Controller
     
     public function store(SaleAgentCommissionBatchRequest $request)
     {
-        // dd($request->all());
+        dd($request->all());
 
         $status = '';
 

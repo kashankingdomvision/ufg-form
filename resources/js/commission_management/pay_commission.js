@@ -1,5 +1,17 @@
 $(document).ready(function() {
 
+    function totalBankAmountValues() {
+
+        let values = $('.bank-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
+        values = values.reduce((a, b) => (a + b), 0);
+
+        $('.booking-commission-total-bank-amount')
+            .html(check(values))
+            .val(check(values));
+
+        return values;
+    }
+
     function totalDepositAmountValues() {
 
         let values = $('.deposit-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
@@ -227,6 +239,7 @@ $(document).ready(function() {
         calDepositAndBankAmountValue(commissionRow);
         calTotalDepositAmountLeftToAllocate();
         totalDepositAmountValues();
+        totalBankAmountValues();
     });
 
     $(document).on('change', '#sp_deposit_amount', function(event) {

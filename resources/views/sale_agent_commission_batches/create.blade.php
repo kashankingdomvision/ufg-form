@@ -493,11 +493,19 @@
                                                         <input type="hidden" name="total_pay_commission_amount" class="total-pay-commission-amount" value="">
                                                     </td>
 
-                                                    <td class="font-weight-bold">
-                                                        <span>{{ $sale_person->getCurrency->code }}</span>
-                                                        <span class="booking-commission-total-deposit-amount">0.00</span>
-                                                        <input type="hidden" name="booking_commission_total_deposit_amount" class="booking-commission-total-deposit-amount" value="">
-                                                    </td>
+                                                    @if(isset($sale_person_batch_exist) && $sale_person_batch_exist)
+                                                        <td class="font-weight-bold">
+                                                            <span>{{ $sale_person->getCurrency->code }}</span>
+                                                            <span class="booking-commission-total-deposit-amount">0.00</span>
+                                                            <input type="hidden" name="booking_commission_total_deposit_amount" class="booking-commission-total-deposit-amount" value="">
+                                                        </td>
+
+                                                        <td class="font-weight-bold">
+                                                            <span>{{ $sale_person->getCurrency->code }}</span>
+                                                            <span class="booking-commission-total-bank-amount">0.00</span>
+                                                            <input type="hidden" name="booking_commission_total_bank_amount" class="booking-commission-total-bank-amount" value="">
+                                                        </td>
+                                                    @endif
 
                                                     <td class="font-weight-bold">
                                                         <span>{{ $sale_person->getCurrency->code }}</span>
