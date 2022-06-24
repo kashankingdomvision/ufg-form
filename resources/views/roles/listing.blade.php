@@ -100,11 +100,11 @@
                                                 <td>{{ $value->name }}</td>
                                                 <td class="d-flex justify-content-center ml-2">
                                                     @if($value->slug != "admin")
-                                                        <form method="post" action="{{ route('roles.destroy', encrypt($value->id)) }}">
                                                         <a href="{{ route('roles.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                                        <form method="post" action="{{ route('roles.destroy', encrypt($value->id)) }}" class="delete-role">
                                                             @csrf
                                                             @method('delete')
-                                                            <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                            <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete">
                                                             <span class="fa fa-trash"></span>
                                                             </button>
                                                         </form>
@@ -152,4 +152,4 @@
         </div>
         </div>
     </div>
-    </section> --}}
+</section> --}}
