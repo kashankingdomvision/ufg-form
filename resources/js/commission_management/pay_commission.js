@@ -24,18 +24,6 @@ $(document).ready(function() {
         return values;
     }
 
-    function totalDepositAmountValues() {
-
-        let values = $('.deposit-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
-        values = values.reduce((a, b) => (a + b), 0);
-
-        $('.booking-commission-total-deposit-amount')
-            .html(check(values))
-            .val(check(values));
-
-        return values;
-    }
-
     function totalDepositedAmount() {
 
         let valesArray = $('.deposited-amount-payments:checked').parents('.commission-row').find('.total-deposit-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
@@ -229,7 +217,7 @@ $(document).ready(function() {
             getRowTotalPaidAmount(commissionRow);
             getRowTotalOutstandingAmount(commissionRow);
 
-            getBankTotalAmountPaid();
+            // getBankTotalAmountPaid();
         }
 
         getTotalPayCommissionAmount();
@@ -240,6 +228,8 @@ $(document).ready(function() {
         calTotalDepositAmountLeftToAllocate();
         totalDepositAmountValues();
         totalBankAmountValues();
+
+        getBankTotalAmountPaid();
     });
 
     $(document).on('change', '#sp_deposit_amount', function(event) {
@@ -309,6 +299,7 @@ $(document).ready(function() {
 
 
         totalDepositAmountValues();
+        totalBankAmountValues();
     });
 
 

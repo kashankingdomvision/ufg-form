@@ -17,6 +17,7 @@ class CreateSalePersonPaymentDetailsTable extends Migration
 
             $table->id();
             $table->foreignId('sale_person_payment_id')->constrained('sale_person_payments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sac_batch_id')->constrained('sac_batches')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->double('paid_amount', 8, 2);
             $table->timestamps();

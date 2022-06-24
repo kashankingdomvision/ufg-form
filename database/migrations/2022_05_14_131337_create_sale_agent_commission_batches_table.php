@@ -21,6 +21,11 @@ class CreateSaleAgentCommissionBatchesTable extends Migration
             $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
             $table->double('sp_deposit_amount', 8, 2)->nullable();
             $table->double('total_pay_commission_amount', 8, 2);
+
+            $table->double('booking_commission_total_deposit_amount', 8, 2);
+            $table->double('booking_commission_total_bank_amount', 8, 2);
+
+
             $table->double('booking_commission_total_paid_amount', 8, 2)->nullable();
             $table->double('bank_total_amount_paid', 8, 2)->nullable();
             $table->double('deposit_and_pay_commission_total', 8, 2);

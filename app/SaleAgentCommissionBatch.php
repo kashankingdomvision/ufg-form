@@ -48,7 +48,16 @@ class SaleAgentCommissionBatch extends Model
         'payment_method_id',
         'bank_total_amount_paid',
         'status',
-        'sp_deposit_date'
+        'sp_deposit_date',
+
+        'total_pay_commission_amount',
+        'booking_commission_total_deposit_amount',
+        'booking_commission_total_bank_amount',
+        'booking_commission_total_paid_amount',
+        'total_outstanding_amount',
+        'show_sp_deposit_amount',
+        'deposit_and_pay_commission_total',
+        'total_deposit_amount_left_to_allocate'
     ];
 
     public function getFormattedStatusAttribute()

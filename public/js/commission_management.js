@@ -414,14 +414,14 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  function totalDepositAmountValues() {
-    var values = $('.deposit-amount-value').map(function (i, e) {
+  function totalBankAmountValues() {
+    var values = $('.bank-amount-value').map(function (i, e) {
       return parseFloat(removeComma(e.value));
     }).get();
     values = values.reduce(function (a, b) {
       return a + b;
     }, 0);
-    $('.booking-commission-total-deposit-amount').html(check(values)).val(check(values));
+    $('.booking-commission-total-bank-amount').html(check(values)).val(check(values));
     return values;
   }
 
@@ -593,8 +593,7 @@ $(document).ready(function () {
     } else {
       commissionRow.find('.finance-child').prop('checked', true).val('1');
       getRowTotalPaidAmount(commissionRow);
-      getRowTotalOutstandingAmount(commissionRow);
-      getBankTotalAmountPaid();
+      getRowTotalOutstandingAmount(commissionRow); // getBankTotalAmountPaid();
     }
 
     getTotalPayCommissionAmount();
@@ -604,6 +603,8 @@ $(document).ready(function () {
     calDepositAndBankAmountValue(commissionRow);
     calTotalDepositAmountLeftToAllocate();
     totalDepositAmountValues();
+    totalBankAmountValues();
+    getBankTotalAmountPaid();
   });
   $(document).on('change', '#sp_deposit_amount', function (event) {
     var spDepositAmount = $(this).val() == '' ? 0.00 : parseFloat(removeComma($('#sp_deposit_amount').val()));
@@ -649,6 +650,7 @@ $(document).ready(function () {
     getDepositAndPayCommissionTotal();
     calTotalDepositAmountLeftToAllocate();
     totalDepositAmountValues();
+    totalBankAmountValues();
   });
   $(document).on('submit', '#store_pay_commission', function (event) {
     event.preventDefault();
