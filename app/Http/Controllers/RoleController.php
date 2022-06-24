@@ -99,8 +99,26 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        Role::destroy(decrypt($id));
-        return redirect()->route('roles.index')->with('success_message', 'Role deleted successfully');
+        $role = Role::findOrFail(decrypt($id));
+        try
+        {
+            $role->delete(); 
+            return response()->json([ 
+                'status'          => true, 
+                'message' => 'Role Deleted Successfully.',
+                'redirect_url'    => route('roles.index') 
+            ]);
+        }
+
+        catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Role can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
+        }
     }
 
     public function bulkAction(Request $request)
@@ -121,13 +139,14 @@ class RoleController extends Controller
                 'message' => $message,
             ]);
           
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
+        } catch(\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 23000)
+            {
+                return response()->json([ 
+                    'status'          => false, 
+                    'message' => 'Role can not be deleted beacuse it is associated one or more record.',
+                ]);
+            }
         }
     }
 }

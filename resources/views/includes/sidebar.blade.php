@@ -175,59 +175,6 @@
                         <p>Templates</p>
                     </a>
                 </li>
-               
-                @if($currenct_user_is_admin)
-
-                    <li class="nav-item {{ in_array($route, ['users.index', 'users.create', 'users.edit', 'roles.index', 'roles.create', 'roles.edit']) ? 'menu-open': '' }}">
-                        
-                        <a href="#" class="nav-link">
-                            <i class="fa fa-user nav-icon"></i>
-                            <p>
-                                User Management
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['users.index', 'users.create', 'users.edit']) ? 'active' : '' }}">
-                                    <i class="fa fa-eye nav-icon"></i>
-                                    <p>View User</p>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item">
-                                <a href="{{ route('roles.index')}}" class="nav-link sidebar-border-left {{ in_array($route, ['roles.index', 'roles.edit']) ? 'active' : ''}}">
-                                    <i class="fa fa-eye nav-icon"></i>
-                                    <p>View Role</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'menu-open': '' }}">
-                        
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-percentage"></i>
-                            <p>
-                                Commision Management
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('commission_criterias.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'active' : '' }}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>
-                                        Commission Criteria
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
 
                 <li class="nav-item {{ in_array($route, [
                     'pay_commissions.index', 'pay_commissions.create', 
@@ -540,6 +487,59 @@
                 </li>
                 @endif
 
+                <li class="nav-item {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'menu-open': '' }}">
+                    
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-percentage"></i>
+                        <p>
+                            Commision Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('commission_criterias.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Commission Criteria
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                @if($currenct_user_is_admin)
+
+                <li class="nav-item {{ in_array($route, ['users.index', 'users.create', 'users.edit', 'roles.index', 'roles.create', 'roles.edit']) ? 'menu-open': '' }}">
+                    
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-user nav-icon"></i>
+                        <p>
+                            User Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('users.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['users.index', 'users.create', 'users.edit']) ? 'active' : '' }}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>View User</p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="{{ route('roles.index')}}" class="nav-link sidebar-border-left {{ in_array($route, ['roles.index', 'roles.edit']) ? 'active' : ''}}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>View Role</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                
                 <li class="nav-item {{ in_array($route, ['reports.user.report', 'reports.activity.by.user', 'reports.supplier.report', 'reports.wallet.report', 'reports.quote.report', 'reports.customer.report', 'reports.payment.method.report', 'reports.refund.by.bank.report', 'reports.refund.by.credit.note.report', 'reports.transfer.report', 'reports.commission.report']) ? 'menu-open': '' }}">
                     
                     <a href="#" class="nav-link">
