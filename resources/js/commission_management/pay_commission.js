@@ -161,19 +161,16 @@ $(document).ready(function() {
 
     function calDepositAndBankAmountValue(commissionRow) {
 
-        let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
+        // let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
+        let totalDepositAmountLeftToAllocate = parseFloat(removeComma($(".total-deposit-amount-left-to-allocate").val()));
 
-        if(depositedAmountPayments) {
+        if(totalDepositAmountLeftToAllocate > 0) {
 
             let totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
             let outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
         
-            console.log(outstandingAmountLeft);
-    
             if(outstandingAmountLeft > totalDepositAmountLeftToAllocateValue){
                 let bankAmountValue = outstandingAmountLeft - totalDepositAmountLeftToAllocateValue;
-
-                console.log(bankAmountValue);
 
                 commissionRow.find('.deposit-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
                 commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
@@ -246,10 +243,10 @@ $(document).ready(function() {
     $(document).on('change', '.deposited-amount-payments', function(event) {
 
         let commissionRow         = $(this).closest('.commission-row');
-        let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
+        let depositedAmountPayments = commissionRow.find(".deposited-amount-payments").prop('checked');
 
         let totalOutstandingAmount = parseFloat(removeComma(commissionRow.find('.current-deposited-total-outstanding-amount').val()));
-        let totalDepositAmount = totalDepositedAmount();
+        // let totalDepositAmount = totalDepositedAmount();
 
         if (depositedAmountPayments) {
 

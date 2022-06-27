@@ -210,23 +210,23 @@ class SaleAgentCommissionBatchController extends Controller
 
                     if(isset($finance['type']) && $finance['type'] == 'sac_batch_details'){
 
-                        $sabtd = SaleAgentBatchTransDetail::create([
+                        // $sabtd = SaleAgentBatchTransDetail::create([
         
-                            'sale_person_id' => $request->sale_person_id,
-                            'type'           => 'sac_batch_details',
-                            'sac_batch_id'   => $sac_batch->id
-                        ]);
+                        //     'sale_person_id' => $request->sale_person_id,
+                        //     'type'           => 'sac_batch_details',
+                        //     'sac_batch_id'   => $sac_batch->id
+                        // ]);
 
-                        $sacbd = SaleAgentCommissionBatchDetails::create([
+                        $sacbd = SaleAgentCommissionBatchDetails::where('sac_batch_trans_detail_id', $finance['id'])->update([
         
-                            'sac_batch_trans_detail_id'                 => $sabtd->id,
+                            // 'sac_batch_trans_detail_id'                 => $sabtd->id,
                             'sac_batch_id'                              => $sac_batch->id,
                             'booking_id'                                => $finance['booking_id'],
                             'sale_person_id'                            => $finance['sale_person_id'],
                             'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
                             'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
-                            'total_paid_amount_yet'                     => $finance['total_paid_amount_yet'],
-                            'outstanding_amount_left'                   => $finance['outstanding_amount_left'],
+                            'total_paid_amount_yet'                     => $finance['row_total_paid_amount'],
+                            'outstanding_amount_left'                   => $finance['row_total_outstanding_amount'],
                             'pay_commission_amount'                     => $finance['pay_commission_amount'],
                             'total_paid_amount'                         => $finance['row_total_paid_amount'],
                             'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],

@@ -237,8 +237,8 @@
                                                     <tr class="commission-row">
                                                         <td>
                                                             <div class="custom-control custom-checkbox">
-                                                                <input type="checkbox" name="finance[{{$key}}][finance_child]" id="child_{{ $loop->iteration }}" value="0" class="finance-child zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
-                                                                <label for="child_{{ $loop->iteration }}" class="custom-control-label"></label>
+                                                                <input type="checkbox" name="finance[{{$key}}][finance_child]" id="child_{{ $loop->index }}" value="0" class="finance-child zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                                                <label for="child_{{ $loop->index }}" class="custom-control-label"></label>
                                                             </div>
                                                         </td>
 

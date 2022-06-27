@@ -550,16 +550,15 @@ $(document).ready(function () {
   }
 
   function calDepositAndBankAmountValue(commissionRow) {
-    var depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
+    // let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
+    var totalDepositAmountLeftToAllocate = parseFloat(removeComma($(".total-deposit-amount-left-to-allocate").val()));
 
-    if (depositedAmountPayments) {
+    if (totalDepositAmountLeftToAllocate > 0) {
       var totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
       var outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
-      console.log(outstandingAmountLeft);
 
       if (outstandingAmountLeft > totalDepositAmountLeftToAllocateValue) {
         var bankAmountValue = outstandingAmountLeft - totalDepositAmountLeftToAllocateValue;
-        console.log(bankAmountValue);
         commissionRow.find('.deposit-amount-value').val(check(totalDepositAmountLeftToAllocateValue));
         commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
       }
@@ -613,9 +612,8 @@ $(document).ready(function () {
   });
   $(document).on('change', '.deposited-amount-payments', function (event) {
     var commissionRow = $(this).closest('.commission-row');
-    var depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
-    var totalOutstandingAmount = parseFloat(removeComma(commissionRow.find('.current-deposited-total-outstanding-amount').val()));
-    var totalDepositAmount = totalDepositedAmount();
+    var depositedAmountPayments = commissionRow.find(".deposited-amount-payments").prop('checked');
+    var totalOutstandingAmount = parseFloat(removeComma(commissionRow.find('.current-deposited-total-outstanding-amount').val())); // let totalDepositAmount = totalDepositedAmount();
 
     if (depositedAmountPayments) {
       commissionRow.find('.total-deposit-amount').val(check(totalOutstandingAmount));
