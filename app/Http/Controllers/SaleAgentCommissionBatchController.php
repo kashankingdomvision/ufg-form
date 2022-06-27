@@ -108,7 +108,7 @@ class SaleAgentCommissionBatchController extends Controller
 
             $data['sale_person_batch_exist'] = SaleAgentCommissionBatch::where('sale_person_id', $request->sale_person_id)->exists();
 
-            $data['bookings'] = $bookings;
+            // $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
 
 
@@ -124,6 +124,7 @@ class SaleAgentCommissionBatchController extends Controller
                 'sac_batch_trans_details.id as sac_batch_trans_detail_id',
                 'sac_batch_trans_details.type',
                 'sac_batch_trans_details.sac_batch_id',
+                'sac_batch_trans_details.sale_person_id as sac_batch_trans_details_sale_person_id',
     
                 'sac_batch_details.sale_person_id as sac_batch_detail_sale_person',
                 'sac_batch_details.sale_person_currency_id as sac_batch_detail_sale_person_currency_id',

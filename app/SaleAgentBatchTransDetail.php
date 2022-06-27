@@ -30,7 +30,7 @@ class SaleAgentBatchTransDetail extends Model
 
     public function getSalePerson()
     {
-        return $this->hasOne(User::class, 'id', 'sale_person_id');
+        return $this->hasOne(User::class, 'id', 'sac_batch_trans_details_sale_person_id');
     }
 
     function getSalePersonCurrency() {

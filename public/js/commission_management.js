@@ -551,11 +551,11 @@ $(document).ready(function () {
 
   function calDepositAndBankAmountValue(commissionRow) {
     // let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
-    var totalDepositAmountLeftToAllocate = parseFloat(removeComma($(".total-deposit-amount-left-to-allocate").val()));
+    var totalDepositAmountLeftToAllocate = parseFloat(removeComma($("#total_deposit_amount_left_to_allocate").val()));
+    var outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
 
     if (totalDepositAmountLeftToAllocate > 0) {
       var totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
-      var outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
 
       if (outstandingAmountLeft > totalDepositAmountLeftToAllocateValue) {
         var bankAmountValue = outstandingAmountLeft - totalDepositAmountLeftToAllocateValue;
@@ -565,6 +565,12 @@ $(document).ready(function () {
 
       if (outstandingAmountLeft <= totalDepositAmountLeftToAllocateValue) {
         commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
+      }
+    } else {
+      var depositPayment = $('.deposited-amount-payments').length;
+
+      if (depositPayment > 0) {
+        commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
       }
     }
   }
