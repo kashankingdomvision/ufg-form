@@ -15,11 +15,18 @@
                             Amount to Pay
                         </label>
 
+                        <div class="input-group d-none">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text sale-person-currency-code"></span>
+                            </div>
+                            <input type="text" name="outstanding_amount" id="outstanding_amount" value="0.00" data-type="currency" class="form-control outstanding-amount hide-arrows">
+                        </div>
+
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text sale-person-currency-code"></span>
                             </div>
-                            <input type="text" name="adjust_total_deposit_amount" id="adjust_total_deposit_amount" value="" data-type="currency" class="form-control adjust-total-deposit-amount hide-arrows">
+                            <input type="text" name="adjust_total_deposit_amount" id="adjust_total_deposit_amount" value="0.00" data-type="currency" class="form-control remove-zero-values adjust-total-deposit-amount hide-arrows">
                         </div>
                     </div>
                 </div>

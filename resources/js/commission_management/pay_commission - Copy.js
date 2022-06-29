@@ -133,8 +133,6 @@ $(document).ready(function() {
 
         modal.modal('show');
         modal.find('form')[0].reset();
-
-        
     });
     
     $(document).on('click', '#apply_adjust_total_deposit_amount', function(event) {

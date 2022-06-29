@@ -446,7 +446,7 @@
                                                             </td>
 
                                                             <td class="form-group">
-                                                                <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                <div class="input-group d-flex justify-content-center">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">
                                                                             USD
@@ -457,8 +457,8 @@
                                                                 </div>
                                                             </td>
                         
-                                                            <td class="d-flex justify-content-center">
-                                                                <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                            <td class="d-flex justify-content-end align-items-center">
+                                                                <div class="input-group d-flex justify-content-end mx-sm-1">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">
                                                                             USD
@@ -466,18 +466,16 @@
                                                                     </div>
                                                                     <input type="text" 
                                                                     name="finance_detail[{{$key}}][total_deposit_amount]" 
-                                                                    data-sale_person_currency_code="USD" 
+                                                                    data-sale_person_currency_code="{{ $sa_currency->code }}" 
                                                                     class="form-control total-deposit-amount remove-zero-values hide-arrows" 
                                                                     data-type="currency"
                                                                     value="{{ isset($sac_batch_trans_detail->total_deposit_amount) && !empty($sac_batch_trans_detail->total_deposit_amount) ? Helper::number_format($sac_batch_trans_detail->total_deposit_amount) :  Helper::number_format(0) }}" 
                                                                     style="max-width: 100px;" readonly>
                                                                 </div>
-                        
-                                                                {{-- <div class="d-flex align-items-center">
-                                                                    <button type="button" class="adjust-deposited-amount btn btn-outline-success btn-xs" data-target="#edit" title="Adjust Deposit Amount">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                </div> --}}
+                                                        
+                                                                <button type="button" class="adjust-deposited-amount btn btn-outline-success btn-xs" data-target="#edit" title="Adjust Deposit Amount">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
                                                             </td>
 
                                                         </tr>
@@ -571,7 +569,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">{{ $sa_currency->code }}</span>
                                                                     </div>
-                                                                <input type="text" name="finance_detail[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
+                                                                    <input type="text" name="finance_detail[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
                                                                 </div>
                                                             </td>
                                                         </tr>
