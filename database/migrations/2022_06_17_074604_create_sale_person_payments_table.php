@@ -23,7 +23,7 @@ class CreateSalePersonPaymentsTable extends Migration
             $table->double('total_deposited_amount', 8, 2);
             $table->double('current_deposited_total_outstanding_amount', 8, 2);
             $table->double('total_deposited_outstanding_amount', 8, 2);
-            $table->double('total_deposit_amount', 8, 2);
+            $table->double('total_deposit_amount', 8, 2)->nullable();
             $table->timestamps();
         });
     }

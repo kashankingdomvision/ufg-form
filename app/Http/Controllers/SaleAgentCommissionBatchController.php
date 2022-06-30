@@ -168,8 +168,8 @@ class SaleAgentCommissionBatchController extends Controller
         // dd($request->finance_detail);
         // dd($request->all());
 
- 
 
+        
         if(isset($request->finance_detail)){
 
             $sac_batch = SaleAgentCommissionBatch::create([
@@ -196,17 +196,19 @@ class SaleAgentCommissionBatchController extends Controller
 
                 if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
 
+                    // dd($finance['total_deposited_outstanding_amount']);
+
                     if(isset($finance['type']) && $finance['type'] == 'sale_person_payments'){
     
                         $spp = SalePersonPayment::where('id', $finance['id'])
                         ->update([
         
-                            "current_deposited_total_outstanding_amount" => $request->total_deposit_amount_left_to_allocate,
-                            "total_deposited_outstanding_amount" => $request->total_deposit_amount_left_to_allocate,
-                            "total_deposit_amount" => $request->booking_commission_total_deposit_amount
+                            "current_deposited_total_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
+                            "total_deposited_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
+                            "total_deposit_amount" => 0.00
                         ]);
 
-
+                        // dd($request->all());
                     }
 
                     if(isset($finance['type']) && $finance['type'] == 'sac_batch_details'){
