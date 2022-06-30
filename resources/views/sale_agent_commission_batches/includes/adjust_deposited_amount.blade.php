@@ -10,17 +10,25 @@
 
             <form action="javascript:void(0);" method="POST" id="adjust_deposited_amount_modal_form">
                 <div class="modal-body">
-                    <div class="form-group">
+
+                    <div class="form-group d-none">
                         <label>
-                            Amount to Pay
+                            Current Outstanding Amount
                         </label>
 
-                        <div class="input-group d-none">
+                        <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text sale-person-currency-code"></span>
                             </div>
                             <input type="text" name="outstanding_amount" id="outstanding_amount" value="0.00" data-type="currency" class="form-control outstanding-amount hide-arrows">
                         </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>
+                            Amount to Pay
+                        </label>
 
                         <div class="input-group">
                             <div class="input-group-prepend">

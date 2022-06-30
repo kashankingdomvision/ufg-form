@@ -45,7 +45,6 @@ $(document).ready(function() {
             $('.deposit-amount-value').prop("readonly", true);
         }
 
-
         $('.total-deposit-amount-left-to-allocate')
             .html(check(totalDepositAmount))
             .val(check(totalDepositAmount));
@@ -57,8 +56,6 @@ $(document).ready(function() {
 
         if(totalDepositAmount > 0){
             
-            let bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount();
-
             // if(totalDepositAmount > bookingCommissionTotalPaidAmount) {
 
             //     let totalDepositAmountLeftToAllocate = totalDepositAmount - bookingCommissionTotalPaidAmount;
@@ -77,6 +74,7 @@ $(document).ready(function() {
 
             //     return 0.00;
             // }
+
 
             let totalDepositAmountLeftToAllocate = totalDepositAmount - totalDepositAmountValues();
 
@@ -304,7 +302,7 @@ $(document).ready(function() {
         $('#adjust_deposited_amount_modal').find('.sale-person-currency-code').html(currencyCode);
 
 
-        $('#adjust_deposited_amount_modal').find('#outstanding_amount').val(totalDepositedOutstandingAmount);
+        modal.find('#outstanding_amount').val(totalDepositedOutstandingAmount);
     });
 
     $(document).on('click', '#apply_adjust_total_deposit_amount', function(event) {
@@ -332,10 +330,14 @@ $(document).ready(function() {
       
         modal.modal('hide');
 
+        let totaldepositedOutstandingAmount = totalOutstandingAmount - adjustTotalDepositAmount;
+
         commissionRow.find('.deposited-amount-payments').prop('checked', true);
         commissionRow.find('.total-deposit-amount').val(check(adjustTotalDepositAmount));
+        commissionRow.find('.total-deposited-outstanding-amount').val(check(totaldepositedOutstandingAmount));
 
         totalDepositAmountLeftToAllocate();
+        calTotalDepositAmountLeftToAllocate();
     });
 
     $(document).on('change', '.deposit-amount-value', function(event) {
@@ -360,10 +362,14 @@ $(document).ready(function() {
             $(this).val('0.00');
         }
 
-        console.log(calTotalDepositAmountLeftToAllocate());
-        console.log(depositAmountValue);
+        if(payCommisionAmount > depositAmountValue){
 
-       
+            let bankAmountValue = payCommisionAmount - depositAmountValue;
+            commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+
+            getBankTotalAmountPaid();
+        }
+
         totalDepositAmountValues();
         calTotalDepositAmountLeftToAllocate();
     });

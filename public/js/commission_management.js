@@ -462,7 +462,7 @@ $(document).ready(function () {
     var totalDepositAmount = totalDepositedAmount();
 
     if (totalDepositAmount > 0) {
-      var bookingCommissionTotalPaidAmount = getTotalPayCommissionAmount(); // if(totalDepositAmount > bookingCommissionTotalPaidAmount) {
+      // if(totalDepositAmount > bookingCommissionTotalPaidAmount) {
       //     let totalDepositAmountLeftToAllocate = totalDepositAmount - bookingCommissionTotalPaidAmount;
       //     $('.total-deposit-amount-left-to-allocate')
       //         .html(check(totalDepositAmountLeftToAllocate))
@@ -475,7 +475,6 @@ $(document).ready(function () {
       //         .val('0.00');
       //     return 0.00;
       // }
-
       var _totalDepositAmountLeftToAllocate = totalDepositAmount - totalDepositAmountValues();
 
       $('.total-deposit-amount-left-to-allocate').html(check(_totalDepositAmountLeftToAllocate)).val(check(_totalDepositAmountLeftToAllocate));
@@ -653,7 +652,7 @@ $(document).ready(function () {
     var currencyCode = commissionRow.find('.total-deposit-amount').data('sale_person_currency_code'); // $('#adjust_deposited_amount_modal').find('#adjust_total_deposit_amount').val(totalDepositedOutstandingAmount);
 
     $('#adjust_deposited_amount_modal').find('.sale-person-currency-code').html(currencyCode);
-    $('#adjust_deposited_amount_modal').find('#outstanding_amount').val(totalDepositedOutstandingAmount);
+    modal.find('#outstanding_amount').val(totalDepositedOutstandingAmount);
   });
   $(document).on('click', '#apply_adjust_total_deposit_amount', function (event) {
     var modal = $('#adjust_deposited_amount_modal');
@@ -670,9 +669,12 @@ $(document).ready(function () {
     }
 
     modal.modal('hide');
+    var totaldepositedOutstandingAmount = totalOutstandingAmount - adjustTotalDepositAmount;
     commissionRow.find('.deposited-amount-payments').prop('checked', true);
     commissionRow.find('.total-deposit-amount').val(check(adjustTotalDepositAmount));
+    commissionRow.find('.total-deposited-outstanding-amount').val(check(totaldepositedOutstandingAmount));
     totalDepositAmountLeftToAllocate();
+    calTotalDepositAmountLeftToAllocate();
   });
   $(document).on('change', '.deposit-amount-value', function (event) {
     var commissionRow = $(this).closest('.commission-row');
@@ -687,8 +689,12 @@ $(document).ready(function () {
       $(this).val('0.00');
     }
 
-    console.log(calTotalDepositAmountLeftToAllocate());
-    console.log(depositAmountValue);
+    if (payCommisionAmount > depositAmountValue) {
+      var bankAmountValue = payCommisionAmount - depositAmountValue;
+      commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+      getBankTotalAmountPaid();
+    }
+
     totalDepositAmountValues();
     calTotalDepositAmountLeftToAllocate();
   });
