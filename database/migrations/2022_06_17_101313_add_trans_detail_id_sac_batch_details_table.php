@@ -16,11 +16,11 @@ class AddTransDetailIdSacBatchDetailsTable extends Migration
         Schema::table('sac_batch_details', function (Blueprint $table) {
 
             $table->foreignId('sac_batch_trans_detail_id')
+            ->after('sac_batch_id')
             ->nullable()
             ->constrained('sac_batch_trans_details')
             ->onUpdate('cascade')
-            ->onDelete('cascade')
-            ->after('sac_batch_id');
+            ->onDelete('cascade');
         });
     }
 

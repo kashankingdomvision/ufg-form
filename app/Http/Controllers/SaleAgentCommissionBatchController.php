@@ -167,8 +167,6 @@ class SaleAgentCommissionBatchController extends Controller
 
         // dd($request->finance_detail);
         // dd($request->all());
-
-
         
         if(isset($request->finance_detail)){
 
@@ -207,14 +205,11 @@ class SaleAgentCommissionBatchController extends Controller
                             "total_deposited_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
                             "total_deposit_amount" => 0.00
                         ]);
-
-                        // dd($request->all());
                     }
 
                     if(isset($finance['type']) && $finance['type'] == 'sac_batch_details'){
 
                         // $sabtd = SaleAgentBatchTransDetail::create([
-        
                         //     'sale_person_id' => $request->sale_person_id,
                         //     'type'           => 'sac_batch_details',
                         //     'sac_batch_id'   => $sac_batch->id
