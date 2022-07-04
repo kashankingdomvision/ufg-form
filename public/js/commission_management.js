@@ -576,13 +576,13 @@ $(document).ready(function () {
       if (outstandingAmountLeft <= totalDepositAmountLeftToAllocateValue) {
         commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
       }
-    } else {
-      var depositPayment = $('.deposited-amount-payments').length;
+    } // else{
+    // let depositPayment = $('.deposited-amount-payments').length;
+    // if(depositPayment > 0){
+    //     commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
+    // }
+    // }
 
-      if (depositPayment > 0) {
-        commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
-      }
-    }
   }
 
   function resetCommissionRow(commissionRow) {
@@ -608,7 +608,15 @@ $(document).ready(function () {
     } else {
       commissionRow.find('.finance-child').prop('checked', true).val('1');
       getRowTotalPaidAmount(commissionRow);
-      getRowTotalOutstandingAmount(commissionRow); // getBankTotalAmountPaid();
+      getRowTotalOutstandingAmount(commissionRow);
+      var depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
+
+      if (parseFloat(depositedAmountValue) > 0) {
+        if (parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)) {
+          var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
+          commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+        }
+      }
     }
 
     getTotalPayCommissionAmount();

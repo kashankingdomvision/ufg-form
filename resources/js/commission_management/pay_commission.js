@@ -197,14 +197,12 @@ $(document).ready(function() {
                 commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
             }
         }
-        else{
-
-            let depositPayment = $('.deposited-amount-payments').length;
-
-            if(depositPayment > 0){
-                commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
-            }
-        }
+        // else{
+            // let depositPayment = $('.deposited-amount-payments').length;
+            // if(depositPayment > 0){
+            //     commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
+            // }
+        // }
     }
 
     function resetCommissionRow(commissionRow) {
@@ -238,7 +236,15 @@ $(document).ready(function() {
             getRowTotalPaidAmount(commissionRow);
             getRowTotalOutstandingAmount(commissionRow);
 
-            // getBankTotalAmountPaid();
+            let depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
+
+            if(parseFloat(depositedAmountValue) > 0){
+                if(parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)){
+                    
+                    let bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
+                    commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+                }
+            }
         }
 
         getTotalPayCommissionAmount();
