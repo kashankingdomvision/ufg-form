@@ -177,13 +177,13 @@ $(document).ready(function() {
 
     function calDepositAndBankAmountValue(commissionRow) {
 
-        // let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
-        let totalDepositAmountLeftToAllocate = parseFloat(removeComma($("#total_deposit_amount_left_to_allocate").val()));
+        let totalDepositAmountLeftToAllocate = $("#total_deposit_amount_left_to_allocate").val();
 
-        let outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
+        if(totalDepositAmountLeftToAllocate && typeof totalDepositAmountLeftToAllocate !== "undefined" && totalDepositAmountLeftToAllocate > 0) {
 
-        if(totalDepositAmountLeftToAllocate > 0) {
+            totalDepositAmountLeftToAllocate = parseFloat(removeComma($("#total_deposit_amount_left_to_allocate").val()));
 
+            let outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
             let totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
         
             if(outstandingAmountLeft > totalDepositAmountLeftToAllocateValue){
@@ -196,12 +196,14 @@ $(document).ready(function() {
             if(outstandingAmountLeft <= totalDepositAmountLeftToAllocateValue){
                 commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
             }
+
         }
+        
         // else{
-            // let depositPayment = $('.deposited-amount-payments').length;
-            // if(depositPayment > 0){
-            //     commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
-            // }
+        //     let depositPayment = $('.deposited-amount-payments').length;
+        //     if(depositPayment > 0){
+        //         commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
+        //     }
         // }
     }
 
@@ -220,6 +222,9 @@ $(document).ready(function() {
         let payCommisionAmount    = removeComma(commissionRow.find('.pay-commission-amount').val());
         let outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
 
+        console.log(payCommisionAmount);
+        console.log(outstandingAmountLeft);
+
         if(parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)){
            
             Toast.fire({
@@ -236,15 +241,17 @@ $(document).ready(function() {
             getRowTotalPaidAmount(commissionRow);
             getRowTotalOutstandingAmount(commissionRow);
 
-            let depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
+            // let depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
 
-            if(parseFloat(depositedAmountValue) > 0){
-                if(parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)){
+            // console.log(depositedAmountValue);
+
+            // if(parseFloat(depositedAmountValue) > 0){
+            //     if(parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)){
                     
-                    let bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
-                    commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
-                }
-            }
+            //         let bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
+            //         commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+            //     }
+            // }
         }
 
         getTotalPayCommissionAmount();
@@ -252,11 +259,11 @@ $(document).ready(function() {
         getTotalOutstandingAmount();
         getDepositAndPayCommissionTotal();
         calDepositAndBankAmountValue(commissionRow);
-        calTotalDepositAmountLeftToAllocate();
-        totalDepositAmountValues();
-        totalBankAmountValues();
+        // calTotalDepositAmountLeftToAllocate();
+        // totalDepositAmountValues();
+        // totalBankAmountValues();
 
-        getBankTotalAmountPaid();
+        // getBankTotalAmountPaid();
     });
 
     $(document).on('change', '#sp_deposit_amount', function(event) {

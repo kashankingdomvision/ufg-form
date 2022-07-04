@@ -560,11 +560,11 @@ $(document).ready(function () {
   }
 
   function calDepositAndBankAmountValue(commissionRow) {
-    // let depositedAmountPayments = $(".deposited-amount-payments").prop('checked');
-    var totalDepositAmountLeftToAllocate = parseFloat(removeComma($("#total_deposit_amount_left_to_allocate").val()));
-    var outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
+    var totalDepositAmountLeftToAllocate = $("#total_deposit_amount_left_to_allocate").val();
 
-    if (totalDepositAmountLeftToAllocate > 0) {
+    if (totalDepositAmountLeftToAllocate && typeof totalDepositAmountLeftToAllocate !== "undefined" && totalDepositAmountLeftToAllocate > 0) {
+      totalDepositAmountLeftToAllocate = parseFloat(removeComma($("#total_deposit_amount_left_to_allocate").val()));
+      var outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
       var totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
 
       if (outstandingAmountLeft > totalDepositAmountLeftToAllocateValue) {
@@ -577,10 +577,10 @@ $(document).ready(function () {
         commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
       }
     } // else{
-    // let depositPayment = $('.deposited-amount-payments').length;
-    // if(depositPayment > 0){
-    //     commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
-    // }
+    //     let depositPayment = $('.deposited-amount-payments').length;
+    //     if(depositPayment > 0){
+    //         commissionRow.find('.bank-amount-value').val(check(outstandingAmountLeft));
+    //     }
     // }
 
   }
@@ -598,6 +598,8 @@ $(document).ready(function () {
     var commissionRow = $(this).closest('.commission-row');
     var payCommisionAmount = removeComma(commissionRow.find('.pay-commission-amount').val());
     var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
+    console.log(payCommisionAmount);
+    console.log(outstandingAmountLeft);
 
     if (parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
       Toast.fire({
@@ -608,26 +610,24 @@ $(document).ready(function () {
     } else {
       commissionRow.find('.finance-child').prop('checked', true).val('1');
       getRowTotalPaidAmount(commissionRow);
-      getRowTotalOutstandingAmount(commissionRow);
-      var depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
-
-      if (parseFloat(depositedAmountValue) > 0) {
-        if (parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)) {
-          var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
-          commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
-        }
-      }
+      getRowTotalOutstandingAmount(commissionRow); // let depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
+      // console.log(depositedAmountValue);
+      // if(parseFloat(depositedAmountValue) > 0){
+      //     if(parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)){
+      //         let bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
+      //         commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+      //     }
+      // }
     }
 
     getTotalPayCommissionAmount();
     getBookingCommissionTotalPaidAmount();
     getTotalOutstandingAmount();
     getDepositAndPayCommissionTotal();
-    calDepositAndBankAmountValue(commissionRow);
-    calTotalDepositAmountLeftToAllocate();
-    totalDepositAmountValues();
-    totalBankAmountValues();
-    getBankTotalAmountPaid();
+    calDepositAndBankAmountValue(commissionRow); // calTotalDepositAmountLeftToAllocate();
+    // totalDepositAmountValues();
+    // totalBankAmountValues();
+    // getBankTotalAmountPaid();
   });
   $(document).on('change', '#sp_deposit_amount', function (event) {
     var spDepositAmount = $(this).val() == '' ? 0.00 : parseFloat(removeComma($('#sp_deposit_amount').val()));
