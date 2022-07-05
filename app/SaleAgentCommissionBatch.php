@@ -107,7 +107,7 @@ class SaleAgentCommissionBatch extends Model
 
     public function getSaleAgentCommissionBatchDetails()
     {
-        return $this->hasMany(SaleAgentCommissionBatchDetails::class, 'sac_batch_id', 'id');
+        return $this->hasMany(SACBDetailHistory::class, 'sac_batch_id', 'id');
     }
 
     public function getBatchBookingIDSAttribute()

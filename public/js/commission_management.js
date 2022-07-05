@@ -598,8 +598,6 @@ $(document).ready(function () {
     var commissionRow = $(this).closest('.commission-row');
     var payCommisionAmount = removeComma(commissionRow.find('.pay-commission-amount').val());
     var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
-    console.log(payCommisionAmount);
-    console.log(outstandingAmountLeft);
 
     if (parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
       Toast.fire({
@@ -610,24 +608,30 @@ $(document).ready(function () {
     } else {
       commissionRow.find('.finance-child').prop('checked', true).val('1');
       getRowTotalPaidAmount(commissionRow);
-      getRowTotalOutstandingAmount(commissionRow); // let depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
-      // console.log(depositedAmountValue);
-      // if(parseFloat(depositedAmountValue) > 0){
-      //     if(parseFloat(payCommisionAmount) > parseFloat(depositedAmountValue)){
-      //         let bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
-      //         commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
-      //     }
-      // }
+      getRowTotalOutstandingAmount(commissionRow);
+      var depositedAmountValue = commissionRow.find('.deposit-amount-value').val();
+
+      if (depositedAmountValue && typeof depositedAmountValue !== "undefined") {
+        var _depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
+
+        if (parseFloat(_depositedAmountValue) > 0) {
+          if (parseFloat(payCommisionAmount) > parseFloat(_depositedAmountValue)) {
+            var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
+            commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+          }
+        }
+      }
     }
 
     getTotalPayCommissionAmount();
     getBookingCommissionTotalPaidAmount();
     getTotalOutstandingAmount();
     getDepositAndPayCommissionTotal();
-    calDepositAndBankAmountValue(commissionRow); // calTotalDepositAmountLeftToAllocate();
-    // totalDepositAmountValues();
-    // totalBankAmountValues();
-    // getBankTotalAmountPaid();
+    calDepositAndBankAmountValue(commissionRow);
+    totalDepositAmountValues();
+    totalBankAmountValues();
+    getBankTotalAmountPaid();
+    calTotalDepositAmountLeftToAllocate();
   });
   $(document).on('change', '#sp_deposit_amount', function (event) {
     var spDepositAmount = $(this).val() == '' ? 0.00 : parseFloat(removeComma($('#sp_deposit_amount').val()));

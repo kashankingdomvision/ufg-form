@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SACBDetailHistory extends Model
 {
-    protected $table = 'sac_batch_details';
+    protected $table = 'sacb_detail_histories';
 
     protected $fillable = [
         
@@ -25,4 +25,81 @@ class SACBDetailHistory extends Model
         'bank_amount_value',                         
         'status'                                    
     ];
+
+
+    
+    public function getFormattedStatusAttribute()
+    {
+        switch ($this->attributes['status']) {
+            
+            case 'confirmed':
+                return '<h5><span class="badge badge-success">Confirmed</span></h5>';
+                break;
+            
+            case 'pending':
+                return '<h5><span class="badge badge-info">Pending</span></h5>';
+                break;
+
+            case 'dispute':
+                return '<h5><span class="badge badge-danger">Dispute</span></h5>';
+                break;
+
+            case 'paid':
+                return '<h5><span class="badge badge-success">Paid</span></h5>';
+                break;
+        }
+    }
+    
+    public function getDepositDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+
+    function getBooking() {
+        return $this->hasOne(Booking::class, 'id', 'booking_id');
+    }
+
+    public function getSalePerson()
+    {
+        return $this->hasOne(User::class, 'id', 'sale_person_id');
+    }
+
+    function getCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'sales_agent_default_currency_id');
+    }
+
+    public function setCommissionAmountInDefaultCurrencyAttribute( $value ) {
+        $this->attributes['commission_amount_in_default_currency'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalPaidAmountYetAttribute( $value ) {
+        $this->attributes['total_paid_amount_yet'] = str_replace( ',', '', $value );
+    }
+
+    public function setOutstandingAmountLeftAttribute( $value ) {
+        $this->attributes['outstanding_amount_left'] = str_replace( ',', '', $value );
+    }
+
+    public function setPayCommissionAmountAttribute( $value ) {
+        $this->attributes['pay_commission_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalPaidAmountAttribute( $value ) {
+        $this->attributes['total_paid_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalOutstandingAmountAttribute( $value ) {
+        $this->attributes['total_outstanding_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepositedAmountValueAttribute( $value ) {
+        $this->attributes['deposited_amount_value'] = str_replace( ',', '', $value );
+    }
+
+    public function setBankAmountValueAttribute( $value ) {
+        $this->attributes['bank_amount_value'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepositDateAttribute( $value ) {
+        $this->attributes['deposit_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
 }

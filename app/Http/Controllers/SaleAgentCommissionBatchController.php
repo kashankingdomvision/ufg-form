@@ -20,6 +20,7 @@ use App\SaleAgentCommissionBatchDetails;
 use App\Bank;
 use App\SalePersonPayment;
 use App\SaleAgentBatchTransDetail;
+use App\SACBDetailHistory;
 
 use App\Http\Requests\SaleAgentCommissionBatchRequest;
 
@@ -233,6 +234,23 @@ class SaleAgentCommissionBatchController extends Controller
                             'status'                                    => 'pending'
                         ]);
 
+                        SACBDetailHistory::create([
+                            // 'sac_batch_trans_detail_id'                 => $sabtd->id,
+                            'sac_batch_id'                              => $sac_batch->id,
+                            'booking_id'                                => $finance['booking_id'],
+                            'sale_person_id'                            => $finance['sale_person_id'],
+                            'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
+                            'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
+                            'total_paid_amount_yet'                     => $finance['total_paid_amount_yet'],
+                            'outstanding_amount_left'                   => $finance['outstanding_amount_left'],
+                            'pay_commission_amount'                     => $finance['pay_commission_amount'],
+                            'total_paid_amount'                         => $finance['row_total_paid_amount'],
+                            'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
+                            'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
+                            'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
+                            'status'                                    => $status
+                        ]);
+
                     }
 
                 
@@ -281,6 +299,24 @@ class SaleAgentCommissionBatchController extends Controller
                     ]);
     
                     $sacbd = SaleAgentCommissionBatchDetails::create([
+    
+                        'sac_batch_trans_detail_id'                 => $sabtd->id,
+                        'sac_batch_id'                              => $sac_batch->id,
+                        'booking_id'                                => $finance['booking_id'],
+                        'sale_person_id'                            => $finance['sale_person_id'],
+                        'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
+                        'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
+                        'total_paid_amount_yet'                     => $finance['total_paid_amount_yet'],
+                        'outstanding_amount_left'                   => $finance['outstanding_amount_left'],
+                        'pay_commission_amount'                     => $finance['pay_commission_amount'],
+                        'total_paid_amount'                         => $finance['row_total_paid_amount'],
+                        'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
+                        'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
+                        'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
+                        'status'                                    => $status
+                    ]);
+
+                    SACBDetailHistory::create([
     
                         'sac_batch_trans_detail_id'                 => $sabtd->id,
                         'sac_batch_id'                              => $sac_batch->id,

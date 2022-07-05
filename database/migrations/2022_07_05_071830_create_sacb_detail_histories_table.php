@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSacbDetailHistoryTable extends Migration
+class CreateSacbDetailHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateSacbDetailHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('sacb_detail_history', function (Blueprint $table) {
+        Schema::create('sacb_detail_histories', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('sac_batch_id')->constrained('sac_batches')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sac_batch_trans_detail_id')->nullable()->constrained('sac_batch_trans_details')->onUpdate('cascade')->onDelete('cascade');
+
             $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('restrict');
@@ -42,6 +44,6 @@ class CreateSacbDetailHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sab_detail_history');
+        Schema::dropIfExists('sacb_detail_hitories');
     }
 }
