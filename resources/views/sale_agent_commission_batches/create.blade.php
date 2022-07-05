@@ -277,6 +277,29 @@
                                                             <small class="text-danger"></small>
                                                         </td>
 
+                                                        @if(isset($sale_person_batch_exist) && $sale_person_batch_exist)
+                                                            <td class="form-group">
+                                                                <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                                    </div>
+                                                                    <input type="text" name="finance_detail[{{$key}}][deposit_amount_value]" id="finance_{{$key}}_deposit_amount_value" class="form-control deposit-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
+                                                                </div>
+                                                                <small class="text-danger"></small>
+                                                            </td>
+
+                                                            <td class="form-group">
+                                                                <div class="input-group mx-sm-3 d-flex justify-content-center">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                                    </div>
+                                                                    <input type="text" name="finance_detail[{{$key}}][bank_amount_value]" id="finance_{{$key}}_bank_amount_value" class="form-control bank-amount-value remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;" readonly>
+                                                                </div>
+                                                                <small class="text-danger"></small>
+                                                            </td>
+                                                        @endif
+
+
                                                         <td class="form-group">
                                                             <div class="input-group d-flex justify-content-center">
                                                                 <div class="input-group-prepend">
@@ -313,7 +336,7 @@
                                                         $sa_currency = isset($sac_batch_trans_detail->getSalePerson->getCurrency) ? $sac_batch_trans_detail->getSalePerson->getCurrency : '';
                                                     @endphp
 
-                                                    @if($sac_batch_trans_detail->type == 'bookings')
+                                                    {{-- @if($sac_batch_trans_detail->type == 'bookings')
                                                         <tr class="commission-row">
 
                                                             <td>
@@ -404,7 +427,7 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                    @endif
+                                                    @endif --}}
 
                                                     @if($sac_batch_trans_detail->type == 'sale_person_payments')
 

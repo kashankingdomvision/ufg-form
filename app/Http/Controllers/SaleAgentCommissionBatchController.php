@@ -109,6 +109,8 @@ class SaleAgentCommissionBatchController extends Controller
 
             $data['sale_person_batch_exist'] = SaleAgentCommissionBatch::where('sale_person_id', $request->sale_person_id)->exists();
 
+            // dd($data['sale_person_batch_exist']);
+
             $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
 
