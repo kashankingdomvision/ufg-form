@@ -561,8 +561,10 @@ $(document).ready(function () {
 
   function calDepositAndBankAmountValue(commissionRow) {
     var totalDepositAmountLeftToAllocate = $("#total_deposit_amount_left_to_allocate").val();
+    var payCommissionAmount = parseFloat(commissionRow.find('.pay-commission-amount').val());
+    var depositAmountValue = commissionRow.find('.deposit-amount-value').val();
 
-    if (totalDepositAmountLeftToAllocate && typeof totalDepositAmountLeftToAllocate !== "undefined" && totalDepositAmountLeftToAllocate > 0) {
+    if (totalDepositAmountLeftToAllocate && typeof totalDepositAmountLeftToAllocate !== "undefined" && parseFloat(totalDepositAmountLeftToAllocate) > 0) {
       totalDepositAmountLeftToAllocate = parseFloat(removeComma($("#total_deposit_amount_left_to_allocate").val()));
       var outstandingAmountLeft = parseFloat(removeComma(commissionRow.find('.pay-commission-amount').val()));
       var totalDepositAmountLeftToAllocateValue = parseFloat(removeComma($('.total-deposit-amount-left-to-allocate').val()));
@@ -576,6 +578,14 @@ $(document).ready(function () {
       if (outstandingAmountLeft <= totalDepositAmountLeftToAllocateValue) {
         commissionRow.find('.deposit-amount-value').val(check(outstandingAmountLeft));
       }
+    }
+
+    if (payCommissionAmount && typeof payCommissionAmount !== "undefined" && parseFloat(totalDepositAmountLeftToAllocate) == 0) {
+      commissionRow.find('.bank-amount-value').val(check(payCommissionAmount));
+    }
+
+    if (depositAmountValue && typeof depositAmountValue !== "undefined" && payCommissionAmount == depositAmountValue) {
+      commissionRow.find('.bank-amount-value').val(check(0));
     } // else{
     //     let depositPayment = $('.deposited-amount-payments').length;
     //     if(depositPayment > 0){
@@ -615,7 +625,7 @@ $(document).ready(function () {
         var _depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
 
         if (parseFloat(_depositedAmountValue) > 0) {
-          if (parseFloat(payCommisionAmount) > parseFloat(_depositedAmountValue)) {
+          if (parseFloat(payCommisionAmount) > parseFloat(_depositedAmountValue) || parseFloat(payCommisionAmount) == parseFloat(_depositedAmountValue)) {
             var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
             commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
           }
