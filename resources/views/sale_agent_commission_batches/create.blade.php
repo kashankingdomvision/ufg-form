@@ -476,7 +476,7 @@
                                                                         </span>
                                                                     </div>
                         
-                                                                    <input type="text" name="finance_detail[{{$key}}][total_deposited_outstanding_amount]" class="total-deposited-outstanding-amount form-control remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sac_batch_trans_detail->total_deposited_outstanding_amount) && !empty($sac_batch_trans_detail->total_deposited_outstanding_amount) ? Helper::number_format($sac_batch_trans_detail->total_deposited_outstanding_amount) : '' }}" style="max-width: 100px;" readonly>
+                                                                    <input type="text" name="finance_detail[{{$key}}][total_deposited_outstanding_amount]" class="total-deposited-outstanding-amount form-control remove-zero-values hide-arrows" data-type="currency" value="{{ isset($sac_batch_trans_detail->total_deposited_outstanding_amount) ? Helper::number_format($sac_batch_trans_detail->total_deposited_outstanding_amount) : '0.00' }}" style="max-width: 100px;" readonly>
                                                                 </div>
                                                             </td>
                         

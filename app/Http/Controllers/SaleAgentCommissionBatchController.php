@@ -123,7 +123,13 @@ class SaleAgentCommissionBatchController extends Controller
                 'getSACommissionBatch.getSalePersonCurrency',
             ])
             ->leftJoin('sac_batch_details', 'sac_batch_trans_details.id', '=', 'sac_batch_details.sac_batch_trans_detail_id')
-            ->join('sale_person_payments', 'sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
+            // ->join('sale_person_payments', 'sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
+
+            ->join('sale_person_payments', function ($join) {
+                $join->on('sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
+                    ->where('sale_person_payments.current_deposited_total_outstanding_amount', '>', 0);
+            })
+
             ->select([
                 'sac_batch_trans_details.id as sac_batch_trans_detail_id',
                 'sac_batch_trans_details.type',
