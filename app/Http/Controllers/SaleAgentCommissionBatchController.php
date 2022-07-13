@@ -395,6 +395,50 @@ class SaleAgentCommissionBatchController extends Controller
         ]);
     }
 
+    public function bookingCommission() {
+
+        
+        $query = Booking::with([
+            'getCommissionDetails',
+            'getCommissionDetails.getSalePersonCurrency',
+            'getSalePerson',
+            // 'getCurrency',
+            // 'getSeason',
+            // 'getCommissionCriteria',
+            'getBrand',
+            'getHolidayType',
+            // 'getLastSaleAgentCommissionBatchDetails',
+        ]);
+
+        $data['bookings'] = $query->select([
+            'season_id',
+            'brand_id',
+            'holiday_type_id',
+            'commission_criteria_id',
+            'ref_no',
+            'quote_ref',
+            'sale_person_id',
+            'sale_person_currency_id',
+            'currency_id',
+            'commission_amount',
+            'rate_type',
+            'id',
+            'commission_amount_in_sale_person_currency',
+            'sale_person_payment_status',
+            'departure_date',
+            'selling_price',
+            'markup_amount',
+            'markup_percentage',
+            'sale_person_bonus_amount'
+        ])
+        ->get();
+
+        // dd($data['bookings']);
+
+        return view('sale_agent_commission_batches.booking_commission', $data);
+
+    }
+
     public function payDepositAmount(Request $request) {
         dd($request);
     }

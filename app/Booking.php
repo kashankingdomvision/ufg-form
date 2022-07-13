@@ -241,6 +241,11 @@ class Booking extends Model
         return $this->hasOne(SaleAgentCommissionBatchDetails::class, 'booking_id', 'id')->latest();
     }
 
+    public function getCommissionDetails()
+    {
+        return $this->hasMany(SACBDetailHistory::class, 'booking_id', 'id');
+    }
+
     public function getUser()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

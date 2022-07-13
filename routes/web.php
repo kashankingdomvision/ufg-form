@@ -313,6 +313,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('create', array('as' => 'create', 'uses' => 'SaleAgentCommissionBatchController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'SaleAgentCommissionBatchController@store'));
         Route::get('commission-review', array('as' => 'commission_review', 'uses' => 'SaleAgentCommissionBatchController@commissionReview'));
+        Route::get('booking-commission', array('as' => 'booking_commission', 'uses' => 'SaleAgentCommissionBatchController@bookingCommission'));
         
         
         Route::get('commission-management', array('as' => 'commission_management', 'uses' => 'SaleAgentCommissionBatchController@commissionManagement'));

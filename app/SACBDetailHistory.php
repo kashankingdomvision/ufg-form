@@ -67,6 +67,10 @@ class SACBDetailHistory extends Model
         return $this->hasOne(Currency::class, 'id', 'sales_agent_default_currency_id');
     }
 
+    function getSalePersonCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'sale_person_currency_id');
+    }
+    
     public function setCommissionAmountInDefaultCurrencyAttribute( $value ) {
         $this->attributes['commission_amount_in_default_currency'] = str_replace( ',', '', $value );
     }

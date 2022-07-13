@@ -237,6 +237,7 @@
                     'sale_person_payments.create',
                     'sale_person_payments.edit',
                     'sale_person_payments.account_allocation',
+                    'pay_commissions.booking_commission'
                     ]) ? 'menu-open': '' }}">
                     
                     <a href="#" class="nav-link">
@@ -276,6 +277,16 @@
                                     </p>
                                 </a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a href="{{ route('pay_commissions.booking_commission') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.booking_commission']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Booking Comm.
+                                    </p>
+                                </a>
+                            </li>
+               
 
                         @endif
 
