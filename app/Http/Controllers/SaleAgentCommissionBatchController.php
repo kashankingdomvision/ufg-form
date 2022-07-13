@@ -116,16 +116,14 @@ class SaleAgentCommissionBatchController extends Controller
 
 
             $data['sac_batch_trans_details'] = SaleAgentBatchTransDetail::where('sac_batch_trans_details.sale_person_id', $request->sale_person_id)
-            // ->where('sac_batch_trans_details.sale_person_id', '>', 0)
+            ->where('sac_batch_trans_details.trans_status', 0)
             ->with([
                 'getBooking',
                 'getBooking.getLastSaleAgentCommissionBatchDetails',
                 'getSACommissionBatch.getSalePersonCurrency',
             ])
             ->leftJoin('sac_batch_details', 'sac_batch_trans_details.id', '=', 'sac_batch_details.sac_batch_trans_detail_id')
-            // ->join('sale_person_payments', 'sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
-
-            ->join('sale_person_payments', function ($join) {
+            ->leftJoin('sale_person_payments', function ($join) {
                 $join->on('sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
                     ->where('sale_person_payments.current_deposited_total_outstanding_amount', '>', 0);
             })
@@ -213,6 +211,10 @@ class SaleAgentCommissionBatchController extends Controller
                             "total_deposited_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
                             "total_deposit_amount" => $finance['total_deposit_amount'],
                         ]);
+
+                        if($spp->current_deposited_total_outstanding_amount == 0){
+                            SaleAgentBatchTransDetail::where('id', $finance['id'])->update([ 'trans_status' => 1 ]);
+                        }
                     }
 
                     if(isset($finance['type']) && $finance['type'] == 'sac_batch_details'){
@@ -260,6 +262,8 @@ class SaleAgentCommissionBatchController extends Controller
 
                         if($finance['row_total_outstanding_amount'] == 0){
                             Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 2 ]);
+
+                            SaleAgentBatchTransDetail::where('id', $finance['id'])->update([ 'trans_status' => 1 ]);
                         }
 
                     }
@@ -350,6 +354,8 @@ class SaleAgentCommissionBatchController extends Controller
                     
                     if($finance['row_total_outstanding_amount'] == 0){
                         Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 2 ]);
+                        
+                        SaleAgentBatchTransDetail::where('id', $sabtd->id)->update([ 'trans_status' => 1 ]);
                     }
 
                 }
@@ -376,6 +382,10 @@ class SaleAgentCommissionBatchController extends Controller
                 'total_deposited_outstanding_amount'  => $request->sp_deposit_amount,
                 'total_deposit_amount'  => 0.00,
             ]);
+
+            if($spp->current_deposited_total_outstanding_amount == 0){
+                SaleAgentBatchTransDetail::where('sac_batch_trans_detail_id', $spp->sac_batch_trans_detail_id )->update([ 'trans_status' => 1 ]);
+            }
         }
 
         return response()->json([ 
