@@ -90,7 +90,7 @@
                           <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>
                             {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code : '' }}
-                            {{ Helper::number_format($sac_batch->total_paid_amount) }}
+                            {{ Helper::number_format($sac_batch->total_pay_commission_amount) }}
                           </td>
                           <td>
                             {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code : '' }}
