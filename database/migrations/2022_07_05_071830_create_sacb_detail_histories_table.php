@@ -31,8 +31,8 @@ class CreateSacbDetailHistoriesTable extends Migration
             $table->double('total_outstanding_amount', 8, 2);
             $table->double('deposited_amount_value', 8, 2)->nullable();
             $table->double('bank_amount_value', 8, 2)->nullable();
-            // $table->enum('status', ['pending' , 'confirmed', 'dispute', 'paid'])->default('pending');
-            // $table->text('dispute_detail')->nullable();
+            $table->enum('status', ['pending' , 'confirmed', 'dispute', 'paid'])->default('pending');
+            $table->text('dispute_detail')->nullable();
             $table->timestamps();
         });
     }

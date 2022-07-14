@@ -199,11 +199,11 @@ class SaleAgentCommissionBatchController extends Controller
 
                 if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
 
-                    // dd($finance['total_deposited_outstanding_amount']);
+                    // dd($finance['total_deposited_outstanding_amount']  == 0);
 
                     if(isset($finance['type']) && $finance['type'] == 'sale_person_payments'){
     
-                        $spp = SalePersonPayment::where('id', $finance['id'])
+                        SalePersonPayment::where('id', $finance['id'])
                         ->update([
         
                             "current_deposited_total_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
@@ -211,8 +211,8 @@ class SaleAgentCommissionBatchController extends Controller
                             "total_deposit_amount" => $finance['total_deposit_amount'],
                         ]);
 
-                        if($spp->current_deposited_total_outstanding_amount == 0){
-                            SaleAgentBatchTransDetail::where('id', $finance['id'])->update([ 'trans_status' => 1 ]);
+                        if($finance['total_deposited_outstanding_amount'] == 0){
+                            SaleAgentBatchTransDetail::where('id', $finance['sac_batch_trans_detail_id'])->update([ 'trans_status' => 1 ]);
                         }
                     }
 
@@ -224,7 +224,25 @@ class SaleAgentCommissionBatchController extends Controller
                         //     'sac_batch_id'   => $sac_batch->id
                         // ]);
 
-                        $sacbd = SaleAgentCommissionBatchDetails::where('sac_batch_trans_detail_id', $finance['id'])->update([
+                        // $sacbd = SaleAgentCommissionBatchDetails::where('sac_batch_trans_detail_id', $finance['id'])->update([
+        
+                        //     // 'sac_batcsac_batch_idh_trans_detail_id'                 => $sabtd->id,
+                        //     ''                              => $sac_batch->id,
+                        //     'booking_id'                                => $finance['booking_id'],
+                        //     'sale_person_id'                            => $finance['sale_person_id'],
+                        //     'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
+                        //     'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
+                        //     'total_paid_amount_yet'                     => $finance['row_total_paid_amount'],
+                        //     'outstanding_amount_left'                   => $finance['row_total_outstanding_amount'],
+                        //     'pay_commission_amount'                     => $finance['pay_commission_amount'],
+                        //     'total_paid_amount'                         => $finance['row_total_paid_amount'],
+                        //     'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
+                        //     'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
+                        //     'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
+                        //     'status'                                    => 'pending'
+                        // ]);
+                        
+                        $sacbd = SaleAgentCommissionBatchDetails::create([
         
                             // 'sac_batch_trans_detail_id'                 => $sabtd->id,
                             'sac_batch_id'                              => $sac_batch->id,
@@ -520,6 +538,8 @@ class SaleAgentCommissionBatchController extends Controller
         ->orderBy('id', 'DESC')
         ->where('sale_person_id', auth()->user()->id)
         ->get();
+
+        // dd($data['sac_batch']);
 
         return view('sale_agent_commission_batches.commission_management', $data);
     }

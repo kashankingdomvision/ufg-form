@@ -124,7 +124,7 @@
                           <td>{{ $sac_batch->name }}</td>
                           <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
                           <td>{!! $sac_batch->formatted_status !!}</td>
-                          <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
+                          <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_pay_commission_amount) }}</td>
                           <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
                           <td>{{ $sac_batch->formatted_deposit_date }}</td>
                           
@@ -216,10 +216,10 @@
                                 </td>
 
                                 <td class="d-flex">
-                                  @if($sacb_details->status != 'paid' && $sacb_details->total_paid_amount_yet == 0)
+                                  {{-- @if($sacb_details->status != 'paid' && $sacb_details->total_paid_amount_yet == 0) --}}
                                     <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
                                     <button type="button" class="commission-status btn btn-outline-danger btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['dispute', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="dispute" title="Dispute Commission"><i class="fa fa-times"></i></button>
-                                  @endif
+                                  {{-- @endif --}}
                                 </td>
                               </tr>
                             @endforeach

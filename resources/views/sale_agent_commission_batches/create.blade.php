@@ -443,6 +443,7 @@
                                                             <td class="d-none">
                                                                 <input type="text" name="finance_detail[{{$key}}][type]" value="sale_person_payments">
                                                                 <input type="text" name="finance_detail[{{$key}}][id]" value="{{ $sac_batch_trans_detail->spp_id }}">
+                                                                <input type="text" name="finance_detail[{{$key}}][sac_batch_trans_detail_id]" value="{{ $sac_batch_trans_detail->sac_batch_trans_detail_id }}">
                                                             </td>
 
                                                             <td>{{ $sac_batch_trans_detail->deposit_date }}</td>
