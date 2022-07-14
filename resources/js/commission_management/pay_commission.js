@@ -1,5 +1,23 @@
 $(document).ready(function() {
 
+    function resetTable(response){
+        $("#listing_card_body").load(`${location.href} #listing_card_body`);
+        $("#overlay").addClass('overlay').html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+
+        setTimeout(function () {
+
+            $("#overlay").removeClass('overlay').html('');
+            $('.child-row').removeClass('d-none');
+            $('.parent-row').html('<span class="fa fa-minus"></span>');
+
+            Toast.fire({
+                icon: 'success',
+                title: response.success_message
+            });
+            
+        }, 500);
+    }
+
     function totalBankAmountValues() {
 
         let values = $('.bank-amount-value').map((i, e) => parseFloat(removeComma(e.value))).get();
@@ -477,5 +495,124 @@ $(document).ready(function() {
     $("#pay_deposit_amount_row").hide();
     $("#pay_deposit_amount").click(function(){
         $("#pay_deposit_amount_row").toggle();
+    });
+
+    $(document).on('click', ".commission-status", function(event) {
+
+        let url        = $(this).data('action');
+        let actionType = $(this).data('action_type');
+        let message    = "";
+        let buttonText = "";
+
+        switch(actionType) {
+
+            case "confirmed":
+                message    = 'You want to Confirmed Commission?';
+                buttonText = 'Confirmed';
+                break;
+
+            case "dispute":
+                message    = 'You want to Dispute Commission?';
+                buttonText = 'Dispute';
+                break;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: `Yes, ${buttonText} it !`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                let modal      = $('#dispute_booking_modal');
+
+                if(actionType == "dispute"){
+
+                    modal.modal('show');
+                    $("#dispute_commission_form")[0].reset();
+                    modal.find('#dispute_commission_form').attr("action", url);
+                }
+
+                if(actionType == "confirmed"){
+
+                    $.ajax({
+                        type: 'PATCH',
+                        url: url,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response) {
+                            resetTable(response);
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    $(document).on('submit', '#dispute_commission_form', function(event) {
+
+        event.preventDefault();
+
+        let formID = $(this).attr('id');
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function(response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+                $("#dispute_booking_modal").modal('hide');
+                resetTable(response);
+            },
+            error: function(response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(response, `#${formID}`);
+            }
+        });
+
+    });
+
+    $(document).on('click', ".view-dispute-detail", function(event) {
+
+        event.preventDefault();
+
+        let disputeDetails = $(this).data('details');
+        let modal = $('#view_dispute_detail_modal');
+        modal.modal('show');
+        modal.find('#view_dispute_detail').html('');
+        modal.find('#view_dispute_detail').html(disputeDetails);
+    });
+
+    $(document).on('click', ".adjust-booking-commission", function(event) {
+
+        let modal = $('#adjust_booking_commission_modal');
+        modal.modal('show');
+
+        let saleAgentCurrencyCode = $(this).data('sale_agent_currency_code');
+        let bookingCurrencyCode = $(this).data('booking_currency_code');
+        let saleAgentCommissionAmount = $(this).data('sale_agent_commission_amount');
+        let bookingID = $(this).data('booking_id');
+        let batchID = $(this).data('batch_id');
+
+        $('.sale-person-currency-code').html(saleAgentCurrencyCode);
+        $('#sale_person_currency_code').val(saleAgentCurrencyCode);
+        $('#current_commission_amount').val(check(saleAgentCommissionAmount));
+        $('#booking_id').val(bookingID);
+        $('#booking_currency_code').val(bookingCurrencyCode);
+        $('.batch-id').val(batchID);
     });
 });

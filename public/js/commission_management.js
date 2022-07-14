@@ -414,6 +414,20 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  function resetTable(response) {
+    $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
+    $("#overlay").addClass('overlay').html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+    setTimeout(function () {
+      $("#overlay").removeClass('overlay').html('');
+      $('.child-row').removeClass('d-none');
+      $('.parent-row').html('<span class="fa fa-minus"></span>');
+      Toast.fire({
+        icon: 'success',
+        title: response.success_message
+      });
+    }, 500);
+  }
+
   function totalBankAmountValues() {
     var values = $('.bank-amount-value').map(function (i, e) {
       return parseFloat(removeComma(e.value));
@@ -784,6 +798,105 @@ $(document).ready(function () {
   $("#pay_deposit_amount_row").hide();
   $("#pay_deposit_amount").click(function () {
     $("#pay_deposit_amount_row").toggle();
+  });
+  $(document).on('click', ".commission-status", function (event) {
+    var url = $(this).data('action');
+    var actionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    switch (actionType) {
+      case "confirmed":
+        message = 'You want to Confirmed Commission?';
+        buttonText = 'Confirmed';
+        break;
+
+      case "dispute":
+        message = 'You want to Dispute Commission?';
+        buttonText = 'Dispute';
+        break;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes, ".concat(buttonText, " it !")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        var modal = $('#dispute_booking_modal');
+
+        if (actionType == "dispute") {
+          modal.modal('show');
+          $("#dispute_commission_form")[0].reset();
+          modal.find('#dispute_commission_form').attr("action", url);
+        }
+
+        if (actionType == "confirmed") {
+          $.ajax({
+            type: 'PATCH',
+            url: url,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function success(response) {
+              resetTable(response);
+            }
+          });
+        }
+      }
+    });
+  });
+  $(document).on('submit', '#dispute_commission_form', function (event) {
+    event.preventDefault();
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: $(this).attr('action'),
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        $("#dispute_booking_modal").modal('hide');
+        resetTable(response);
+      },
+      error: function error(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(response, "#".concat(formID));
+      }
+    });
+  });
+  $(document).on('click', ".view-dispute-detail", function (event) {
+    event.preventDefault();
+    var disputeDetails = $(this).data('details');
+    var modal = $('#view_dispute_detail_modal');
+    modal.modal('show');
+    modal.find('#view_dispute_detail').html('');
+    modal.find('#view_dispute_detail').html(disputeDetails);
+  });
+  $(document).on('click', ".adjust-booking-commission", function (event) {
+    var modal = $('#adjust_booking_commission_modal');
+    modal.modal('show');
+    var saleAgentCurrencyCode = $(this).data('sale_agent_currency_code');
+    var bookingCurrencyCode = $(this).data('booking_currency_code');
+    var saleAgentCommissionAmount = $(this).data('sale_agent_commission_amount');
+    var bookingID = $(this).data('booking_id');
+    var batchID = $(this).data('batch_id');
+    $('.sale-person-currency-code').html(saleAgentCurrencyCode);
+    $('#sale_person_currency_code').val(saleAgentCurrencyCode);
+    $('#current_commission_amount').val(check(saleAgentCommissionAmount));
+    $('#booking_id').val(bookingID);
+    $('#booking_currency_code').val(bookingCurrencyCode);
+    $('.batch-id').val(batchID);
   });
 });
 

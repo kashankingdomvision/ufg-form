@@ -127,7 +127,6 @@ class SaleAgentCommissionBatchController extends Controller
                 $join->on('sac_batch_trans_details.id', '=', 'sale_person_payments.sac_batch_trans_detail_id')
                     ->where('sale_person_payments.current_deposited_total_outstanding_amount', '>', 0);
             })
-
             ->select([
                 'sac_batch_trans_details.id as sac_batch_trans_detail_id',
                 'sac_batch_trans_details.type',
@@ -257,7 +256,7 @@ class SaleAgentCommissionBatchController extends Controller
                             'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
                             'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
                             'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
-                            'status'                                    => $status
+                            // 'status'                                    => $status
                         ]);
 
                         if($finance['row_total_outstanding_amount'] == 0){
@@ -349,7 +348,7 @@ class SaleAgentCommissionBatchController extends Controller
                         'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
                         'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
                         'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
-                        'status'                                    => $status
+                        // 'status'                                    => $status
                     ]);
                     
                     if($finance['row_total_outstanding_amount'] == 0){

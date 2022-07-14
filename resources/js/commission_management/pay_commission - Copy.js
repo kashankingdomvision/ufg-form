@@ -360,7 +360,6 @@ $(document).ready(function() {
         modal.modal('show');
         modal.find('#view_dispute_detail').html('');
         modal.find('#view_dispute_detail').html(disputeDetails);
-
     });
 
     $(document).on('click', ".adjust-booking-commission", function(event) {
