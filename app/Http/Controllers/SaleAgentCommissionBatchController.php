@@ -425,7 +425,8 @@ class SaleAgentCommissionBatchController extends Controller
             'getBrand',
             'getHolidayType',
             // 'getLastSaleAgentCommissionBatchDetails',
-        ]);
+        ])
+        ->has('getCommissionDetails', '>' , 0);
 
         $data['bookings'] = $query->select([
             'season_id',
