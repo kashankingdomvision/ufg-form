@@ -263,7 +263,7 @@ class Quote extends Model
     }
     
     public function setStoredTextAttribute( $value ) {
-        $this->attributes['stored_text']    = json_encode($value);
+        $this->attributes['stored_text'] = json_encode($value);
     }
 
     public function setNetPriceAttribute( $value ) {

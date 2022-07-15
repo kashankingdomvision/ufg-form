@@ -10,11 +10,9 @@ class QuoteDetail extends Model
         
         'quote_id',
         'category_id',
-        // 'supplier_location_id',
         'supplier_country_ids',
         'supplier_id',
         'group_owner_id',
-        // 'product_location_id',
         'product_id',
         'booking_method_id',
         'booked_by_id',
@@ -62,9 +60,9 @@ class QuoteDetail extends Model
 
     public function getChildQuote()
     {
-        // dd('wqw');
         return $this->hasMany(QuoteDetail::class, 'parent_id', 'id');
     }
+
     public function getCategory()
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
@@ -75,7 +73,6 @@ class QuoteDetail extends Model
         return $this->hasMany(QuoteCategoryDetail::class, 'quote_detail_id', 'id');   
     }
 
-    
     public function getSupplier()
     {
         return $this->hasOne(Supplier::class, 'id', 'supplier_id');
