@@ -294,6 +294,10 @@ class Booking extends Model
         $this->attributes['commission_amount'] = str_replace( ',', '', $value );
     }
 
+    public function setCommissionAmountInSalePersonCurrencyAttribute( $value ) {
+        $this->attributes['commission_amount_in_sale_person_currency'] = str_replace( ',', '', $value );
+    }
+
     public function setSellingPriceOcrAttribute( $value ) {
         $this->attributes['selling_price_ocr'] = str_replace( ',', '', $value );
     }
