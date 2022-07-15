@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Auth;
+
 class Booking extends Model
 {
     protected $fillable = [ 
@@ -93,32 +94,33 @@ class Booking extends Model
     {
         if($this->agency == 1){
             return "Yes";
-        }else{
-            return "No";
         }
+
+        return "No";
     }
 
     public function getLeadPassengerDinningPreferencesAttribute()
     {
         if($this->agency == 1){
             return "";
-        }else{
-            return $this->lead_passenger_dinning_preference;
         }
+
+        return $this->lead_passenger_dinning_preference;
     }
     
     public function getLeadPassengerBeddingPreferencesAttribute()
     {
         if($this->agency == 1){
             return "";
-        }else{
-            return $this->lead_passenger_bedding_preference;
         }
+
+        return $this->lead_passenger_bedding_preference;
     }
     
     public function getBookingFormatedStatusAttribute()
     {
         $status = $this->status;
+
         switch ($status) {
             case 'confirmed':
                 return '<h5><span class="badge badge-success">Confirmed</span></h5>';
@@ -130,7 +132,82 @@ class Booking extends Model
         
         return $status;
     }
+
+    public function getHasUserEditAttribute()
+    {
+        $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
+        if($checkUserExist){
+            return "";
+            // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
+        }
+    }
+        
+    public function getDepartureDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
     
+    public function getReturnDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+  
+   
+    public function setRevelantQuoteAttribute($value)
+    {
+        $this->attributes['revelant_quote'] = json_encode($value);
+    }
+    
+    public function getRevelantQuoteAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setNetPriceAttribute( $value ) {
+        $this->attributes['net_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountAttribute( $value ) {
+        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setAgencyCommissionAttribute( $value ) {
+        $this->attributes['agency_commission'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalNetMarginAttribute( $value ) {
+        $this->attributes['total_net_margin'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceAttribute( $value ) {
+        $this->attributes['selling_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setAmountPerPersonAttribute( $value ) {
+        $this->attributes['amount_per_person'] = str_replace( ',', '', $value );
+    }
+
+    public function setCommissionAmountAttribute( $value ) {
+        $this->attributes['commission_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setCommissionAmountInSalePersonCurrencyAttribute( $value ) {
+        $this->attributes['commission_amount_in_sale_person_currency'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceOcrAttribute( $value ) {
+        $this->attributes['selling_price_ocr'] = str_replace( ',', '', $value );
+    }
+
+    public function setBookingAmountPerPersonInOspAttribute( $value ) {
+        $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepartureDateAttribute( $value ) {
+        $this->attributes['departure_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+
+    public function setReturnDateAttribute( $value) {
+        $this->attributes['return_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
     
     public function getCountryDestinations()
     {
@@ -140,7 +217,6 @@ class Booking extends Model
     public function getBookingDetail()
     {
         return $this->hasMany(BookingDetail::class, 'booking_id', 'id');
-        // ->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC');
     }
     
     function getSeason() {
@@ -214,23 +290,6 @@ class Booking extends Model
         return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','bookings');
     }
 
-    public function getHasUserEditAttribute()
-    {
-        $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
-        if($checkUserExist){
-            return "";
-            // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
-        }
-    }
-    
-    public function getDepartureDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
-    }
-    
-    public function getReturnDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
-    }
-
     public function getSalePerson()
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');
@@ -254,64 +313,6 @@ class Booking extends Model
     public function getLeadPassengerNationality()
     {
         return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
-    }
-   
-    public function setRevelantQuoteAttribute($value)
-    {
-        $this->attributes['revelant_quote'] = json_encode($value);
-    }
-    
-    public function getRevelantQuoteAttribute($value)
-    {
-        return json_decode($value);
-    }
-
-    public function setNetPriceAttribute( $value ) {
-        $this->attributes['net_price'] = str_replace( ',', '', $value );
-    }
-
-    public function setMarkupAmountAttribute( $value ) {
-        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
-    }
-
-    public function setAgencyCommissionAttribute( $value ) {
-        $this->attributes['agency_commission'] = str_replace( ',', '', $value );
-    }
-
-    public function setTotalNetMarginAttribute( $value ) {
-        $this->attributes['total_net_margin'] = str_replace( ',', '', $value );
-    }
-
-    public function setSellingPriceAttribute( $value ) {
-        $this->attributes['selling_price'] = str_replace( ',', '', $value );
-    }
-
-    public function setAmountPerPersonAttribute( $value ) {
-        $this->attributes['amount_per_person'] = str_replace( ',', '', $value );
-    }
-
-    public function setCommissionAmountAttribute( $value ) {
-        $this->attributes['commission_amount'] = str_replace( ',', '', $value );
-    }
-
-    public function setCommissionAmountInSalePersonCurrencyAttribute( $value ) {
-        $this->attributes['commission_amount_in_sale_person_currency'] = str_replace( ',', '', $value );
-    }
-
-    public function setSellingPriceOcrAttribute( $value ) {
-        $this->attributes['selling_price_ocr'] = str_replace( ',', '', $value );
-    }
-
-    public function setBookingAmountPerPersonInOspAttribute( $value ) {
-        $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
-    }
-
-    public function setDepartureDateAttribute( $value ) {
-        $this->attributes['departure_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
-    }
-
-    public function setReturnDateAttribute( $value) {
-        $this->attributes['return_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }
 
