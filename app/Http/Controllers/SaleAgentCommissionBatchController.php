@@ -208,7 +208,7 @@ class SaleAgentCommissionBatchController extends Controller
         
                             "current_deposited_total_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
                             "total_deposited_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
-                            "total_deposit_amount" => $finance['total_deposit_amount'],
+                            "total_deposit_amount" => 0.00,
                         ]);
 
                         if($finance['total_deposited_outstanding_amount'] == 0){
