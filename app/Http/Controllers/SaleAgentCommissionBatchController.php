@@ -170,9 +170,6 @@ class SaleAgentCommissionBatchController extends Controller
     {
         $status = '';
 
-        // dd($request->finance_detail);
-        // dd($request->all());
-        
         if(isset($request->finance_detail)){
 
             $sac_batch = SaleAgentCommissionBatch::create([
@@ -199,13 +196,10 @@ class SaleAgentCommissionBatchController extends Controller
 
                 if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
 
-                    // dd($finance['total_deposited_outstanding_amount']  == 0);
-
                     if(isset($finance['type']) && $finance['type'] == 'sale_person_payments'){
     
                         SalePersonPayment::where('id', $finance['id'])
                         ->update([
-        
                             "current_deposited_total_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
                             "total_deposited_outstanding_amount" => $finance['total_deposited_outstanding_amount'],
                             "total_deposit_amount" => 0.00,
@@ -218,33 +212,8 @@ class SaleAgentCommissionBatchController extends Controller
 
                     if(isset($finance['type']) && $finance['type'] == 'sac_batch_details'){
 
-                        // $sabtd = SaleAgentBatchTransDetail::create([
-                        //     'sale_person_id' => $request->sale_person_id,
-                        //     'type'           => 'sac_batch_details',
-                        //     'sac_batch_id'   => $sac_batch->id
-                        // ]);
-
-                        // $sacbd = SaleAgentCommissionBatchDetails::where('sac_batch_trans_detail_id', $finance['id'])->update([
-        
-                        //     // 'sac_batcsac_batch_idh_trans_detail_id'                 => $sabtd->id,
-                        //     ''                              => $sac_batch->id,
-                        //     'booking_id'                                => $finance['booking_id'],
-                        //     'sale_person_id'                            => $finance['sale_person_id'],
-                        //     'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
-                        //     'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
-                        //     'total_paid_amount_yet'                     => $finance['row_total_paid_amount'],
-                        //     'outstanding_amount_left'                   => $finance['row_total_outstanding_amount'],
-                        //     'pay_commission_amount'                     => $finance['pay_commission_amount'],
-                        //     'total_paid_amount'                         => $finance['row_total_paid_amount'],
-                        //     'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
-                        //     'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
-                        //     'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
-                        //     'status'                                    => 'pending'
-                        // ]);
-                        
                         $sacbd = SaleAgentCommissionBatchDetails::create([
         
-                            // 'sac_batch_trans_detail_id'                 => $sabtd->id,
                             'sac_batch_id'                              => $sac_batch->id,
                             'booking_id'                                => $finance['booking_id'],
                             'sale_person_id'                            => $finance['sale_person_id'],
@@ -261,7 +230,6 @@ class SaleAgentCommissionBatchController extends Controller
                         ]);
 
                         SACBDetailHistory::create([
-                            // 'sac_batch_trans_detail_id'                 => $sabtd->id,
                             'sac_batch_id'                              => $sac_batch->id,
                             'booking_id'                                => $finance['booking_id'],
                             'sale_person_id'                            => $finance['sale_person_id'],
@@ -274,15 +242,12 @@ class SaleAgentCommissionBatchController extends Controller
                             'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
                             'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
                             'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
-                            // 'status'                                    => $status
                         ]);
 
                         if($finance['row_total_outstanding_amount'] == 0){
                             Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 2 ]);
-
                             SaleAgentBatchTransDetail::where('id', $finance['id'])->update([ 'trans_status' => 1 ]);
                         }
-
                     }
                 
                 }
@@ -366,12 +331,10 @@ class SaleAgentCommissionBatchController extends Controller
                         'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
                         'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
                         'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
-                        // 'status'                                    => $status
                     ]);
                     
                     if($finance['row_total_outstanding_amount'] == 0){
                         Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 2 ]);
-                        
                         SaleAgentBatchTransDetail::where('id', $sabtd->id)->update([ 'trans_status' => 1 ]);
                     }
 
@@ -792,3 +755,27 @@ class SaleAgentCommissionBatchController extends Controller
     }
 
 }
+
+// $sabtd = SaleAgentBatchTransDetail::create([
+//     'sale_person_id' => $request->sale_person_id,
+//     'type'           => 'sac_batch_details',
+//     'sac_batch_id'   => $sac_batch->id
+// ]);
+
+// $sacbd = SaleAgentCommissionBatchDetails::where('sac_batch_trans_detail_id', $finance['id'])->update([
+
+//     // 'sac_batcsac_batch_idh_trans_detail_id'                 => $sabtd->id,
+//     ''                              => $sac_batch->id,
+//     'booking_id'                                => $finance['booking_id'],
+//     'sale_person_id'                            => $finance['sale_person_id'],
+//     'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
+//     'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
+//     'total_paid_amount_yet'                     => $finance['row_total_paid_amount'],
+//     'outstanding_amount_left'                   => $finance['row_total_outstanding_amount'],
+//     'pay_commission_amount'                     => $finance['pay_commission_amount'],
+//     'total_paid_amount'                         => $finance['row_total_paid_amount'],
+//     'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
+//     'deposited_amount_value'                    => isset($finance['deposited_amount_value']) && $finance['deposited_amount_value'] > 0 ? $finance['deposited_amount_value'] : NULL,
+//     'bank_amount_value'                         => isset($finance['bank_amount_value']) && $finance['bank_amount_value'] > 0 ? $finance['bank_amount_value'] : NULL,
+//     'status'                                    => 'pending'
+// ]);
