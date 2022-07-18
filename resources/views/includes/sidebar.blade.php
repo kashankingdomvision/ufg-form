@@ -269,14 +269,14 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('sale_person_payments.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['sale_person_payments.index', 'sale_person_payments.create', 'sale_person_payments.edit', 'sale_person_payments.listing', 'sale_person_payments.account_allocation']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>
                                         Sale Person's Payment
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
                             
                             <li class="nav-item">
                                 <a href="{{ route('pay_commissions.booking_commission') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.booking_commission']) ? 'active' : '' }}">
