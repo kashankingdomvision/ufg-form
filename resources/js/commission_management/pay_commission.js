@@ -277,6 +277,14 @@ $(document).ready(function() {
                         let bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(depositedAmountValue);
                         commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
                     }
+
+                    if(calTotalDepositAmountLeftToAllocate() == 0){
+                        if(parseFloat(payCommisionAmount) < parseFloat(depositedAmountValue)){
+                            commissionRow.find('.deposit-amount-value').val(check(0));
+                            commissionRow.find('.bank-amount-value').val(check(0));
+                        }
+                    }
+
                 }
             }
 
