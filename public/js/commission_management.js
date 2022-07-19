@@ -639,7 +639,7 @@ $(document).ready(function () {
         var _depositedAmountValue = removeComma(commissionRow.find('.deposit-amount-value').val());
 
         if (parseFloat(_depositedAmountValue) > 0) {
-          if (parseFloat(payCommisionAmount) > parseFloat(_depositedAmountValue) || parseFloat(payCommisionAmount) == parseFloat(_depositedAmountValue)) {
+          if (parseFloat(payCommisionAmount) >= parseFloat(_depositedAmountValue)) {
             var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
             commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
           }
@@ -650,6 +650,11 @@ $(document).ready(function () {
               commissionRow.find('.bank-amount-value').val(check(0));
             }
           }
+        }
+
+        if (parseFloat(_depositedAmountValue) == 0 && parseFloat(payCommisionAmount) <= calTotalDepositAmountLeftToAllocate()) {
+          commissionRow.find('.deposit-amount-value').val(check(parseFloat(payCommisionAmount)));
+          commissionRow.find('.bank-amount-value').val(check(0));
         }
       }
     }
