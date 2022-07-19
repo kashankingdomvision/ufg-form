@@ -100,6 +100,10 @@
                             {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->sp_deposit_amount) : '' }}
                           </td>
                           <td>
+                            @if($sac_batch->status == 'pending')
+                              <h5><span class="badge badge-info">Awaiting Response from Agent</span></h5>
+                            @endif
+
                             @if($sac_batch->status == 'confirmed')
                               <button type="button" class="pay-batch btn btn-outline-info btn-xs mr-2" data-batch_id="{{ $sac_batch->id }}" title="Pay Batch"><i class="fa fa-money-bill-alt"></i></button>
                             @endif
