@@ -622,6 +622,7 @@ $(document).ready(function () {
     var commissionRow = $(this).closest('.commission-row');
     var payCommisionAmount = removeComma(commissionRow.find('.pay-commission-amount').val());
     var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
+    var bankAmountValue = removeComma(commissionRow.find('.bank-amount-value').val());
 
     if (parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
       Toast.fire({
@@ -640,8 +641,9 @@ $(document).ready(function () {
 
         if (parseFloat(_depositedAmountValue) > 0) {
           if (parseFloat(payCommisionAmount) >= parseFloat(_depositedAmountValue)) {
-            var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
-            commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
+            var _bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
+
+            commissionRow.find('.bank-amount-value').val(check(_bankAmountValue));
           }
 
           if (calTotalDepositAmountLeftToAllocate() == 0) {
