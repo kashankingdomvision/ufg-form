@@ -814,7 +814,6 @@ class QuoteController extends Controller
 
     public function bulkAction(Request $request)
     {
-        dd($request->all());
         try {
 
             $message = "";
