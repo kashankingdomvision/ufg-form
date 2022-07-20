@@ -811,6 +811,10 @@ $(document).ready(function () {
   $("#pay_deposit_amount").click(function () {
     $("#pay_deposit_amount_row").toggle();
   });
+  $("#pay_bonus_amount_row").hide();
+  $("#bonus_amount_btn").click(function () {
+    $("#pay_bonus_amount_row").toggle();
+  });
   $(document).on('click', ".commission-status", function (event) {
     var url = $(this).data('action');
     var actionType = $(this).data('action_type');
@@ -1033,8 +1037,8 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeModalFormLoadingStyles("#".concat(formID));
-        $("#store_sale_person_bonus_modal").modal('hide'); // $("#listing_card_body").load(`${location.href} #listing_card_body`);
-
+        $("#store_sale_person_bonus_modal").modal('hide');
+        location.reload();
         Toast.fire({
           icon: 'success',
           title: response.success_message

@@ -70,6 +70,8 @@
                       <th>Payment Method</th>
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
+                      <th>Deposit Amount</th>
+                      <th>Bonus Amount</th>
                       <th>Status</th>
                       <th>Deposit Date</th>
                     </tr>
@@ -92,7 +94,13 @@
                           <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
                           <td>{{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
-                          <td> {!! $sac_batch->formatted_status !!} </td>
+                          <td>
+                            {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->sp_deposit_amount) : '' }}
+                          </td>
+                          <td>
+                            {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->batch_bonus_amount) : '' }}
+                          </td>
+                          <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>{{ $sac_batch->formatted_deposit_date }}</td>
 
                           <td></td>

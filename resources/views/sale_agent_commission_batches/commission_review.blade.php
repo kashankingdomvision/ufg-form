@@ -71,6 +71,7 @@
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
                       <th>Deposit Amount</th>
+                      <th>Batch Bonus Amount</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -98,6 +99,9 @@
                           </td>
                           <td>
                             {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->sp_deposit_amount) : '' }}
+                          </td>
+                          <td>
+                            {{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' '.Helper::number_format($sac_batch->batch_bonus_amount) : '' }}
                           </td>
                           <td>
                             @if($sac_batch->status == 'pending')

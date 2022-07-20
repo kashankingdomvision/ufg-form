@@ -188,7 +188,7 @@ class SaleAgentCommissionBatchController extends Controller
                 'payment_method_id'      => $request->filled('payment_method_id') ? $request->payment_method_id : null,
                 'bank_total_amount_paid' => $request->filled('bank_total_amount_paid') ? $request->bank_total_amount_paid : null,
                 'status'                 => 'pending',
-    
+                'batch_bonus_amount'     => $request->batch_bonus_amount,
                 'sp_deposit_date'   => $request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0 ? Carbon::today()->toDateString() : null,
             ]);
 
@@ -270,7 +270,8 @@ class SaleAgentCommissionBatchController extends Controller
                 'payment_method_id'      => $request->filled('payment_method_id') ? $request->payment_method_id : null,
                 'bank_total_amount_paid' => $request->filled('bank_total_amount_paid') ? $request->bank_total_amount_paid : null,
                 'status'                 => 'pending',
-    
+                'batch_bonus_amount'     => $request->batch_bonus_amount,
+
                 'sp_deposit_date'   => $request->filled('sp_deposit_amount') && $request->sp_deposit_amount > 0 ? Carbon::today()->toDateString() : null,
             ]);
     

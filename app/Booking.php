@@ -165,6 +165,10 @@ class Booking extends Model
         $this->attributes['net_price'] = str_replace( ',', '', $value );
     }
 
+    public function setSalePersonBonusAmountAttribute( $value ) {
+        $this->attributes['sale_person_bonus_amount'] = str_replace( ',', '', $value );
+    }
+
     public function setMarkupAmountAttribute( $value ) {
         $this->attributes['markup_amount'] = str_replace( ',', '', $value );
     }

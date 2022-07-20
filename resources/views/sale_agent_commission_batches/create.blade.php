@@ -170,12 +170,15 @@
 
                         <div class="card-body p-0" id="listing_card_body">
                             <div class="row p-3 border-top d-flex align-items-center">
-                                <div class="col-md-12">
-                                    <button type="button" id="pay_deposit_amount" class="btn btn-outline-success btn-xs font-weight-bold">
-                                    <i class="fas fa-plus"></i>
-                                        Pay Deposit Amount
-                                    </button>
-                                </div>
+                                <button type="button" id="pay_deposit_amount" class="btn btn-outline-success btn-xs font-weight-bold">
+                                <i class="fas fa-plus"></i>
+                                    Pay Deposit Amount
+                                </button>
+                                
+                                <button type="button" id="bonus_amount_btn" class="btn btn-outline-success btn-xs font-weight-bold ml-2">
+                                <i class="fas fa-plus"></i>
+                                    Bonus Amount
+                                </button>
                             </div>
 
                             <div class="row" id="pay_deposit_amount_row">
@@ -198,7 +201,28 @@
                                         </div>
                                     </div>
                                 </div>
-                        
+                            </div>
+
+                            <div class="row" id="pay_bonus_amount_row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group d-flex justify-content-center">
+                                            <label>
+                                                Bonus Amount
+                                            </label>
+                                        </div>
+
+                                        <div class="input-group d-flex justify-content-center">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    USD
+                                                </span>
+                                            </div>
+    
+                                            <input type="text" name="batch_bonus_amount" id="batch_bonus_amount" class="form-control remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 150px;">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
 

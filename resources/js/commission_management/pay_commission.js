@@ -511,10 +511,10 @@ $(document).ready(function() {
         $("#pay_deposit_amount_row").toggle();
     });
 
-    // $(document).on('click', "#pay_deposit_amount", function(event) {
-    //     $("#pay_deposit_amount_row").toggle();
-    // });
-
+    $("#pay_bonus_amount_row").hide();
+    $("#bonus_amount_btn").click(function(){
+        $("#pay_bonus_amount_row").toggle();
+    });
 
     $(document).on('click', ".commission-status", function(event) {
 
@@ -789,8 +789,7 @@ $(document).ready(function() {
                 removeModalFormLoadingStyles(`#${formID}`);
 
                 $("#store_sale_person_bonus_modal").modal('hide');
-                $("#store_pay_commission").load(`${location.href} #store_pay_commission`);
-                $("#pay_deposit_amount_row").hide();
+                location.reload();
 
                 Toast.fire({
                     icon: 'success',

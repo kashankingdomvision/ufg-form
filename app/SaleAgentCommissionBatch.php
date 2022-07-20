@@ -48,6 +48,7 @@ class SaleAgentCommissionBatch extends Model
         'payment_method_id',
         'bank_total_amount_paid',
         'status',
+        'batch_bonus_amount',
         'sp_deposit_date',
 
         'total_pay_commission_amount',
@@ -128,4 +129,7 @@ class SaleAgentCommissionBatch extends Model
         $this->attributes['total_outstanding_amount'] = str_replace( ',', '', $value );
     }
 
+    public function setBatchBonusAmountAttribute( $value ) {
+        $this->attributes['batch_bonus_amount'] = str_replace( ',', '', $value );
+    }
 }
