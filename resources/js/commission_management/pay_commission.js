@@ -249,7 +249,7 @@ $(document).ready(function() {
         let payCommisionAmount    = removeComma(commissionRow.find('.pay-commission-amount').val());
         let outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
 
-        let bankAmountValue = removeComma(commissionRow.find('.bank-amount-value').val());
+        // let bankAmountValue = removeComma(commissionRow.find('.bank-amount-value').val());
 
         if(parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)){
            
@@ -511,6 +511,11 @@ $(document).ready(function() {
         $("#pay_deposit_amount_row").toggle();
     });
 
+    // $(document).on('click', "#pay_deposit_amount", function(event) {
+    //     $("#pay_deposit_amount_row").toggle();
+    // });
+
+
     $(document).on('click', ".commission-status", function(event) {
 
         let url        = $(this).data('action');
@@ -747,5 +752,56 @@ $(document).ready(function() {
             }
         });
 
+    });
+
+    $(document).on('click', ".store-sale-person-bonus", function(event) {
+
+        let modal = $('#store_sale_person_bonus_modal');
+        let bookingID = $(this).data('booking_id');
+        let saleAgentCurrencyCode = $(this).data('sale_agent_currency_code');
+
+        modal.modal('show');
+        modal.find('form')[0].reset();
+
+        modal.find('.booking-id').val(bookingID);
+        modal.find('.sale-person-currency-code').html(saleAgentCurrencyCode);
+    });
+
+    $(document).on('submit', '#store_sale_person_bonus_modal_form', function(event) {
+
+        event.preventDefault();
+
+        let formID = $(this).attr('id');
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function(response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+
+                $("#store_sale_person_bonus_modal").modal('hide');
+                $("#store_pay_commission").load(`${location.href} #store_pay_commission`);
+                $("#pay_deposit_amount_row").hide();
+
+                Toast.fire({
+                    icon: 'success',
+                    title: response.success_message
+                });
+            },
+            error: function(response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(response, `#${formID}`);
+            }
+        });
     });
 });

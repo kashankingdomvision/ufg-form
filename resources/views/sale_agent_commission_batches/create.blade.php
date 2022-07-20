@@ -168,8 +168,6 @@
                             </div>
                         </div>
 
-           
-
                         <div class="card-body p-0" id="listing_card_body">
                             <div class="row p-3 border-top d-flex align-items-center">
                                 <div class="col-md-12">
@@ -222,8 +220,8 @@
 
                                             <th style="min-width: 250px;">Total Paid Amount</th>
                                             <th>Total Outstanding Amount</th>
-                                            {{-- <th>Agent's Bonus</th> --}}
-                                            {{-- <th>Action</th> --}}
+                                            <th>Agent's Bonus</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -323,6 +321,17 @@
                                                                 -
                                                             @else
                                                                 {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->sale_person_bonus_amount) }}
+                                                            @endif
+                                                        </td>
+
+                                                        <td>
+                                                            @if($booking->sale_person_payment_status == 0)
+                                                                <button type="button" 
+                                                                    data-booking_id="{{ $booking->id }}"
+                                                                    data-sale_agent_currency_code="{{ $supplier_default_currency_code }}"
+                                                                    class="store-sale-person-bonus ml-1 btn btn-outline-info btn-xs" title="Add Bonus">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -596,6 +605,26 @@
                                                                     <input type="text" name="finance_detail[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
                                                                 </div>
                                                             </td>
+
+                                                            <td>
+                                                                @if(is_null($sac_batch_trans_detail->getBooking->sale_person_bonus_amount))
+                                                                    -
+                                                                @else
+                                                                    {{ $sa_currency->code }} {{ Helper::number_format($sac_batch_trans_detail->getBooking->sale_person_bonus_amount) }}
+                                                                @endif
+                                                            </td>
+    
+                                                            <td>
+                                                                @if(isset($sac_batch_trans_detail->getBooking->sale_person_payment_status) && $sac_batch_trans_detail->getBooking->sale_person_payment_status == 0)
+                                                                    <button type="button" 
+                                                                        data-booking_id="{{ $sac_batch_trans_detail->getBooking->id }}"
+                                                                        data-sale_agent_currency_code="{{ $sa_currency->code }}"
+                                                                        class="store-sale-person-bonus ml-1 btn btn-outline-info btn-xs" title="Add Bonus">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </button>
+                                                                @endif
+                                                            </td>
+
                                                         </tr>
 
                                                     @endif

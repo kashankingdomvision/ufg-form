@@ -14,12 +14,12 @@
             <input type="hidden" name="booking_id" value="" class="form-control booking-id hide-arrows" readonly>
   
             <div class="form-group">
-              <label>Sale Person Bonus Amount <span style="color:red">*</span></label>
+              <label>Agent's Bonus Amount <span style="color:red">*</span></label>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <span class="input-group-text sale-person-currency-code"></span>
                 </div>
-                <input type="text" name="sale_person_bonus_amount" id="sale_person_bonus_amount" value="" class="form-control sale-person-bonus-amount hide-arrows">
+                <input type="text" name="sale_person_bonus_amount" id="sale_person_bonus_amount" value="" data-type="currency" class="form-control sale-person-bonus-amount hide-arrows">
               </div>
               <span class="text-danger" role="alert"></span>
             </div>

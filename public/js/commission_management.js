@@ -621,8 +621,7 @@ $(document).ready(function () {
   $(document).on("change", '.pay-commission-amount', function (e) {
     var commissionRow = $(this).closest('.commission-row');
     var payCommisionAmount = removeComma(commissionRow.find('.pay-commission-amount').val());
-    var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
-    var bankAmountValue = removeComma(commissionRow.find('.bank-amount-value').val());
+    var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val()); // let bankAmountValue = removeComma(commissionRow.find('.bank-amount-value').val());
 
     if (parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
       Toast.fire({
@@ -641,9 +640,8 @@ $(document).ready(function () {
 
         if (parseFloat(_depositedAmountValue) > 0) {
           if (parseFloat(payCommisionAmount) >= parseFloat(_depositedAmountValue)) {
-            var _bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
-
-            commissionRow.find('.bank-amount-value').val(check(_bankAmountValue));
+            var bankAmountValue = parseFloat(payCommisionAmount) - parseFloat(_depositedAmountValue);
+            commissionRow.find('.bank-amount-value').val(check(bankAmountValue));
           }
 
           if (calTotalDepositAmountLeftToAllocate() == 0) {
@@ -1007,6 +1005,44 @@ $(document).ready(function () {
       error: function error(response) {
         removeModalFormLoadingStyles("#".concat(formID));
         printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', ".store-sale-person-bonus", function (event) {
+    var modal = $('#store_sale_person_bonus_modal');
+    var bookingID = $(this).data('booking_id');
+    var saleAgentCurrencyCode = $(this).data('sale_agent_currency_code');
+    modal.modal('show');
+    modal.find('form')[0].reset();
+    modal.find('.booking-id').val(bookingID);
+    modal.find('.sale-person-currency-code').html(saleAgentCurrencyCode);
+  });
+  $(document).on('submit', '#store_sale_person_bonus_modal_form', function (event) {
+    event.preventDefault();
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: $(this).attr('action'),
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        $("#store_sale_person_bonus_modal").modal('hide'); // $("#listing_card_body").load(`${location.href} #listing_card_body`);
+
+        Toast.fire({
+          icon: 'success',
+          title: response.success_message
+        });
+      },
+      error: function error(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(response, "#".concat(formID));
       }
     });
   });
