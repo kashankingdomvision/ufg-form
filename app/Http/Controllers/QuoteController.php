@@ -154,16 +154,6 @@ class QuoteController extends Controller
             $query->whereDate('created_at', '<=', $dates->end_date);
         });
 
-        // if($request->has('created_date')){
-        //     $quote->where(function($query) use($request){
-        //         if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
-        //             $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
-        //         }
-        //         if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
-        //             $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
-        //         }
-        //     });
-        // }
         return $quote;
     }
 
@@ -467,7 +457,6 @@ class QuoteController extends Controller
 
     public function getQuoteLogArray($quote)
     {
-
         $array          = $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
         $array['pax'  ] = $quote->getPaxDetail->toArray();
@@ -505,13 +494,6 @@ class QuoteController extends Controller
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['preset_comments']      = PresetComment::orderBy('id', 'ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::ignoreSameCurrency()->orderBy('from', 'desc')->get();
-        
-        // $data['commission_types'] = Commission::all();
-        // $data['quote_ref']        = Quote::get('quote_ref');
-        // $data['locations']        = Location::get();
-        // $data['harbours']          = Harbour::get();
-        // $data['booked_by']        = User::all()->sortBy('name');
-        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
 
         return view('quotes.create', $data);
     }
@@ -856,29 +838,7 @@ class QuoteController extends Controller
             ]);
         }
 
-        // $table_name        = $request->table;
-        // $respons['status'] = FALSE;
-        // $isArchive         = ($request->btn == 'unarchive')? 0 : 1;
 
-        // if($request->btn == 'archive' || $request->btn == 'unarchive'){
-            
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
-        //     $respons['message'] = ($isArchive == 1)? "Quotes Archived Successfully" : 'Quotes Unarchived Successfully';
-
-        // }elseif ($request->btn  == 'cancel'){
-
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'cancelled']);
-        //     $respons['message'] = 'Quotes Cancelled Successfully !!';
-        // }
-        // elseif ($request->btn  == 'quote'){
-
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'quote']);
-        //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
-        // }
-
-        // $respons['status']  = true;
-
-        // return response()->json($respons);
     }
 
     public function compare_quote(Request $request)
@@ -900,7 +860,6 @@ class QuoteController extends Controller
             if(isset($request->quote_ref_four) && !empty($request->quote_ref_four)){
                 $data['quote_ref_four'] =  Quote::find($request->quote_ref_four);
             }
-
         }
     
         $data['quotes'] = Quote::groupBy('ref_no')->orderBy('created_at','DESC')->get();
@@ -1168,7 +1127,6 @@ class QuoteController extends Controller
                     QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'clone'));
                 }
             }
-            
         }
     
         if($quote->getPaxDetail && $quote->pax_no >= 1){
@@ -1202,6 +1160,8 @@ class QuoteController extends Controller
             ->get();
         return $array;
     }
+}
+
 
     /* update status in archive */
     // public function addInArchive(Request $request, $id)
@@ -1272,9 +1232,49 @@ class QuoteController extends Controller
     // 'supplier_location_id'  => $quoteD['supplier_location_id'],
     // 'supplier_country_ids'  => (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ,
     // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
-}
 
+    // $data['commission_types'] = Commission::all();
+    // $data['quote_ref']        = Quote::get('quote_ref');
+    // $data['locations']        = Location::get();
+    // $data['harbours']          = Harbour::get();
+    // $data['booked_by']        = User::all()->sortBy('name');
+    // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
 
 // whereHas('getRole', function($query){
 //     $query->where('slug', 'sales-agent');
 // })
+
+        // $table_name        = $request->table;
+        // $respons['status'] = FALSE;
+        // $isArchive         = ($request->btn == 'unarchive')? 0 : 1;
+
+        // if($request->btn == 'archive' || $request->btn == 'unarchive'){
+            
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
+        //     $respons['message'] = ($isArchive == 1)? "Quotes Archived Successfully" : 'Quotes Unarchived Successfully';
+
+        // }elseif ($request->btn  == 'cancel'){
+
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'cancelled']);
+        //     $respons['message'] = 'Quotes Cancelled Successfully !!';
+        // }
+        // elseif ($request->btn  == 'quote'){
+
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'quote']);
+        //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
+        // }
+
+        // $respons['status']  = true;
+
+        // return response()->json($respons);
+
+        // if($request->has('created_date')){
+        //     $quote->where(function($query) use($request){
+        //         if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
+        //             $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
+        //         }
+        //         if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
+        //             $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
+        //         }
+        //     });
+        // }
